@@ -1,7 +1,7 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RouterProvider } from 'react-router-dom';
-import { Suspense } from 'react';
-import { router } from './routes';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider } from "react-router-dom";
+import { Suspense } from "react";
+import { router } from "./routes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,7 +15,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<div className="p-5 text-center">Loading Platform...</div>}>
+      <Suspense
+        fallback={<div className="p-5 text-center">Loading Platform...</div>}
+      >
         <RouterProvider router={router} />
       </Suspense>
     </QueryClientProvider>

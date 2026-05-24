@@ -1,7 +1,42 @@
-@import "tailwindcss";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-@theme {
-  --color-brand-light: #3b82f6;
-  --color-brand: #1d4ed8;
-  --color-brand-dark: #1e3a8a;
+:root {
+  /* Brand Colors */
+  --color-brand-blue: #1e3a8a;
+  --color-brand-teal: #14b8a6;
+  --color-brand-blue-light: #3b82f6;
+  --color-brand-teal-light: #5eead4;
+
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+  --color-destructive: #dc2626;
+
+  /* UI Colors */
+  --color-background: #f8fafc;
+  --color-foreground: #0f172a;
+  --color-card: #ffffff;
+  --color-border: #e2e8f0;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #14b8a6;
+  --color-input-background: #ffffff;
+
+  /* Sidebar */
+  --color-sidebar: #ffffff;
+  --color-sidebar-border: #e2e8f0;
+  --color-sidebar-accent: #f1f5f9;
+
+  /* Chart Colors */
+  --color-chart-1: #14b8a6;
+  --color-chart-2: #1e3a8a;
+  --color-chart-3: #8b5cf6;
+  --color-chart-4: #f59e0b;
+  --color-chart-5: #10b981;
+
+  /* Radius */
+  --radius: 0.75rem;
 }
