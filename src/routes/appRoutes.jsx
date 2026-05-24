@@ -1,21 +1,26 @@
 /* eslint-disable react-refresh/only-export-components */
-import { lazy } from 'react';
+import { lazy } from "react";
 
-const KanbanPipeline = lazy(() => import('../pages/KanbanPipeline'));
-const Dashboard = lazy(() => import('../pages/Dashboard'));
-const JobsManagement = lazy(() => import('../pages/JobsManagement'));
+const KanbanPipeline = lazy(() => import("../pages/KanbanPipeline"));
+const Dashboard = lazy(() => import("../pages/Dashboard"));
+const JobsManagement = lazy(() => import("../pages/JobsManagement"));
+const UIKit = lazy(() => import("../pages/UIKit"));
 
 export const appRoutes = [
   {
-    path: '/',
+    path: "/",
     element: <Dashboard />,
   },
   {
-    path: '/jobs',
-    element: <JobsManagement />, 
+    path: "/jobs",
+    element: <JobsManagement />,
   },
   {
-    path: '/pipeline/:jobId',
-    element: <KanbanPipeline />, 
+    path: "/pipeline/:jobId",
+    element: <KanbanPipeline />,
+  },
+  {
+    path: "/uikit",
+    element: <UIKit />,
   },
 ];
