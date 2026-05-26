@@ -1,8 +1,6 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
-:root {
+@theme {
   /* Brand Colors */
   --color-brand-blue: #1e3a8a;
   --color-brand-teal: #14b8a6;

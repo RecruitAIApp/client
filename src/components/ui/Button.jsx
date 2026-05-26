@@ -10,13 +10,13 @@ export function Button({
 
   const variants = {
     primary:
-      "bg-[var(--color-brand-blue)] text-white hover:bg-[var(--color-brand-blue-light)] active:scale-95",
+      "bg-[var(--color-brand-blue)] text-white active:scale-95 hover:cursor-pointer",
     secondary:
-      "bg-[var(--color-brand-teal)] text-white hover:bg-[var(--color-brand-teal-light)] hover:text-[var(--color-brand-blue)] active:scale-95",
+      "bg-[var(--color-brand-teal)] text-white active:scale-95 hover:cursor-pointer",
     outline:
-      "border-2 border-[var(--color-brand-blue)] text-[var(--color-brand-blue)] hover:bg-[var(--color-brand-blue)] hover:text-white active:scale-95",
-    ghost: "text-[var(--color-brand-blue)] hover:bg-blue-50 active:scale-95",
-    destructive: "bg-red-600 text-white hover:bg-red-700 active:scale-95",
+      "border-2 border-[var(--color-brand-blue)] text-[var(--color-brand-blue)] active:scale-95 hover:cursor-pointer",
+    ghost: "text-[var(--color-brand-blue)] active:scale-95 hover:cursor-pointer",
+    destructive: "bg-red-600 text-white active:scale-95",
   };
 
   const sizes = {
