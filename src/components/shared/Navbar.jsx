@@ -1,24 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, User, Settings, LogOut, Menu } from "lucide-react";
+import { Bell, User, Settings, LogOut, Menu, Loader2 } from "lucide-react";
 import { Button } from "../ui/Button";
+import { useSignOut } from "../../hooks/useSignOut";
 
 export function Navbar({ userRole, userName }) {
   const navigate = useNavigate();
+  const { signOut, isLoading } = useSignOut();
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
   const [showNotifications, setShowNotifications] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
 
-  const notifications = [
-    {
-      id: 1,
-      text: "New job match found: Senior Developer",
-      time: "5m ago",
-      unread: true,
-    },
-    { id: 2, text: "Application status updated", time: "1h ago", unread: true },
-    { id: 3, text: "AI analysis complete", time: "2h ago", unread: false },
-  ];
+  const handleSignOut = async () => {
+    setShowUserMenu(false);
+    setShowMobileMenu(false);
+    setShowNotifications(false);
+    await signOut();
+  };
+
+  const notifications = [];
 
   const unreadCount = notifications.filter((n) => n.unread).length;
 
@@ -26,7 +26,7 @@ export function Navbar({ userRole, userName }) {
     <nav className="bg-white border-b border-(--color-border) sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Left — Logo + Nav links */}
+          {/* Logo + Nav links */}
           <div className="flex items-center gap-8">
             {/* Logo */}
             <button
@@ -37,7 +37,7 @@ export function Navbar({ userRole, userName }) {
                 <span className="text-white font-bold text-xl">A</span>
               </div>
               <span className="text-xl font-bold bg-linear-to-r from-(--color-brand-blue) to-(--color-brand-teal) bg-clip-text text-transparent">
-                AetherHire
+                Masar
               </span>
             </button>
 
@@ -204,8 +204,18 @@ export function Navbar({ userRole, userName }) {
                         <Settings className="w-4 h-4" /> Settings
                       </button>
                       <div className="border-t border-(--color-border) my-2"></div>
-                      <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-red-600">
-                        <LogOut className="w-4 h-4" /> Sign Out
+                      <button
+                        type="button"
+                        onClick={handleSignOut}
+                        disabled={isLoading}
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-red-600 disabled:opacity-50"
+                      >
+                        {isLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <LogOut className="w-4 h-4" />
+                        )}
+                        Sign Out
                       </button>
                     </div>
                   )}
@@ -294,6 +304,21 @@ export function Navbar({ userRole, userName }) {
                 </button>
               </>
             )}
+            <div className="border-t border-(--color-border) my-2 pt-2">
+              <button
+                type="button"
+                onClick={handleSignOut}
+                disabled={isLoading}
+                className="w-full px-4 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <LogOut className="w-4 h-4" />
+                )}
+                Sign Out
+              </button>
+            </div>
           </div>
         </div>
       )}
