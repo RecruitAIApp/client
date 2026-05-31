@@ -38,6 +38,10 @@ export const appRoutes = [
         element: <KanbanPipeline />,
       },
       {
+        path: "/pipeline",
+        element: <KanbanPipeline />,
+      },
+      {
         path: "/uikit",
         element: <UIKit />,
       },

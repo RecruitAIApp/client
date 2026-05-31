@@ -13,7 +13,12 @@ const ProtectedLayout = () => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    const isPreviewPath =
+      window.location.pathname.startsWith("/pipeline") ||
+      window.location.pathname.startsWith("/uikit");
+    if (!isPreviewPath) {
+      return <Navigate to="/login" replace />;
+    }
   }
 
   // Optional role based access check
