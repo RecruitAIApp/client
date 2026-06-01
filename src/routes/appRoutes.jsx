@@ -20,6 +20,8 @@ const EmployerCompanyOnboarding = lazy(
 const EmployerPendingApproval = lazy(
   () => import("../pages/EmployerPendingApproval"),
 );
+const JobFormPage = lazy(() => import("../pages/JobFormPage"));
+
 
 export const appRoutes = [
   {
@@ -91,6 +93,26 @@ export const appRoutes = [
           {
             path: "/employer/dashboard",
             element: <EmployerDashboard />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/employer/company/:companyId",
+            element: <EmployerDashboard />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/employer/company/:companyId/jobs",
+            element: <JobsManagement />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/jobs/create",
+            element: <JobFormPage mode="create" />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/jobs/:jobId/edit",
+            element: <JobFormPage mode="edit" />,
             handle: { allowedRoles: ["employer"] },
           },
         ],
