@@ -1,19 +1,9 @@
 import { MoreVertical, Mail, Phone, Calendar, AlertTriangle, Eye, Star } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
+import { AIScoreBadge } from '../../../components/ui/AIScoreBadge.jsx';
 
 function CandidateCard({candidateDate}) {
-  const {name, role , email, phone, appliedAt, score, location, experience , isStarred, redFlags, initials} = candidateDate || {};
-
-  const getScoreStyles = (scoreVal) => {
-    const s = Number(scoreVal || 79);
-    if (s < 50) {
-      return "bg-orange-50 text-orange-600 border-orange-100";
-    }
-    if (s <= 70) {
-      return "bg-amber-50 text-amber-600 border-amber-100";
-    }
-    return "bg-emerald-50 text-emerald-600 border-emerald-100";
-  };
+  const {name, role , email, phone, appliedAt, score, skills,  location, experience , isStarred, redFlags, initials} = candidateDate || {};
 
   return (
     <div className='bg-white rounded-lg border border-gray-100 p-4  shadow-sm hover:shadow-md transition-all relative'>
@@ -35,10 +25,7 @@ function CandidateCard({candidateDate}) {
         </div>
 
         {/*AI match Score */}
-        <span className={`font-semibold px-2 py-0.5 rounded-full inline-flex items-center gap-1 border text-xs shrink-0 ${getScoreStyles(score)}`}>
-           <Star className="w-3 h-3 fill-current" />
-           {score ? `${score}%` : '79%'}
-        </span>
+        <AIScoreBadge score={score || 79} size="sm" />
       </div>
 
       {redFlags && (
@@ -62,6 +49,17 @@ function CandidateCard({candidateDate}) {
           <Calendar className="w-3.5 h-3.5 text-gray-400" /> <span>{appliedAt ? (isNaN(Date.parse(appliedAt)) ? appliedAt : `Applied ${new Date(appliedAt).toLocaleDateString()}`) : 'Applied 2026-05-01'}</span>
         </div>
       </div>
+      {/*Skills */}
+      <div className='flex gap-1.5 flex-wrap mb-4'>
+        {skills && skills.slice(0,3).map((skill, idx) => (
+          <span 
+            key={idx} 
+            className="bg-slate-100 text-slate-600 text-[10px] font-bold px-2.5 py-0.5 rounded-md border border-slate-200/50"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
 
       {/*badges */}
       <div className="flex gap-2 flex-wrap mb-4">
@@ -75,7 +73,7 @@ function CandidateCard({candidateDate}) {
 
       {/*actions*/}
       <div className='flex justify-between items-center pt-2 gap-2'>
-        <button className='flex-1 border border-blue-900 cursor-pointer text-blue-900 rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-1.5'>
+        <button className='flex-1 border border-[var(--color-brand-blue)] cursor-pointer text-[var(--color-brand-blue)] rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-[var(--color-brand-blue)] hover:text-white transition-colors flex items-center justify-center gap-1.5'>
           <Eye className="w-3.5 h-3.5" /> View
         </button>
         <button className="p-1.5 text-gray-400 hover:text-gray-600 cursor-pointer shrink-0">
