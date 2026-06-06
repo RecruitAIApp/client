@@ -16,4 +16,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'), // now we can import like this import Button from '@/components/Button' instead of '../../components/Button'
     },
   },
+  server: {
+    open: true, // Automatically open the app in the browser when the server starts
+  },
 });
