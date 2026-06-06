@@ -230,9 +230,9 @@ export const useAuthStore = create((set, get) => ({
         await authFetch("/logout", { method: "POST" });
       }
     } catch (error) {
-      clearSession(set);
-      set({ isLoading: false, error: error?.message || 'Logout failed' });
+      console.error("Logout request failed:", error);
     } finally {
+      clearSession(set);
       set({ isLoading: false });
     }
   },

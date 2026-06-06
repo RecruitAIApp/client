@@ -2,7 +2,7 @@ export function getPostAuthPath(user, membership = null) {
   if (!user) return "/login";
 
   if (user.role === "candidate") {
-    return "/profile";
+    return "/candidate/dashboard";
   }
 
   if (user.role === "employer") {
