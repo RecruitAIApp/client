@@ -1,8 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createBrowserRouter, Navigate, Outlet, useMatches } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import { useAuthStore } from "../store/authStore";
 import { appRoutes } from "./appRoutes";
 import { authRoutes } from "./authRoutes";
+
+const LandingPage = lazy(() => import("../pages/LandingPage"));
 
 const ProtectedLayout = () => {
   const { isAuthenticated, user, isHydrated } = useAuthStore();
@@ -57,6 +60,15 @@ const PublicLayout = () => {
 };
 
 export const router = createBrowserRouter([
+  // Public landing page
+  {
+    path: "/",
+    element: (
+      <Suspense fallback={null}>
+        <LandingPage />
+      </Suspense>
+    ),
+  },
   {
     element: <ProtectedLayout />,
     children: appRoutes,

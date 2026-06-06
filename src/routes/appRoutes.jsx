@@ -23,16 +23,15 @@ const EmployerPendingApproval = lazy(
   () => import("../pages/EmployerPendingApproval"),
 );
 const JobFormPage = lazy(() => import("../pages/JobFormPage"));
-
+const CandidateDashboard = lazy(() => import("../pages/CandidateDashboard"));
+const JobSearch = lazy(() => import("../pages/JobSearch"));
+const JobDetail = lazy(() => import("../pages/JobDetail"));
+const SavedJobs = lazy(() => import("../pages/SavedJobs"));
 
 export const appRoutes = [
   {
     element: <DashboardLayout />,
     children: [
-      {
-        path: "/",
-        element: <Dashboard />,
-      },
       {
         path: "/jobs",
         element: <JobsManagement />,
@@ -78,6 +77,31 @@ export const appRoutes = [
           {
             path: "/profile",
             element: <CandidateProfile />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
+            path: "/candidate/dashboard",
+            element: <CandidateDashboard />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
+            path: "/candidate/jobs",
+            element: <JobSearch />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
+            path: "/candidate/jobs/:id",
+            element: <JobDetail />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
+            path: "/candidate/applications",
+            element: <CandidateApplications />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
+            path: "/candidate/saved-jobs",
+            element: <SavedJobs />,
             handle: { allowedRoles: ["candidate"] },
           },
         ],

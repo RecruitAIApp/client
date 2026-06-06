@@ -30,7 +30,7 @@ export default function CandidateOnboardingGuard() {
     return () => {
       cancelled = true;
     };
-  }, [isCandidate]);
+  }, [isCandidate, location.pathname]);
 
   if (isCandidate && status === "loading") {
     return (
