@@ -91,7 +91,7 @@ function CandidateCard({candidateDate}) {
       {/*actions*/}
       <div className='flex justify-between items-center pt-2 gap-2'>
         <button 
-          onClick={(e) => { e.stopPropagation(); navigate('/CandidateDetails'); }} 
+          onClick={(e) => { e.stopPropagation(); navigate(`/candidateProfile/${id}`); }} 
           className='flex-1 border border-[var(--color-brand-blue)] cursor-pointer text-[var(--color-brand-blue)] rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-[var(--color-brand-blue)] hover:text-white transition-colors flex items-center justify-center gap-1.5'
         >
           <Eye className="w-3.5 h-3.5" /> View

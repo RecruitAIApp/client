@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, User, Settings, LogOut, Menu, Loader2, ChevronDown, Check, Plus, Building, Bookmark } from "lucide-react";
+import { Bell, User, LogOut, Menu, Loader2, ChevronDown, Check, Plus, Building, Bookmark } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useSignOut } from "../../hooks/useSignOut";
 import { useEmployerStore } from "../../store/employerStore";
@@ -84,10 +84,10 @@ export function Navbar({ userRole, userName }) {
               className="flex items-center gap-2 group"
             >
               <div className="w-10 h-10 bg-linear-to-br from-(--color-brand-blue) to-(--color-brand-teal) rounded-lg flex items-center justify-center transform group-hover:scale-105 transition-transform">
-                <span className="text-white font-bold text-xl">M</span>
+                <span className="text-white font-bold text-xl">N</span>
               </div>
               <span className="text-xl font-bold bg-linear-to-r from-(--color-brand-blue) to-(--color-brand-teal) bg-clip-text text-transparent">
-                Masar
+                Naqla AI
               </span>
             </button>
 

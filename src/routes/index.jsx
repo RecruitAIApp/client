@@ -17,9 +17,7 @@ const ProtectedLayout = () => {
 
   if (!isAuthenticated) {
     const isPreviewPath =
-      window.location.pathname.startsWith("/pipeline") ||
       window.location.pathname.startsWith("/uikit") ||
-      window.location.pathname.startsWith("/CandidateDetails")||
       window.location.pathname.startsWith("/applications");
     if (!isPreviewPath) {
       return <Navigate to="/login" replace />;

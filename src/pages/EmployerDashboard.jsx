@@ -312,7 +312,7 @@ export default function EmployerDashboard() {
                       {recentJobs?.map((job) => (
                         <tr key={job._id} className="hover:bg-slate-50/50">
                           <td className="px-6 py-4 font-semibold text-slate-700">
-                            <Link to={`/employer/company/${companyId}/jobs`} className="hover:text-[var(--color-brand-blue)]">
+                            <Link to={`/employer/pipeline/${job._id}`} className="hover:text-[var(--color-brand-blue)] hover:underline">
                               {job.title}
                             </Link>
                           </td>
@@ -369,7 +369,13 @@ export default function EmployerDashboard() {
                             <p className="text-xs text-slate-400">{app.candidateId?.email}</p>
                           </td>
                           <td className="px-6 py-4 text-slate-500 font-medium">
-                            {app.jobId?.title || "Deleted Job"}
+                            {app.jobId?._id ? (
+                              <Link to={`/employer/pipeline/${app.jobId._id}`} className="hover:text-[var(--color-brand-blue)] hover:underline">
+                                {app.jobId.title}
+                              </Link>
+                            ) : (
+                              "Deleted Job"
+                            )}
                           </td>
                           <td className="px-6 py-4 capitalize">
                             <Badge variant={app.stage?.key === "hired" ? "success" : app.stage?.key === "rejected" ? "error" : "warning"}>
