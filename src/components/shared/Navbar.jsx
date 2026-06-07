@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, User, Settings, LogOut, Menu, Loader2, ChevronDown, Check, Plus, Building, Bookmark } from "lucide-react";
+import { Bell, User, Settings, LogOut, Menu, Loader2, ChevronDown, Check, Plus, Building, Bookmark, Briefcase, Calendar, Info, ClipboardList } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useSignOut } from "../../hooks/useSignOut";
 import { useEmployerStore } from "../../store/employerStore";
@@ -295,32 +295,48 @@ export function Navbar({ userRole, userName }) {
                             <p className="text-sm">No notifications</p>
                           </div>
                         ) : (
-                          notifications.slice(0, 5).map((notif) => (
-                            <div
-                              key={notif._id}
-                              onClick={() => {
-                                markRead(notif._id);
-                                if (notif.link) navigate(notif.link);
-                                setShowNotifications(false);
-                              }}
-                              className={`px-4 py-3 hover:bg-gray-50 cursor-pointer border-l-4 transition-all relative ${
-                                !notif.read ? "border-blue-500 bg-blue-50/40" : "border-transparent"
-                              }`}
-                            >
-                              {!notif.read && (
-                                <div className="absolute right-3 top-3 w-2 h-2 bg-blue-500 rounded-full"></div>
-                              )}
-                              <p className={`text-sm tracking-tight ${!notif.read ? "font-bold text-gray-900" : "font-semibold text-gray-600"}`}>
-                                {notif.title}
-                              </p>
-                              <p className={`text-xs mt-0.5 line-clamp-2 ${!notif.read ? "text-gray-700 font-medium" : "text-gray-500"}`}>
-                                {notif.message}
-                              </p>
-                              <p className="text-[10px] text-gray-400 mt-1 font-medium">
-                                {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                              </p>
-                            </div>
-                          ))
+                            notifications.slice(0, 5).map((notif) => {
+                              const getIcon = (type) => {
+                                switch (type) {
+                                  case "application": return <ClipboardList className="w-4 h-4 text-indigo-500" />;
+                                  case "job": return <Briefcase className="w-4 h-4 text-blue-500" />;
+                                  case "interview": return <Calendar className="w-4 h-4 text-teal-500" />;
+                                  case "system": return <Settings className="w-4 h-4 text-gray-500" />;
+                                  default: return <Info className="w-4 h-4 text-blue-500" />;
+                                }
+                              };
+                              return (
+                                <div
+                                  key={notif._id}
+                                  onClick={() => {
+                                    markRead(notif._id);
+                                    if (notif.link) navigate(notif.link);
+                                    setShowNotifications(false);
+                                  }}
+                                  className={`px-4 py-3 hover:bg-gray-50 cursor-pointer border-l-4 transition-all relative flex gap-3 ${
+                                    !notif.read ? "border-blue-500 bg-blue-50/40" : "border-transparent"
+                                  }`}
+                                >
+                                  <div className="shrink-0 mt-0.5">
+                                    {getIcon(notif.type)}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className={`text-sm tracking-tight ${!notif.read ? "font-bold text-gray-900" : "font-semibold text-gray-600"}`}>
+                                      {notif.title}
+                                    </p>
+                                    <p className={`text-xs mt-0.5 line-clamp-2 ${!notif.read ? "text-gray-700 font-medium" : "text-gray-500"}`}>
+                                      {notif.message}
+                                    </p>
+                                    <p className="text-[10px] text-gray-400 mt-1 font-medium">
+                                      {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </p>
+                                  </div>
+                                  {!notif.read && (
+                                    <div className="absolute right-3 top-3 w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                                  )}
+                                </div>
+                              );
+                            })
                         )}
                       </div>
                       {notifications.length > 5 && (

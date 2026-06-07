@@ -62,3 +62,12 @@
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif !important;
   border-radius: 12px !important;
 }
+
+.Toastify__close-button--light {
+  color: white !important;
+  opacity: 0.8 !important;
+}
+
+.Toastify__close-button--light:hover {
+  opacity: 1 !important;
+}

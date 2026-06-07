@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNotificationStore } from "../store/notificationStore";
-import { Bell, Trash2, CheckCircle, Clock, Info, AlertTriangle, CheckCheck } from "lucide-react";
+import { Bell, Trash2, CheckCircle, Clock, Info, AlertTriangle, CheckCheck, Briefcase, Calendar, UserCheck, Settings, ClipboardList } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 const NotificationsPage = () => {
@@ -12,12 +12,14 @@ const NotificationsPage = () => {
 
   const getIcon = (type) => {
     switch (type) {
-      case "success":
-        return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case "warning":
-        return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
-      case "error":
-        return <AlertTriangle className="w-5 h-5 text-red-500" />;
+      case "application":
+        return <ClipboardList className="w-5 h-5 text-indigo-500" />;
+      case "job":
+        return <Briefcase className="w-5 h-5 text-blue-500" />;
+      case "interview":
+        return <Calendar className="w-5 h-5 text-teal-500" />;
+      case "system":
+        return <Settings className="w-5 h-5 text-gray-500" />;
       default:
         return <Info className="w-5 h-5 text-blue-500" />;
     }
