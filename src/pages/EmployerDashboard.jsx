@@ -29,6 +29,7 @@ import {
   ChevronRight,
   Loader2,
   CheckCircle,
+  Sparkles,
 } from "lucide-react";
 
 export default function EmployerDashboard() {
@@ -208,6 +209,15 @@ export default function EmployerDashboard() {
           <p className="text-sm text-slate-500 mt-1.5">{company?.description}</p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
+          {recentJobs?.[0] && (
+            <Button 
+              variant="outline" 
+              className="border-brand-teal text-brand-teal hover:bg-brand-teal/5 font-bold"
+              onClick={() => navigate(`/employer/company/${companyId}/ai-assistant/${recentJobs[0]._id}`)}
+            >
+              <Sparkles className="w-4 h-4" /> AI Recruitment Assistant
+            </Button>
+          )}
           <Button variant="outline" onClick={() => navigate(`/employer/company/${companyId}/jobs`)}>
             Manage Jobs
           </Button>
@@ -306,6 +316,7 @@ export default function EmployerDashboard() {
                         <th className="px-6 py-3">Type</th>
                         <th className="px-6 py-3">Status</th>
                         <th className="px-6 py-3">Created</th>
+                        <th className="px-6 py-3 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50">
@@ -326,6 +337,16 @@ export default function EmployerDashboard() {
                           </td>
                           <td className="px-6 py-4 text-slate-400">
                             {new Date(job.createdAt).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <Button 
+                              size="sm" 
+                              variant="ghost" 
+                              className="text-brand-teal hover:bg-brand-teal/5 font-bold gap-1.5"
+                              onClick={() => navigate(`/employer/company/${companyId}/ai-assistant/${job._id}`)}
+                            >
+                              <Sparkles className="w-3.5 h-3.5" /> HR Agent
+                            </Button>
                           </td>
                         </tr>
                       ))}
