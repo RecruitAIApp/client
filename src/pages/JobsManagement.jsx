@@ -31,6 +31,8 @@ import {
   ChevronRight,
   Briefcase,
   MapPin,
+  Sparkles,
+  Bot,
 } from "lucide-react";
 
 export default function JobsManagement() {
@@ -295,6 +297,15 @@ export default function JobsManagement() {
                     <td className="px-6 py-4 text-right">
                       {canModify && (
                         <div className="flex items-center justify-end gap-2">
+                           <button
+                            onClick={() => navigate(`/employer/company/${companyId}/ai-assistant/${job._id}`)}
+                            className="p-2 text-(--color-brand-teal) hover:bg-teal-50 rounded-lg transition-colors cursor-pointer group flex items-center gap-1.5"
+                            title="Chat with AI HR Assistant"
+                          >
+                            <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                            <span className="text-xs font-bold hidden sm:inline">AI Assistant</span>
+                          </button>
+
                           <button
                             onClick={() => handleToggleStatus(job._id, job.status)}
                             className="p-2 text-slate-400 hover:text-[var(--color-brand-teal)] hover:bg-teal-50 rounded-lg transition-colors cursor-pointer"

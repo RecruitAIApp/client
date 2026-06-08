@@ -29,6 +29,7 @@ const JobSearch = lazy(() => import("../pages/JobSearch"));
 const JobDetail = lazy(() => import("../pages/JobDetail"));
 const SavedJobs = lazy(() => import("../pages/SavedJobs"));
 const Notifications = lazy(() => import("../pages/Notifications"));
+const HrAssistantPage = lazy(() => import("../pages/HrAssistantPage"));
 
 export const appRoutes = [
   {
@@ -163,6 +164,11 @@ export const appRoutes = [
           {
             path: "/jobs/:jobId/edit",
             element: <JobFormPage mode="edit" />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/employer/company/:companyId/ai-assistant/:jobId",
+            element: <HrAssistantPage />,
             handle: { allowedRoles: ["employer"] },
           },
         ],
