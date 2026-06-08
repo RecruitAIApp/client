@@ -43,23 +43,7 @@ export const appRoutes = [
         path: "/jobs",
         element: <JobsManagement />,
       },
-      {
-        path: "/pipeline/:jobId",
-        element: <KanbanPipeline />,
-      },
-      {
-        // sboha kda l7ad ma a5ls kol ma y5os a pipline w kda 
-        path: "/pipeline",
-        element: <KanbanPipeline />,
-      },
-      {
-        path: "/applications",
-        element: <CandidateApplications />
-      },
-      {
-        path: "/CandidateDetails",
-        element: <CandidateDetails />,
-      },
+
       {
         path: "/uikit",
         element: <UIKit />,
@@ -154,6 +138,21 @@ export const appRoutes = [
           {
             path: "/employer/company/:companyId/jobs",
             element: <JobsManagement />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/employer/pipeline",
+            element: <KanbanPipeline />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/employer/pipeline/:jobId",
+            element: <KanbanPipeline />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/candidateProfile/:id",
+            element: <CandidateDetails />,
             handle: { allowedRoles: ["employer"] },
           },
           {
