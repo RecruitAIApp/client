@@ -13,6 +13,7 @@ import {
   X,
   Check,
   AlertCircle,
+  MessageSquare,
 } from "lucide-react";
 import { Card, CardContent } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
@@ -22,6 +23,7 @@ import { AIScoreBadge } from "../components/ui/AIScoreBadge";
 import { getJobs } from "../services/jobsApi";
 import { quickApplyToJob, getMyApplications } from "../services/applicationAPI";
 import { getCandidateProfile, saveJob, unsaveJob } from "../services/profileApi";
+import { useChatStore } from "../store/chatStore";
 import {
   Modal,
   ModalContent,
@@ -83,6 +85,7 @@ function JobSkeleton() {
 
 export default function JobSearch() {
   const navigate = useNavigate();
+  const openChat = useChatStore((s) => s.openChat);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -540,6 +543,15 @@ export default function JobSearch() {
                                 onClick={() => navigate(`/candidate/jobs/${id}`)}
                               >
                                 View Details
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-brand-teal text-brand-teal hover:bg-brand-teal/5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                                onClick={() => openChat(id, job.title, companyName)}
+                              >
+                                <MessageSquare className="w-4 h-4" />
+                                Ask AI
                               </Button>
                               {appliedJobIds.has(id) ? (
                                 <Badge className="h-9 px-4 flex items-center justify-center font-medium gap-1 text-sm bg-green-50 border border-green-200 text-green-700 rounded-lg">

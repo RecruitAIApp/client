@@ -3,8 +3,12 @@ import { RouterProvider } from "react-router-dom";
 import { Suspense, useEffect } from "react";
 import { router } from "./routes";
 import { useAuthStore } from "./store/authStore";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import NotificationListener from "./components/shared/NotificationListener";
+import JobChatBox from "./components/chat/JobChatBox";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
@@ -16,10 +20,16 @@ const queryClient = new QueryClient({
 function App() {
   const restoreSession = useAuthStore((state) => state.restoreSession);
   const isHydrated = useAuthStore((state) => state.isHydrated);
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
     restoreSession();
   }, [restoreSession]);
+
+  useEffect(() => {
+    queryClient.clear();
+  }, [user?._id, isAuthenticated]);
 
   if (!isHydrated) {
     return (
@@ -55,6 +65,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <NotificationListener />
+      <JobChatBox />
+      <ToastContainer theme="light" />
       <Suspense
         fallback={<div className="p-5 text-center text-slate-500 font-medium">Loading Platform...</div>}
       >

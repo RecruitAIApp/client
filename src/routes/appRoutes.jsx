@@ -7,7 +7,7 @@ import CandidateDetails from "../pages/CandidateDetails";
 import CandidateApplications from "../pages/CandidateApplications";
 
 const KanbanPipeline = lazy(() => import("../pages/KanbanPipeline"));
-const Dashboard = lazy(() => import("../pages/Dashboard"));
+// const Dashboard = lazy(() => import("../pages/Dashboard"));
 const JobsManagement = lazy(() => import("../pages/JobsManagement"));
 const UIKit = lazy(() => import("../pages/UIKit"));
 const Unauthorized = lazy(() => import("../pages/Unauthorized"));
@@ -15,6 +15,7 @@ const ProfileBuilder = lazy(() => import("../pages/ProfileBuilder"));
 const CandidateProfile = lazy(() => import("../pages/CandidateProfile"));
 const EmployerDashboard = lazy(() => import("../pages/EmployerDashboard"));
 const EmployerHrDashboard = lazy(() => import("../pages/EmployerHrDashboard"));
+const EmployerProfile = lazy(() => import("../pages/EmployerProfile"));
 const EmployerOnboarding = lazy(() => import("../pages/EmployerOnboarding"));
 const EmployerCompanyOnboarding = lazy(
   () => import("../pages/EmployerCompanyOnboarding"),
@@ -27,11 +28,17 @@ const CandidateDashboard = lazy(() => import("../pages/CandidateDashboard"));
 const JobSearch = lazy(() => import("../pages/JobSearch"));
 const JobDetail = lazy(() => import("../pages/JobDetail"));
 const SavedJobs = lazy(() => import("../pages/SavedJobs"));
+const Notifications = lazy(() => import("../pages/Notifications"));
+const HrAssistantPage = lazy(() => import("../pages/HrAssistantPage"));
 
 export const appRoutes = [
   {
     element: <DashboardLayout />,
     children: [
+      {
+        path: "/notifications",
+        element: <Notifications />,
+      },
       {
         path: "/jobs",
         element: <JobsManagement />,
@@ -119,6 +126,11 @@ export const appRoutes = [
         element: <EmployerApprovedGuard />,
         children: [
           {
+            path: "/employer/profile",
+            element: <EmployerProfile />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
             path: "/employer/dashboard",
             element: <EmployerDashboard />,
             handle: { allowedRoles: ["employer"] },
@@ -156,6 +168,11 @@ export const appRoutes = [
           {
             path: "/jobs/:jobId/edit",
             element: <JobFormPage mode="edit" />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/employer/company/:companyId/ai-assistant/:jobId",
+            element: <HrAssistantPage />,
             handle: { allowedRoles: ["employer"] },
           },
         ],

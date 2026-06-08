@@ -3,12 +3,22 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useJobsStore } from "../store/jobsStore";
 import { useEmployerStore } from "../store/employerStore";
+import { useAuthStore } from "../store/authStore";
 import { getJobsByCompany, updateJob, deleteJob } from "../services/jobsApi";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
 import { Input } from "../components/ui/Input";
 import { Card, CardContent } from "../components/ui/Card";
 import { Skeleton } from "../components/ui/Skeleton";
+import { toast } from "react-toastify";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter,
+} from "../components/ui/Modal";
 import {
   Search,
   RefreshCw,
@@ -21,6 +31,8 @@ import {
   ChevronRight,
   Briefcase,
   MapPin,
+  Sparkles,
+  Bot,
 } from "lucide-react";
 
 export default function JobsManagement() {
@@ -29,8 +41,14 @@ export default function JobsManagement() {
   const queryClient = useQueryClient();
 
   const { activeCompanyId, memberships } = useEmployerStore();
+  const { user } = useAuthStore();
   const { filters, setFilter, resetFilters } = useJobsStore();
   const [searchTerm, setSearchTerm] = useState(filters.search);
+
+  // States for delete job confirmation modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [jobToDelete, setJobToDelete] = useState(null);
+  const [jobTitleToDelete, setJobTitleToDelete] = useState("");
 
   // Sync route param with activeCompanyId if direct link was visited
   useEffect(() => {
@@ -69,9 +87,11 @@ export default function JobsManagement() {
     mutationFn: ({ jobId, status }) => updateJob(jobId, { status }),
     onSuccess: () => {
       queryClient.invalidateQueries(["companyJobs", companyId]);
+      toast.success("Job status updated successfully.");
     },
     onError: (err) => {
-      alert(err.message || "Failed to update job status.");
+      const errorMsg = err.response?.data?.message || err.message || "Failed to update job status.";
+      toast.error(errorMsg);
     },
   });
 
@@ -80,9 +100,11 @@ export default function JobsManagement() {
     mutationFn: (jobId) => deleteJob(jobId),
     onSuccess: () => {
       queryClient.invalidateQueries(["companyJobs", companyId]);
+      toast.success("Job posting deleted successfully.");
     },
     onError: (err) => {
-      alert(err.message || "Failed to delete job.");
+      const errorMsg = err.response?.data?.message || err.message || "Failed to delete job.";
+      toast.error(errorMsg);
     },
   });
 
@@ -92,10 +114,11 @@ export default function JobsManagement() {
   };
 
   const handleDeleteJob = (jobId, title) => {
-    if (confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
-      deleteJobMutation.mutate(jobId);
-    }
+    setJobToDelete(jobId);
+    setJobTitleToDelete(title);
+    setIsDeleteModalOpen(true);
   };
+
 
   const handlePageChange = (newPage) => {
     setFilter("page", newPage);
@@ -239,8 +262,8 @@ export default function JobsManagement() {
                     <td className="px-6 py-4">
                       <div>
                         <Link
-                          to={`/employer/pipeline/${job._id}`}
-                          className="font-bold text-slate-800 hover:text-[var(--color-brand-blue)] text-base hover:underline"
+                          to={`/pipeline/${job._id}`}
+                          className="font-bold text-slate-800 hover:text-[var(--color-brand-blue)] text-base"
                         >
                           {job.title}
                         </Link>
@@ -274,6 +297,15 @@ export default function JobsManagement() {
                     <td className="px-6 py-4 text-right">
                       {canModify && (
                         <div className="flex items-center justify-end gap-2">
+                           <button
+                            onClick={() => navigate(`/employer/company/${companyId}/ai-assistant/${job._id}`)}
+                            className="p-2 text-(--color-brand-teal) hover:bg-teal-50 rounded-lg transition-colors cursor-pointer group flex items-center gap-1.5"
+                            title="Chat with AI HR Assistant"
+                          >
+                            <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                            <span className="text-xs font-bold hidden sm:inline">AI Assistant</span>
+                          </button>
+
                           <button
                             onClick={() => handleToggleStatus(job._id, job.status)}
                             className="p-2 text-slate-400 hover:text-[var(--color-brand-teal)] hover:bg-teal-50 rounded-lg transition-colors cursor-pointer"
@@ -295,14 +327,20 @@ export default function JobsManagement() {
                             <Edit2 className="w-4 h-4" />
                           </Link>
 
-                          <button
-                            onClick={() => handleDeleteJob(job._id, job.title)}
-                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                            title="Delete Job"
-                            disabled={deleteJobMutation.isPending}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          {(activeMembership?.role === "owner" || 
+                            job.postedBy === user?._id || 
+                            job.postedBy?._id === user?._id || 
+                            job.postedBy === user?.id || 
+                            job.postedBy?._id === user?.id) && (
+                            <button
+                              onClick={() => handleDeleteJob(job._id, job.title)}
+                              className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                              title="Delete Job"
+                              disabled={deleteJobMutation.isPending}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
                         </div>
                       )}
                     </td>
@@ -342,6 +380,52 @@ export default function JobsManagement() {
           </div>
         )}
       </Card>
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <Modal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+          <ModalContent>
+            <ModalHeader>
+              <ModalTitle className="text-slate-900 font-bold">Delete Job Posting</ModalTitle>
+              <ModalDescription className="text-slate-500 mt-2">
+                Are you sure you want to delete <span className="font-semibold text-slate-800">"{jobTitleToDelete}"</span>?
+                <br /><br />
+                This action cannot be undone.
+              </ModalDescription>
+            </ModalHeader>
+            <ModalFooter className="mt-6 flex flex-row justify-end gap-3">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsDeleteModalOpen(false);
+                  setJobToDelete(null);
+                  setJobTitleToDelete("");
+                }}
+                disabled={deleteJobMutation.isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  if (jobToDelete) {
+                    deleteJobMutation.mutate(jobToDelete, {
+                      onSuccess: () => {
+                        setIsDeleteModalOpen(false);
+                        setJobToDelete(null);
+                        setJobTitleToDelete("");
+                      }
+                    });
+                  }
+                }}
+                disabled={deleteJobMutation.isPending}
+              >
+                {deleteJobMutation.isPending ? "Deleting..." : "Delete"}
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </div>
   );
 }
