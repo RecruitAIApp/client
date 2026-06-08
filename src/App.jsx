@@ -20,10 +20,16 @@ export const queryClient = new QueryClient({
 function App() {
   const restoreSession = useAuthStore((state) => state.restoreSession);
   const isHydrated = useAuthStore((state) => state.isHydrated);
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
     restoreSession();
   }, [restoreSession]);
+
+  useEffect(() => {
+    queryClient.clear();
+  }, [user?._id, isAuthenticated]);
 
   if (!isHydrated) {
     return (

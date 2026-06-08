@@ -262,7 +262,7 @@ export default function JobsManagement() {
                     <td className="px-6 py-4">
                       <div>
                         <Link
-                          to={`/employer/company/${companyId}/jobs`}
+                          to={`/pipeline/${job._id}`}
                           className="font-bold text-slate-800 hover:text-[var(--color-brand-blue)] text-base"
                         >
                           {job.title}

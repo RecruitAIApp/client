@@ -6,6 +6,7 @@ import { useSignOut } from "../../hooks/useSignOut";
 import { useEmployerStore } from "../../store/employerStore";
 import { useProfile } from "../../features/profile/hooks/useProfile";
 import { useNotificationStore } from "../../store/notificationStore";
+import { useAuthStore } from "../../store/authStore";
 
 function CandidateAvatar({ userName }) {
   const { profile } = useProfile();
@@ -30,6 +31,7 @@ function CandidateAvatar({ userName }) {
 export function Navbar({ userRole, userName }) {
   const navigate = useNavigate();
   const { signOut, isLoading } = useSignOut();
+  const { user } = useAuthStore();
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
   const [showNotifications, setShowNotifications] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
@@ -70,12 +72,12 @@ export function Navbar({ userRole, userName }) {
   }, []);
 
   React.useEffect(() => {
-    if (userRole === "employer" && memberships.length === 0) {
+    if (userRole === "employer" && user?._id) {
       fetchMemberships().catch((err) =>
         console.error("Error loading memberships:", err),
       );
     }
-  }, [userRole, fetchMemberships, memberships.length]);
+  }, [userRole, fetchMemberships, user?._id]);
 
   const handleSwitchCompany = (companyId) => {
     setActiveCompanyId(companyId);
@@ -241,11 +243,6 @@ export function Navbar({ userRole, userName }) {
                       }
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
                       Jobs
-                    </button>
-                    <button
-                      onClick={() => navigate("/pipeline")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
-                      Pipeline
                     </button>
                   </>
                 )}
