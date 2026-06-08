@@ -244,6 +244,12 @@ export function Navbar({ userRole, userName }) {
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
                       Jobs
                     </button>
+                    <button
+                      onClick={() => navigate("/employer/analytics")}
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
+                    >
+                      Analytics
+                    </button>
                   </>
                 )}
 

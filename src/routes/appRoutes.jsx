@@ -91,6 +91,11 @@ export const appRoutes = [
             handle: { allowedRoles: ["candidate"] },
           },
           {
+            path: "/candidate/application/:id",
+            element: <CandidateDetails />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
             path: "/candidate/saved-jobs",
             element: <SavedJobs />,
             handle: { allowedRoles: ["candidate"] },

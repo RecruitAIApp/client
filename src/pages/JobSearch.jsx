@@ -21,7 +21,7 @@ import { Input } from "../components/ui/Input";
 import { Badge } from "../components/ui/Badge";
 import { AIScoreBadge } from "../components/ui/AIScoreBadge";
 import { getJobs } from "../services/jobsApi";
-import { quickApplyToJob, getMyApplications } from "../services/applicationApi";
+import { quickApplyToJob, getMyApplications } from "../services/applicationAPI";
 import { getCandidateProfile, saveJob, unsaveJob } from "../services/profileApi";
 import { useChatStore } from "../store/chatStore";
 import {

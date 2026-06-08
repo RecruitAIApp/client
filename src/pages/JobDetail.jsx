@@ -26,7 +26,7 @@ import { Modal, ModalContent, ModalHeader, ModalTitle, ModalDescription, ModalFo
 import { useAuthStore } from "../store/authStore";
 import { useChatStore } from "../store/chatStore";
 import { getJobById } from "../services/jobsApi";
-import { applyToJob, quickApplyToJob, getMyApplications } from "../services/applicationApi";
+import { applyToJob, quickApplyToJob, getMyApplications } from "../services/applicationAPI";
 import { getSavedJobs, saveJob as saveJobApi, unsaveJob as unsaveJobApi, getCandidateProfile } from "../services/profileApi";
 
 // Mock AI analysis — until a real matching endpoint exists
