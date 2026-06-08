@@ -29,3 +29,22 @@ export async function removeHR(companyId, hrId) {
   const { data } = await apiClient.delete(`/companies/${companyId}/hrs/${hrId}`);
   return data;
 }
+
+export async function uploadCompanyLicense(companyId, file, onUploadProgress) {
+  const formData = new FormData();
+  formData.append("license", file);
+  const { data } = await apiClient.put(`/companies/${companyId}/licenses`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    onUploadProgress: (progressEvent) => {
+      if (onUploadProgress && progressEvent.total) {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        onUploadProgress(percentCompleted);
+      }
+    },
+  });
+  return data;
+}

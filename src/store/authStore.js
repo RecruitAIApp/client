@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { AUTH_API_URL } from "../config/api.config.js";
+import { useEmployerStore } from "./employerStore.js";
 
 export function getAccessToken() {
   return localStorage.getItem("accessToken");
@@ -72,6 +73,11 @@ function applySession(set, get, { user, accessToken, refreshToken, membership })
 
 function clearSession(set) {
   clearStoredTokens();
+  try {
+    useEmployerStore.getState().reset();
+  } catch (e) {
+    console.error("Failed to reset employer store on clearSession:", e);
+  }
 
   set({
     user: null,

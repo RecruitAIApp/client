@@ -6,6 +6,7 @@ import { appRoutes } from "./appRoutes";
 import { authRoutes } from "./authRoutes";
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
+const AcceptInvite = lazy(() => import("../pages/AcceptInvite"));
 
 const ProtectedLayout = () => {
   const { isAuthenticated, user, isHydrated } = useAuthStore();
@@ -64,6 +65,14 @@ export const router = createBrowserRouter([
     element: (
       <Suspense fallback={null}>
         <LandingPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/accept-invite",
+    element: (
+      <Suspense fallback={null}>
+        <AcceptInvite />
       </Suspense>
     ),
   },

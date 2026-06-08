@@ -24,6 +24,7 @@ import { Badge } from "../components/ui/Badge";
 import { AIScoreCircular } from "../components/ui/AIScoreBadge";
 import { Modal, ModalContent, ModalHeader, ModalTitle, ModalDescription, ModalFooter, ModalClose } from "../components/ui/Modal";
 import { useAuthStore } from "../store/authStore";
+import { useChatStore } from "../store/chatStore";
 import { getJobById } from "../services/jobsApi";
 import { applyToJob, quickApplyToJob, getMyApplications } from "../services/applicationApi";
 import { getSavedJobs, saveJob as saveJobApi, unsaveJob as unsaveJobApi, getCandidateProfile } from "../services/profileApi";
@@ -64,6 +65,7 @@ export default function JobDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
+  const openChat = useChatStore((s) => s.openChat);
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -287,52 +289,72 @@ export default function JobDetail() {
                 </div>
 
                 {/* CTA buttons */}
-                <div className="flex gap-3 mb-8 pt-6 border-t border-[var(--color-border)]">
-                  {applied ? (
-                    <div className="flex-1 flex items-center gap-2 px-4 py-3 bg-green-50 border border-green-200 rounded-lg text-green-700 font-medium">
-                      <CheckCircle className="w-5 h-5" /> Application Submitted!
-                    </div>
-                  ) : (
-                    <>
-                      <Button
-                        size="lg"
-                        className="flex-1"
-                        disabled={applying}
-                        onClick={handleQuickApplyClick}
-                      >
-                        {applying ? (
-                          <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Applying…</>
-                        ) : (
-                          "Quick Apply"
-                        )}
-                      </Button>
-                      <Button
-                        size="lg"
-                        variant="secondary"
-                        className="flex-1"
-                        disabled={applying}
-                        onClick={() => setShowApplyModal(true)}
-                      >
-                        Apply with Custom CV
-                      </Button>
-                    </>
-                  )}
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    onClick={handleToggleSave}
-                    aria-label={saved ? "Unsave" : "Save"}
-                  >
-                    {saved ? (
-                      <Bookmark className="w-5 h-5 fill-current text-[var(--color-brand-teal)]" />
+                <div className="space-y-3 mb-8 pt-6 border-t border-[var(--color-border)]">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    {applied ? (
+                      <div className="flex-1 flex items-center gap-2 px-4 py-3 bg-green-50 border border-green-200 rounded-lg text-green-700 font-medium">
+                        <CheckCircle className="w-5 h-5" /> Application Submitted!
+                      </div>
                     ) : (
-                      <Bookmark className="w-5 h-5" />
+                      <>
+                        <Button
+                          size="lg"
+                          className="flex-1"
+                          disabled={applying}
+                          onClick={handleQuickApplyClick}
+                        >
+                          {applying ? (
+                            <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Applying…</>
+                          ) : (
+                            "Quick Apply"
+                          )}
+                        </Button>
+                        <Button
+                          size="lg"
+                          variant="secondary"
+                          className="flex-1"
+                          disabled={applying}
+                          onClick={() => setShowApplyModal(true)}
+                        >
+                          Apply with Custom CV
+                        </Button>
+                      </>
                     )}
-                    {saved ? "Saved" : "Save"}
-                  </Button>
-                  <Button size="lg" variant="outline" aria-label="Share" onClick={() => setShowShareModal(true)}>
-                    <Share2 className="w-5 h-5" />
-                  </Button>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="flex-1 border-brand-teal text-brand-teal hover:bg-brand-teal/5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                      onClick={() => openChat(id, job.title, companyName)}
+                    >
+                      <MessageSquare className="w-5 h-5" />
+                      Ask AI Advisor
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={handleToggleSave}
+                      aria-label={saved ? "Unsave" : "Save"}
+                      className="w-auto px-4"
+                    >
+                      {saved ? (
+                        <Bookmark className="w-5 h-5 fill-current text-[var(--color-brand-teal)]" />
+                      ) : (
+                        <Bookmark className="w-5 h-5" />
+                      )}
+                    </Button>
+                    <Button 
+                      size="lg" 
+                      variant="outline" 
+                      aria-label="Share" 
+                      onClick={() => setShowShareModal(true)}
+                      className="w-auto px-4"
+                    >
+                      <Share2 className="w-5 h-5" />
+                    </Button>
+                  </div>
                 </div>
 
                 {applyError && (

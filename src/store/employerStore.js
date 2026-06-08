@@ -52,4 +52,15 @@ export const useEmployerStore = create((set, get) => ({
       set({ isLoading: false });
     }
   },
+
+  reset: () => {
+    localStorage.removeItem("activeCompanyId");
+    set({
+      memberships: [],
+      activeCompanyId: null,
+      activeCompany: null,
+      isLoading: false,
+      error: null,
+    });
+  },
 }));
