@@ -200,9 +200,9 @@ export default function JobFormPage({ mode = "create" }) {
       experienceLevel: data.experienceLevel,
       company: activeCompanyId,
       salaryRange: {
-        min: data.minSalary,
-        max: data.maxSalary,
-        currency: data.currency,
+        min: Number(data.minSalary) >= 0 ? Number(data.minSalary) : 0,
+        max: Number(data.maxSalary) >= 0 ? Number(data.maxSalary) : 0,
+        currency: data.currency || "USD",
       },
       requirements: cleanRequirements,
       skills: cleanSkills,

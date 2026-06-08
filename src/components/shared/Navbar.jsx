@@ -1,6 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, User, Settings, LogOut, Menu, Loader2, ChevronDown, Check, Plus, Building, Bookmark } from "lucide-react";
+import {
+  Bell,
+  User,
+  Settings,
+  LogOut,
+  Menu,
+  Loader2,
+  ChevronDown,
+  Check,
+  Plus,
+  Building,
+  Bookmark,
+} from "lucide-react";
 import { Button } from "../ui/Button";
 import { useSignOut } from "../../hooks/useSignOut";
 import { useEmployerStore } from "../../store/employerStore";
@@ -9,11 +21,19 @@ import { useProfile } from "../../features/profile/hooks/useProfile";
 function CandidateAvatar({ userName }) {
   const { profile } = useProfile();
   if (profile?.profilePicture?.url) {
-    return <img src={profile.profilePicture.url} alt={userName} className="w-8 h-8 rounded-full object-cover" />;
+    return (
+      <img
+        src={profile.profilePicture.url}
+        alt={userName}
+        className="w-8 h-8 rounded-full object-cover"
+      />
+    );
   }
   return (
     <div className="w-8 h-8 bg-linear-to-br from-(--color-brand-blue) to-(--color-brand-teal) rounded-full flex items-center justify-center">
-      <span className="text-white text-sm font-medium">{userName?.[0] || "U"}</span>
+      <span className="text-white text-sm font-medium">
+        {userName?.[0] || "U"}
+      </span>
     </div>
   );
 }
@@ -25,7 +45,13 @@ export function Navbar({ userRole, userName }) {
   const [showNotifications, setShowNotifications] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
 
-  const { memberships, activeCompanyId, activeCompany, fetchMemberships, setActiveCompanyId } = useEmployerStore();
+  const {
+    memberships,
+    activeCompanyId,
+    activeCompany,
+    fetchMemberships,
+    setActiveCompanyId,
+  } = useEmployerStore();
   const [showWorkspaceMenu, setShowWorkspaceMenu] = React.useState(false);
 
   const userMenuRef = React.useRef(null);
@@ -37,10 +63,16 @@ export function Navbar({ userRole, userName }) {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setShowUserMenu(false);
       }
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(event.target)
+      ) {
         setShowNotifications(false);
       }
-      if (workspaceMenuRef.current && !workspaceMenuRef.current.contains(event.target)) {
+      if (
+        workspaceMenuRef.current &&
+        !workspaceMenuRef.current.contains(event.target)
+      ) {
         setShowWorkspaceMenu(false);
       }
     }
@@ -50,7 +82,9 @@ export function Navbar({ userRole, userName }) {
 
   React.useEffect(() => {
     if (userRole === "employer" && memberships.length === 0) {
-      fetchMemberships().catch((err) => console.error("Error loading memberships:", err));
+      fetchMemberships().catch((err) =>
+        console.error("Error loading memberships:", err),
+      );
     }
   }, [userRole, fetchMemberships, memberships.length]);
 
@@ -81,8 +115,7 @@ export function Navbar({ userRole, userName }) {
             {/* Logo */}
             <button
               onClick={() => navigate("/")}
-              className="flex items-center gap-2 group"
-            >
+              className="flex items-center gap-2 group">
               <div className="w-10 h-10 bg-linear-to-br from-(--color-brand-blue) to-(--color-brand-teal) rounded-lg flex items-center justify-center transform group-hover:scale-105 transition-transform">
                 <span className="text-white font-bold text-xl">M</span>
               </div>
@@ -100,11 +133,14 @@ export function Navbar({ userRole, userName }) {
                     setShowUserMenu(false);
                     setShowNotifications(false);
                   }}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 transition-all text-left max-w-[12rem] cursor-pointer"
-                >
+                  className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 transition-all text-left max-w-[12rem] cursor-pointer">
                   <div className="w-6 h-6 rounded bg-slate-200 flex items-center justify-center text-xs font-semibold text-slate-700 shrink-0 overflow-hidden">
                     {activeCompany?.logo ? (
-                      <img src={activeCompany.logo} alt="" className="w-full h-full object-cover" />
+                      <img
+                        src={activeCompany.logo}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
                       <Building className="w-3.5 h-3.5" />
                     )}
@@ -125,19 +161,26 @@ export function Navbar({ userRole, userName }) {
                         <button
                           key={m.company?._id}
                           onClick={() => handleSwitchCompany(m.company?._id)}
-                          className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 flex items-center justify-between gap-3 group transition-colors cursor-pointer"
-                        >
+                          className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 flex items-center justify-between gap-3 group transition-colors cursor-pointer">
                           <div className="flex items-center gap-2.5 min-w-0">
                             <div className="w-7 h-7 rounded bg-slate-100 flex items-center justify-center text-xs font-semibold text-slate-600 shrink-0 overflow-hidden border border-slate-200">
                               {m.company?.logo ? (
-                                <img src={m.company.logo} alt="" className="w-full h-full object-cover" />
+                                <img
+                                  src={m.company.logo}
+                                  alt=""
+                                  className="w-full h-full object-cover"
+                                />
                               ) : (
                                 <Building className="w-4 h-4" />
                               )}
                             </div>
                             <div className="truncate text-left">
-                              <p className="font-medium text-slate-800 truncate">{m.company?.name}</p>
-                              <p className="text-xs text-slate-400 capitalize">{m.role}</p>
+                              <p className="font-medium text-slate-800 truncate">
+                                {m.company?.name}
+                              </p>
+                              <p className="text-xs text-slate-400 capitalize">
+                                {m.role}
+                              </p>
                             </div>
                           </div>
                           {m.company?._id === activeCompanyId && (
@@ -152,8 +195,7 @@ export function Navbar({ userRole, userName }) {
                         setShowWorkspaceMenu(false);
                         navigate("/employer/company-onboarding");
                       }}
-                      className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50 flex items-center gap-2 text-slate-600 font-medium cursor-pointer"
-                    >
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-slate-50 flex items-center gap-2 text-slate-600 font-medium cursor-pointer">
                       <Plus className="w-4 h-4 text-slate-400" /> Create Company
                     </button>
                   </div>
@@ -168,26 +210,22 @@ export function Navbar({ userRole, userName }) {
                   <>
                     <button
                       onClick={() => navigate("/candidate/dashboard")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       Dashboard
                     </button>
                     <button
                       onClick={() => navigate("/candidate/jobs")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       Find Jobs
                     </button>
                     <button
                       onClick={() => navigate("/candidate/applications")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       My Applications
                     </button>
                     <button
                       onClick={() => navigate("/candidate/profile")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       Profile
                     </button>
                   </>
@@ -196,28 +234,31 @@ export function Navbar({ userRole, userName }) {
                 {userRole === "employer" && (
                   <>
                     <button
-                      onClick={() => navigate(activeCompanyId ? `/employer/company/${activeCompanyId}` : "/employer/dashboard")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
-                    >
+                      onClick={() =>
+                        navigate(
+                          activeCompanyId
+                            ? `/employer/company/${activeCompanyId}`
+                            : "/employer/dashboard",
+                        )
+                      }
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
                       Dashboard
                     </button>
                     <button
-                      onClick={() => navigate(activeCompanyId ? `/employer/company/${activeCompanyId}/jobs` : "/employer/jobs")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
-                    >
+                      onClick={() =>
+                        navigate(
+                          activeCompanyId
+                            ? `/employer/company/${activeCompanyId}/jobs`
+                            : "/employer/jobs",
+                        )
+                      }
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
                       Jobs
                     </button>
                     <button
-                      onClick={() => navigate("/employer/pipeline")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      onClick={() => navigate("/pipeline")}
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors cursor-pointer">
                       Pipeline
-                    </button>
-                    <button
-                      onClick={() => navigate("/employer/analytics")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
-                      Analytics
                     </button>
                   </>
                 )}
@@ -226,26 +267,22 @@ export function Navbar({ userRole, userName }) {
                   <>
                     <button
                       onClick={() => navigate("/admin/dashboard")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       Dashboard
                     </button>
                     <button
                       onClick={() => navigate("/admin/users")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       Users
                     </button>
                     <button
                       onClick={() => navigate("/admin/moderation")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       Moderation
                     </button>
                     <button
                       onClick={() => navigate("/admin/analytics")}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors"
-                    >
+                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-(--color-brand-blue) hover:bg-blue-50 rounded-lg transition-colors">
                       Analytics
                     </button>
                   </>
@@ -265,8 +302,7 @@ export function Navbar({ userRole, userName }) {
                       setShowNotifications(!showNotifications);
                       setShowUserMenu(false);
                     }}
-                    className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative"
-                  >
+                    className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative">
                     <Bell className="w-5 h-5" />
                     {unreadCount > 0 && (
                       <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -281,8 +317,7 @@ export function Navbar({ userRole, userName }) {
                       {notifications.map((notif) => (
                         <div
                           key={notif.id}
-                          className={`px-4 py-3 hover:bg-gray-50 cursor-pointer border-l-4 ${notif.unread ? "border-(--color-brand-teal) bg-blue-50/30" : "border-transparent"}`}
-                        >
+                          className={`px-4 py-3 hover:bg-gray-50 cursor-pointer border-l-4 ${notif.unread ? "border-(--color-brand-teal) bg-blue-50/30" : "border-transparent"}`}>
                           <p className="text-sm">{notif.text}</p>
                           <p className="text-xs text-gray-500 mt-1">
                             {notif.time}
@@ -300,8 +335,7 @@ export function Navbar({ userRole, userName }) {
                       setShowUserMenu(!showUserMenu);
                       setShowNotifications(false);
                     }}
-                    className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  >
+                    className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors">
                     {userRole === "candidate" ? (
                       <CandidateAvatar userName={userName} />
                     ) : (
@@ -324,10 +358,11 @@ export function Navbar({ userRole, userName }) {
                       <button
                         onClick={() => {
                           setShowUserMenu(false);
-                          navigate(`/${userRole === "employer" ? "employer" : "candidate"}/profile`);
+                          navigate(
+                            `/${userRole === "employer" ? "employer" : "candidate"}/profile`,
+                          );
                         }}
-                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 cursor-pointer"
-                      >
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
                         <User className="w-4 h-4" /> Profile
                       </button>
                       {userRole === "candidate" && (
@@ -336,8 +371,7 @@ export function Navbar({ userRole, userName }) {
                             setShowUserMenu(false);
                             navigate("/candidate/saved-jobs");
                           }}
-                          className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 cursor-pointer"
-                        >
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
                           <Bookmark className="w-4 h-4" /> Saved Jobs
                         </button>
                       )}
@@ -346,8 +380,7 @@ export function Navbar({ userRole, userName }) {
                         type="button"
                         onClick={handleSignOut}
                         disabled={isLoading}
-                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-red-600 disabled:opacity-50"
-                      >
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-red-600 disabled:opacity-50">
                         {isLoading ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
@@ -376,8 +409,7 @@ export function Navbar({ userRole, userName }) {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-gray-500 hover:text-gray-900"
-            >
+              className="md:hidden p-2 text-gray-500 hover:text-gray-900">
               <Menu className="w-6 h-6" />
             </button>
           </div>
@@ -392,20 +424,17 @@ export function Navbar({ userRole, userName }) {
               <>
                 <button
                   onClick={() => navigate("/candidate/dashboard")}
-                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg">
                   Dashboard
                 </button>
                 <button
                   onClick={() => navigate("/candidate/jobs")}
-                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg">
                   Find Jobs
                 </button>
                 <button
                   onClick={() => navigate("/candidate/applications")}
-                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg">
                   My Applications
                 </button>
               </>
@@ -415,19 +444,25 @@ export function Navbar({ userRole, userName }) {
                 <button
                   onClick={() => {
                     setShowMobileMenu(false);
-                    navigate(activeCompanyId ? `/employer/company/${activeCompanyId}` : "/employer/dashboard");
+                    navigate(
+                      activeCompanyId
+                        ? `/employer/company/${activeCompanyId}`
+                        : "/employer/dashboard",
+                    );
                   }}
-                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg">
                   Dashboard
                 </button>
                 <button
                   onClick={() => {
                     setShowMobileMenu(false);
-                    navigate(activeCompanyId ? `/employer/company/${activeCompanyId}/jobs` : "/employer/jobs");
+                    navigate(
+                      activeCompanyId
+                        ? `/employer/company/${activeCompanyId}/jobs`
+                        : "/employer/jobs",
+                    );
                   }}
-                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg">
                   Jobs
                 </button>
               </>
@@ -436,14 +471,12 @@ export function Navbar({ userRole, userName }) {
               <>
                 <button
                   onClick={() => navigate("/admin/dashboard")}
-                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg">
                   Dashboard
                 </button>
                 <button
                   onClick={() => navigate("/admin/users")}
-                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-50 rounded-lg">
                   Users
                 </button>
               </>
@@ -451,10 +484,22 @@ export function Navbar({ userRole, userName }) {
             {/* Guest Mobile Buttons */}
             {!userRole && (
               <div className="flex flex-col gap-2 p-2 pt-4 border-t border-(--color-border)">
-                <Button variant="ghost" onClick={() => { setShowMobileMenu(false); navigate("/login"); }} className="w-full justify-center">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setShowMobileMenu(false);
+                    navigate("/login");
+                  }}
+                  className="w-full justify-center">
                   Sign In
                 </Button>
-                <Button variant="primary" onClick={() => { setShowMobileMenu(false); navigate("/register"); }} className="w-full justify-center">
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    setShowMobileMenu(false);
+                    navigate("/register");
+                  }}
+                  className="w-full justify-center">
                   Get Started
                 </Button>
               </div>
@@ -467,8 +512,7 @@ export function Navbar({ userRole, userName }) {
                   type="button"
                   onClick={handleSignOut}
                   disabled={isLoading}
-                  className="w-full px-4 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 disabled:opacity-50"
-                >
+                  className="w-full px-4 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 disabled:opacity-50">
                   {isLoading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (

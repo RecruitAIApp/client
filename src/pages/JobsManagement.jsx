@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useJobsStore } from "../store/jobsStore";
 import { useEmployerStore } from "../store/employerStore";
+import { useAuthStore } from "../store/authStore";
 import { getJobsByCompany, updateJob, deleteJob } from "../services/jobsApi";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
@@ -29,6 +30,7 @@ export default function JobsManagement() {
   const queryClient = useQueryClient();
 
   const { activeCompanyId, memberships } = useEmployerStore();
+  const { user } = useAuthStore();
   const { filters, setFilter, resetFilters } = useJobsStore();
   const [searchTerm, setSearchTerm] = useState(filters.search);
 
@@ -295,14 +297,20 @@ export default function JobsManagement() {
                             <Edit2 className="w-4 h-4" />
                           </Link>
 
-                          <button
-                            onClick={() => handleDeleteJob(job._id, job.title)}
-                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                            title="Delete Job"
-                            disabled={deleteJobMutation.isPending}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          {(activeMembership?.role === "owner" || 
+                            job.postedBy === user?._id || 
+                            job.postedBy?._id === user?._id || 
+                            job.postedBy === user?.id || 
+                            job.postedBy?._id === user?.id) && (
+                            <button
+                              onClick={() => handleDeleteJob(job._id, job.title)}
+                              className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                              title="Delete Job"
+                              disabled={deleteJobMutation.isPending}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
                         </div>
                       )}
                     </td>

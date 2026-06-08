@@ -48,4 +48,14 @@ export async function resetPassword(token, password) {
   return data;
 }
 
+export async function validateHRInvite(token) {
+  const { data } = await apiClient.get("/auth/validate-hr-invite", { params: { token } });
+  return data;
+}
+
+export async function acceptHRInvite({ token, password, fullName }) {
+  const { data } = await apiClient.post("/auth/accept-hr-invite", { token, password, fullName });
+  return data;
+}
+
 export { AUTH_API_URL };

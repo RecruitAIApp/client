@@ -4,7 +4,7 @@ import { Suspense, useEffect } from "react";
 import { router } from "./routes";
 import { useAuthStore } from "./store/authStore";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,

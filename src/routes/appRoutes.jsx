@@ -7,7 +7,7 @@ import CandidateDetails from "../pages/CandidateDetails";
 import CandidateApplications from "../pages/CandidateApplications";
 
 const KanbanPipeline = lazy(() => import("../pages/KanbanPipeline"));
-const Dashboard = lazy(() => import("../pages/Dashboard"));
+// const Dashboard = lazy(() => import("../pages/Dashboard"));
 const JobsManagement = lazy(() => import("../pages/JobsManagement"));
 const UIKit = lazy(() => import("../pages/UIKit"));
 const Unauthorized = lazy(() => import("../pages/Unauthorized"));

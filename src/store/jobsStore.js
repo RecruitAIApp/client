@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export const useJobsStore = create((set) => ({
   filters: {
-    status: "open",
+    status: "",
     jobType: "",
     employmentType: "",
     experienceLevel: "",
