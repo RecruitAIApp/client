@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import PipelineHeader from '../features/piplines/components/PipelineHeader';
 import KanbanColumn from '../features/piplines/components/KanbanColumn';
@@ -6,6 +6,7 @@ import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { useApplicationStore } from '../store/applicationStore';
 import { RejectConfirmationModal } from '../features/applications/components/kanban/RejectConfirmationModal';
 import { getJobById } from '../services/jobsApi';
+import { usePipelineExport } from '../hooks/usePipelineExport';
 
 const mapApplicationToCandidateCard = (app) => ({
   id: app._id,
@@ -33,6 +34,31 @@ function KanbanPipeline() {
   const { fetchJobKanban, kanbanData, updateApplicationStage, loading } = useApplicationStore();
   const [rejectingAppId, setRejectingAppId] = useState(null);
   const [job, setJob] = useState(null);
+  const [sortBy, setSortBy] = useState('score');
+
+  const columns = useMemo(() => {
+    const sortCandidates = (list) => {
+      const mapped = list.map(mapApplicationToCandidateCard);
+      if (sortBy === 'score') {
+        return mapped.sort((a, b) => (b.score || 0) - (a.score || 0));
+      }
+      if (sortBy === 'date') {
+        return mapped.sort((a, b) => new Date(b.appliedAt) - new Date(a.appliedAt));
+      }
+      return mapped;
+    };
+
+    return {
+      applied: sortCandidates(kanbanData?.applied || []),
+      shortlisted: sortCandidates(kanbanData?.shortlisted || []),
+      interview: sortCandidates(kanbanData?.interview || []),
+      offerSent: sortCandidates(kanbanData?.offer || []),
+      hired: sortCandidates(kanbanData?.hired || []),
+      rejected: sortCandidates(kanbanData?.rejected || []),
+    };
+  }, [kanbanData, sortBy]);
+
+  const handleExport = usePipelineExport(job?.title, columns);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -52,15 +78,6 @@ function KanbanPipeline() {
         });
     }
   }, [jobId, fetchJobKanban]);
-
-  const columns = {
-    applied: (kanbanData?.applied || []).map(mapApplicationToCandidateCard),
-    shortlisted: (kanbanData?.shortlisted || []).map(mapApplicationToCandidateCard),
-    interview: (kanbanData?.interview || []).map(mapApplicationToCandidateCard),
-    offerSent: (kanbanData?.offer || []).map(mapApplicationToCandidateCard),
-    hired: (kanbanData?.hired || []).map(mapApplicationToCandidateCard),
-    rejected: (kanbanData?.rejected || []).map(mapApplicationToCandidateCard),
-  };
 
   const totalCandidates = Object.values(columns).reduce((acc, col) => acc + col.length, 0);
   const allCandidates = Object.values(columns).flat();
@@ -160,6 +177,9 @@ function KanbanPipeline() {
         totalCandidates={totalCandidates} 
         avgMatchScore={avgMatchScore} 
         avgTimeToHire={avgTimeToHire}
+        sortBy={sortBy}
+        onSortChange={setSortBy}
+        onExport={handleExport}
       />
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <div className="flex gap-5 overflow-x-auto pb-6 select-none flex-1 items-start">

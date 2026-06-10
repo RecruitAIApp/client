@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { 
@@ -18,9 +18,7 @@ import {
 } from "lucide-react";
 import { getHrChatHistory, sendHrMessage, deleteHrChatHistory } from "../services/hrChatApi";
 import { getJobsByCompany } from "../services/jobsApi";
-import { useEmployerStore } from "../store/employerStore";
 import { Button } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
 import { Card, CardContent } from "../components/ui/Card";
 import ReactMarkdown from "react-markdown";
 import { toast } from "react-toastify";
@@ -33,7 +31,6 @@ export default function HrAssistantPage() {
   const dropdownRef = useRef(null);
   const [input, setInput] = useState("");
   const scrollRef = useRef(null);
-  const { activeCompany } = useEmployerStore();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -275,7 +272,7 @@ export default function HrAssistantPage() {
                                                     {cand.name ? cand.name[0] : 'C'}
                                                 </div>
                                                 <Link 
-                                                    to={`/pipeline/${jobId}`}
+                                                    to={`/employer/pipeline/${jobId}`}
                                                     title="View in Pipeline"
                                                     className="p-2 text-slate-300 hover:text-brand-blue transition-colors"
                                                 >
