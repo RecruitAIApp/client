@@ -1,11 +1,32 @@
-import { MoreVertical, Mail, Phone, Calendar, AlertTriangle, Eye, Star } from 'lucide-react';
+import { useState } from 'react';
+import { MoreVertical, Mail, Phone, Calendar, AlertTriangle, Eye, Star, GripVertical, Copy } from 'lucide-react';
 import { useDraggable } from '@dnd-kit/core';
 import { AIScoreBadge } from '../../../components/ui/AIScoreBadge.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useApplicationStore } from '../../../store/applicationStore.js';
+import { toast } from 'react-toastify';
 
 function CandidateCard({candidateDate}) {
   const {name, role , id, email, phone, appliedAt, score, skills,  location, experience , isStarred, redFlags, initials} = candidateDate || {};
   const navigate = useNavigate();
+  const { addApplicationNote } = useApplicationStore();
+  const [showMenu, setShowMenu] = useState(false);
+
+  const handleToggleStar = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      const newRating = isStarred ? 1 : 5;
+      await addApplicationNote(id, {
+        content: isStarred ? "Removed star rating" : "Starred candidate",
+        ratingScore: newRating
+      });
+    } catch (err) {
+      toast.error("Failed to update candidate star status. Please check your connection.");
+      console.error("Failed to toggle star rating:", err);
+    }
+  };
+
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: id,
   });
@@ -21,19 +42,36 @@ function CandidateCard({candidateDate}) {
     <div 
     ref={setNodeRef}
     style={dragStyle}
-    {...attributes}
-    {...listeners}
-    className='bg-white rounded-lg border border-gray-100 p-4  shadow-sm hover:shadow-md transition-all relative'>
+    className='bg-white rounded-lg border border-gray-100 p-4 shadow-sm hover:shadow-md transition-all relative animate-settle'>
       {/* Header */}
       <div className='flex justify-between items-start mb-3 gap-2'>
-        <div className='flex gap-3 items-center min-w-0'>
-         <div className='w-10 h-10 shrink-0 bg-linear-to-br from-(--color-brand-blue) to-(--color-brand-teal)  rounded-full text-white flex items-center justify-center font-medium text-sm '>
+        <div className='flex gap-2 items-center min-w-0'>
+          {/* Grip drag handle */}
+          <div 
+            {...attributes} 
+            {...listeners} 
+            className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-650 p-1 hover:bg-slate-50 rounded transition-colors shrink-0"
+            title="Drag candidate card"
+          >
+            <GripVertical className="w-4 h-4" />
+          </div>
+          <div className='w-10 h-10 shrink-0 bg-linear-to-br from-(--color-brand-blue) to-(--color-brand-teal)  rounded-full text-white flex items-center justify-center font-medium text-sm '>
            {initials || 'AN'}
          </div>
-         <div className='min-w-0'>
-          <h4 className='font-semibold text-gray-900 flex items-center gap-1 text-sm'>
-            {name || 'Ahmed Nabil'}
-            {isStarred && <Star className='w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0' />}
+         <div className='min-w-0 flex-1'>
+          <h4 className='font-semibold text-gray-900 flex items-center gap-1.5 text-sm'>
+            <span className="truncate">{name || 'Ahmed Nabil'}</span>
+            <button 
+              onClick={handleToggleStar}
+              className="focus:outline-none p-0.5 rounded hover:bg-slate-50 transition-colors shrink-0 cursor-pointer"
+              title={isStarred ? "Unstar candidate" : "Star candidate"}
+            >
+              <Star className={`w-3.5 h-3.5 shrink-0 transition-all ${
+                isStarred 
+                  ? 'fill-amber-400 text-amber-400 scale-110' 
+                  : 'text-slate-350 hover:text-amber-450 hover:scale-110'
+              }`} />
+            </button>
           </h4>
           <p className='font-medium text-gray-400 text-sm'>
             {role || 'Software Engineer'}
@@ -88,8 +126,7 @@ function CandidateCard({candidateDate}) {
         </span>
       </div>
 
-      {/*actions*/}
-      <div className='flex justify-between items-center pt-2 gap-2'>
+      <div className='flex justify-between items-center pt-2 gap-2 relative'>
         <button 
           onClick={(e) => { e.stopPropagation(); navigate(`/candidateProfile/${id}`); }} 
           className='flex-1 border border-[var(--color-brand-blue)] cursor-pointer text-[var(--color-brand-blue)] rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-[var(--color-brand-blue)] hover:text-white transition-colors flex items-center justify-center gap-1.5'
@@ -97,11 +134,53 @@ function CandidateCard({candidateDate}) {
           <Eye className="w-3.5 h-3.5" /> View
         </button>
         <button 
-          onClick={(e) => e.stopPropagation()} 
-          className="p-1.5 text-gray-400 hover:text-gray-600 cursor-pointer shrink-0"
+          onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }} 
+          className="p-1.5 text-gray-400 hover:text-gray-600 cursor-pointer shrink-0 rounded-lg hover:bg-slate-50 transition-colors"
         >
           <MoreVertical className="w-4 h-4" />
         </button>
+
+        {showMenu && (
+          <>
+            <div 
+              className="fixed inset-0 z-10" 
+              onClick={(e) => { e.stopPropagation(); setShowMenu(false); }}
+            />
+            <div className="absolute right-0 bottom-10 z-20 w-40 bg-white rounded-xl border border-gray-100 shadow-lg p-1 space-y-0.5 text-xs">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMenu(false);
+                  window.location.href = `mailto:${email}?subject=Regarding Your Job Application`;
+                }}
+                className="w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-lg flex items-center gap-2 cursor-pointer font-medium"
+              >
+                <Mail className="w-3.5 h-3.5 text-gray-400" /> Send Email
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMenu(false);
+                  window.location.href = `tel:${phone}`;
+                }}
+                className="w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-lg flex items-center gap-2 cursor-pointer font-medium"
+              >
+                <Phone className="w-3.5 h-3.5 text-gray-400" /> Call Candidate
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMenu(false);
+                  navigator.clipboard.writeText(email);
+                  toast.success("Email copied to clipboard!");
+                }}
+                className="w-full text-left px-3 py-2 text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-lg flex items-center gap-2 cursor-pointer font-medium"
+              >
+                <Copy className="w-3.5 h-3.5 text-gray-400" /> Copy Email
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
     </div>

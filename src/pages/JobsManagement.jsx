@@ -32,7 +32,6 @@ import {
   Briefcase,
   MapPin,
   Sparkles,
-  Bot,
 } from "lucide-react";
 
 export default function JobsManagement() {
@@ -262,7 +261,7 @@ export default function JobsManagement() {
                     <td className="px-6 py-4">
                       <div>
                         <Link
-                          to={`/pipeline/${job._id}`}
+                          to={`/employer/pipeline/${job._id}`}
                           className="font-bold text-slate-800 hover:text-[var(--color-brand-blue)] text-base"
                         >
                           {job.title}

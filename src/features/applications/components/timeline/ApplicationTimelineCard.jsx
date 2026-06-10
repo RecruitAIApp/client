@@ -1,10 +1,13 @@
 import React from "react";
-import { Calendar, MessageSquare, Briefcase, CheckCircle2, MapPin, Check, X, ArrowRight } from "lucide-react";
+import { Calendar, MessageSquare, Briefcase, CheckCircle2, MapPin, Check, X } from "lucide-react";
 import { Button } from "../../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
+import { useChatStore } from "../../../../store/chatStore";
+import { toast } from "react-toastify";
 
 export default function ApplicationTimelineCard({ app }) {
   const navigate = useNavigate();
+  const openChat = useChatStore((state) => state.openChat);
   const targetStages = ["Applied", "Reviewed", "Interview", "Offer"];
 
   const renderAlertBanner = () => {
@@ -170,19 +173,14 @@ export default function ApplicationTimelineCard({ app }) {
           View Application
         </Button>
         {app.status === "Interview Scheduled"  && (
-          <Button variant="primary" size="sm" className="border border-transparent hover:text-[var(--color-brand-blue)] hover:bg-white hover:border-[var(--color-brand-blue)]  px-4 py-2 text-sm font-semibold">
+          <Button 
+            variant="primary" 
+            size="sm" 
+            onClick={() => toast.info(app.alertMessage || "Check your email for details")}
+            className="border border-transparent hover:text-[var(--color-brand-blue)] hover:bg-white hover:border-[var(--color-brand-blue)]  px-4 py-2 text-sm font-semibold"
+          >
             <Calendar className="w-3.5 h-3.5" /> Interview Details
           </Button>
-        )}
-        {app.status === "Offer Received"  && (
-          <Button variant="primary" size="sm" className="border border-transparent hover:text-[var(--color-brand-blue)] hover:bg-white hover:border-[var(--color-brand-blue)]  px-4 py-2 text-sm font-semibold">
-            <Check className="w-3.5 h-3.5" /> Offer Letter
-          </Button>
-        )}
-        {(app.status === "In Review" || app.status === "Interview Scheduled")  && (
-          <button className="flex items-center gap-2 bg-blue-50 text-[var(--color-brand-blue)] border border-transparent hover:text-[var(--color-brand-blue)] hover:bg-white hover:border-[var(--color-brand-blue)] px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 cursor-pointer">
-            <MessageSquare className="w-3.5 h-3.5" /> Message
-          </button>
         )}
       </div>
     </div>

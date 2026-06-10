@@ -94,7 +94,11 @@ export default function CandidateDetails() {
           <div className="space-y-6">
             {isHR && <AIMatchScoreCircle score={candidate.overallScore} />}
             <ApplicationDetails meta={candidate.meta} />
-            <ResumeDownloadCard resumeName={candidate.meta.resumeName} uploadedTime={candidate.meta.uploadedTime} />
+            <ResumeDownloadCard 
+              resumeName={candidate.meta.resumeName} 
+              uploadedTime={candidate.meta.uploadedTime} 
+              resumeUrl={currentApplication?.resumeUrl} 
+            />
             {isHR && <AIRecommendation />}
           </div>
         </div>

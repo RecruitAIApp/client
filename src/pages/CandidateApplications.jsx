@@ -5,13 +5,14 @@ import ApplicationTimelineCard from "../features/applications/components/timelin
 import ApplicationKanbanColumn from "../features/applications/components/kanban/ApplicationKanbanColumn.jsx";
 import ApplicationsSkeleton from "../features/applications/components/shared/ApplicationsSkeleton.jsx";
 import { useApplicationStore } from "../store/applicationStore.js";
+import { AlertCircle } from "lucide-react";
 
 const mapApplication = (app) => {
   const stageKey = app.stage?.key || "applied";
   
-  let status = "Applied";
-  let currentStageIndex = 0;
-  let kanbanBucket = "inProgress";
+  let status;
+  let currentStageIndex;
+  let kanbanBucket;
   let alertMessage = "";
 
   if (stageKey === "rejected") {
@@ -74,7 +75,7 @@ export default function CandidateApplications() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
 
-  const { loading, applications, fetchCandidateApplications } = useApplicationStore();
+  const { loading, error, applications, fetchCandidateApplications, clearError } = useApplicationStore();
 
   useEffect(() => {
     fetchCandidateApplications();
@@ -114,7 +115,24 @@ export default function CandidateApplications() {
           setShowFilters={setShowFilters}
         />
         <ApplicationsStats apps={mappedApplications}/>
-        {loading ? (
+        {error ? (
+          <div className="mt-8 bg-red-50 border border-red-200 rounded-2xl p-8 text-center max-w-xl mx-auto shadow-sm animate-in fade-in slide-in-from-bottom-3 duration-300">
+            <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+              <AlertCircle className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-red-800 mb-1">Failed to Load Applications</h3>
+            <p className="text-sm text-red-600/80 mb-6 font-medium">{error}</p>
+            <button
+              onClick={() => {
+                clearError();
+                fetchCandidateApplications();
+              }}
+              className="bg-red-650 hover:bg-red-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all shadow-md shadow-red-600/10 cursor-pointer"
+            >
+              Retry Connection
+            </button>
+          </div>
+        ) : loading ? (
           <ApplicationsSkeleton viewMode={viewMode} />
         ) : viewMode === 'timeline' ? (
           <div className='mt-8 space-y-4 w-full'>
