@@ -1,11 +1,31 @@
+import { useState } from 'react';
 import { Mail, Phone, MapPin, Briefcase, Star, CheckCircle2, Calendar, XCircle } from 'lucide-react';
 import { Button } from '../../../../components/ui/Button.jsx';
 import { useApplicationStore } from '../../../../store/applicationStore.js';
 import { toast } from 'react-toastify';
+import { createInterview } from '../../../../services/interviewApi.js';
+import { InterviewModal } from '../../../../components/interviews/InterviewModal.jsx';
 
 export default function CandidateProfileHeader({ candidate = {}, hideActions = false }) {
   const { id, name, role, email, phone, skills, location, experienceYears, isStarred, initials } = candidate || {};
   const { updateApplicationStage, addApplicationNote } = useApplicationStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleScheduleSubmit = async (payload) => {
+    setIsSaving(true);
+    try {
+      await createInterview({ ...payload, applicationId: id });
+      toast.success("Interview scheduled successfully!");
+      setIsModalOpen(false);
+      // reload details
+      window.location.reload();
+    } catch (err) {
+      toast.error(err.message || "Failed to schedule interview");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const handleStages = async (stageKey) => {
     try {
@@ -85,7 +105,13 @@ export default function CandidateProfileHeader({ candidate = {}, hideActions = f
             </Button>
           )}
           
-          <Button className="hover:bg-brand hover:text-white hover:border-brand transition-colors w-full" variant='outline'><Calendar className="w-4 h-4" /> Schedule Interview</Button>
+          <Button 
+            onClick={() => setIsModalOpen(true)}
+            className="hover:bg-brand hover:text-white hover:border-brand transition-colors w-full" 
+            variant='outline'
+          >
+            <Calendar className="w-4 h-4" /> Schedule Interview
+          </Button>
           
           {currentStatus === 'rejected' ? (
             <div className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200 cursor-not-allowed">
@@ -101,6 +127,15 @@ export default function CandidateProfileHeader({ candidate = {}, hideActions = f
             </Button>
           )}
         </div>
+      )}
+
+      {isModalOpen && (
+        <InterviewModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleScheduleSubmit}
+          isLoading={isSaving}
+        />
       )}
     </div>
   );

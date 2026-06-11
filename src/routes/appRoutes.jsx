@@ -9,6 +9,8 @@ import CandidateApplications from "../pages/CandidateApplications";
 const KanbanPipeline = lazy(() => import("../pages/KanbanPipeline"));
 // const Dashboard = lazy(() => import("../pages/Dashboard"));
 const JobsManagement = lazy(() => import("../pages/JobsManagement"));
+const CompanyInterviews = lazy(() => import("../pages/CompanyInterviews"));
+const MyInterviews = lazy(() => import("../pages/MyInterviews"));
 const UIKit = lazy(() => import("../pages/UIKit"));
 const Unauthorized = lazy(() => import("../pages/Unauthorized"));
 const ProfileBuilder = lazy(() => import("../pages/ProfileBuilder"));
@@ -96,6 +98,16 @@ export const appRoutes = [
             handle: { allowedRoles: ["candidate"] },
           },
           {
+            path: "/my-interviews",
+            element: <MyInterviews />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
+            path: "/candidate/interviews",
+            element: <MyInterviews />,
+            handle: { allowedRoles: ["candidate"] },
+          },
+          {
             path: "/candidate/application/:id",
             element: <CandidateDetails />,
             handle: { allowedRoles: ["candidate"] },
@@ -158,6 +170,11 @@ export const appRoutes = [
           {
             path: "/employer/pipeline/:jobId",
             element: <KanbanPipeline />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
+            path: "/employer/interviews",
+            element: <CompanyInterviews />,
             handle: { allowedRoles: ["employer"] },
           },
           {
