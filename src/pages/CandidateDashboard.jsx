@@ -1,48 +1,31 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Briefcase,
-  MapPin,
-  Clock,
-  TrendingUp,
-  CheckCircle,
-  AlertCircle,
-  ArrowRight,
-  Sparkles,
-} from "lucide-react";
-import { Card, CardHeader, CardContent } from "../components/ui/Card";
+import { Briefcase, TrendingUp, CheckCircle, Sparkles, ArrowRight } from "lucide-react";
+import { Card, CardContent } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
-import { Badge } from "../components/ui/Badge";
-import { AIScoreBadge, AIScoreCircular } from "../components/ui/AIScoreBadge";
 import { useAuthStore } from "../store/authStore";
 import { getRecommendations } from "../services/jobsApi";
 import { getMyApplications } from "../services/applicationAPI";
-import { getDashboardStats } from "../services/profileApi";
-import { getCandidateProfile } from "../services/profileApi";
+import { getDashboardStats, getCandidateProfile } from "../services/profileApi";
 
-// Maps a backend application status to a Badge variant
-function statusVariant(status) {
-  const map = {
-    "Interview Scheduled": "info",
-    "In Review": "warning",
-    Reviewing: "warning",
-    Applied: "default",
-    Rejected: "error",
-    "Offer Received": "success",
-  };
-  return map[status] ?? "default";
-}
+import RecommendedJobCard from "../components/candidate-dashboard/RecommendedJobCard";
+import RecommendedJobsSkeleton from "../components/candidate-dashboard/RecommendedJobsSkeleton";
+import ProfileStrengthCard from "../components/candidate-dashboard/ProfileStrengthCard";
+import ApplicationActivityCard from "../components/candidate-dashboard/ApplicationActivityCard";
 
-// Formats a salary range object into a readable string
-function formatSalary(range) {
-  if (!range) return null;
-  const { min, max, currency = "$" } = range;
-  const fmt = (n) =>
-    n >= 1000 ? `${currency}${Math.round(n / 1000)}k` : `${currency}${n}`;
-  if (min && max) return `${fmt(min)} – ${fmt(max)}`;
-  if (min) return `${fmt(min)}+`;
-  return null;
-}
+const ILLUSTRATIONS = [
+  "/illustrations/Developer activity-rafiki.svg",
+  "/illustrations/Business deal-rafiki.svg",
+  "/illustrations/Business deal-pana.svg",
+  "/illustrations/File searching-rafiki.svg",
+  "/illustrations/Business deal-bro.svg"
+];
+
+const getDailyIllustration = () => {
+  const date = new Date();
+  const daysSinceEpoch = Math.floor((date.getTime() - date.getTimezoneOffset() * 60000) / 86400000);
+  return ILLUSTRATIONS[daysSinceEpoch % ILLUSTRATIONS.length];
+};
 
 export default function CandidateDashboard() {
   const navigate = useNavigate();
@@ -60,24 +43,28 @@ export default function CandidateDashboard() {
     contactInfo: false,
     bio: false,
   });
-  const [loading, setLoading] = useState(true);
+
+  // Recommendations have their own loading state — page renders without waiting for them
+  const [loadingRecs, setLoadingRecs] = useState(true);
+  // Other data (stats, apps, profile) load in parallel
+  const [loadingMeta, setLoadingMeta] = useState(true);
 
   useEffect(() => {
-    async function fetchAll() {
-      try {
-        const [statsData, recData, appsData, profileData] = await Promise.allSettled([
-          getDashboardStats(),
-          getRecommendations(),
-          getMyApplications(),
-          getCandidateProfile(),
-        ]);
+    // Fetch recommendations separately so they can show a skeleton independently
+    getRecommendations()
+      .then((data) => {
+        const raw = data?.data ?? data;
+        setRecommendations(raw?.slice?.(0, 3) ?? []);
+      })
+      .catch(() => setRecommendations([]))
+      .finally(() => setLoadingRecs(false));
 
+    // Fetch the rest in parallel
+    Promise.allSettled([getDashboardStats(), getMyApplications(), getCandidateProfile()]).then(
+      ([statsData, appsData, profileData]) => {
         if (statsData.status === "fulfilled") setStats(statsData.value);
-        if (recData.status === "fulfilled") {
-          const rawRecs = recData.value?.data ?? recData.value;
-          setRecommendations(rawRecs?.slice?.(0, 3) ?? []);
-        }
-        if (appsData.status === "fulfilled") setApplications(appsData.value?.slice?.(0, 3) ?? []);
+        if (appsData.status === "fulfilled")
+          setApplications(appsData.value?.slice?.(0, 3) ?? []);
         if (profileData.status === "fulfilled") {
           const p = profileData.value?.profile;
           if (p) {
@@ -92,76 +79,87 @@ export default function CandidateDashboard() {
             });
           }
         }
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchAll();
+        setLoadingMeta(false);
+      },
+    );
   }, []);
 
-  const displayName = user?.fullName?.split(" ")?.[0] ?? user?.email?.split("@")?.[0] ?? "there";
+  const displayName =
+    user?.fullName?.split(" ")?.[0] ?? user?.email?.split("@")?.[0] ?? "there";
+
+  const dailyIllustration = getDailyIllustration();
 
   const insightCards = stats
     ? [
-        { label: "Profile Views", ...stats.profileViews },
-        { label: "Applications", ...stats.applications },
-        { label: "Avg Match Score", ...stats.avgMatchScore },
-      ]
+      { label: "Profile Views", ...stats.profileViews },
+      { label: "Applications", ...stats.applications },
+      { label: "Avg Match Score", ...stats.avgMatchScore },
+    ]
     : [];
 
-  if (loading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-brand-teal border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-slate-50 animate-fade-in pb-12">
+      {/* Premium Light Gradient Header */}
+      <div className="bg-white bg-gradient-to-br from-white via-blue-50/50 to-blue-100/30 pt-16 pb-32 px-4 sm:px-8 relative overflow-hidden border-b border-slate-100">
+        <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100/50 via-transparent to-transparent" />
+        <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex-1 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold uppercase tracking-wider mb-4 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5" /> AI-Powered Hub
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+              Welcome back, {displayName}.
+            </h1>
+            <p className="text-slate-600 text-lg sm:text-xl font-medium leading-relaxed">
+              Here's what is happening with your applications, profile views, and personalized career matches today.
+            </p>
+          </div>
 
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[var(--color-brand-blue)] mb-2">
-            Welcome back, {displayName}!
-          </h1>
-          <p className="text-[var(--color-muted-foreground)]">
-            Here's your personalised dashboard with AI-powered insights
-          </p>
+          <div className="hidden md:block flex-shrink-0 animate-fade-in group">
+            <img
+              src={dailyIllustration}
+              alt="Dashboard Motivation"
+              className="w-80 h-80 lg:w-[450px] lg:h-[450px] object-contain drop-shadow-[0_20px_40px_rgba(37,99,235,0.15)] transition-transform duration-700 ease-out group-hover:scale-105 group-hover:-translate-y-2"
+              style={{
+                WebkitMaskImage: "radial-gradient(circle, black 60%, transparent 100%)",
+                maskImage: "radial-gradient(circle, black 60%, transparent 100%)"
+              }}
+            />
+          </div>
         </div>
+      </div>
 
-        {/* Stat Cards */}
-        {insightCards.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {insightCards.map((insight) => (
-              <Card key={insight.label}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 -mt-16 relative z-20 space-y-8">
+
+        {/* Stat Cards — show once meta is loaded */}
+        {!loadingMeta && insightCards.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {insightCards.map((insight, idx) => (
+              <Card key={insight.label} className="animate-slide-up bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08)] border-white/50 transition-all hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] cursor-pointer" style={{ animationDelay: `${idx * 150}ms` }}>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[var(--color-muted-foreground)] mb-1">
+                      <p className="text-sm font-bold tracking-wider uppercase text-slate-400 mb-2">
                         {insight.label}
                       </p>
-                      <p className="text-3xl font-bold text-[var(--color-foreground)]">
+                      <p className="text-4xl font-black text-slate-900 mb-1 tracking-tight">
                         {insight.value}
                       </p>
-                      <p
-                        className={`text-sm mt-1 ${
-                          insight.trend === "up" ? "text-green-600" : "text-red-500"
-                        }`}
-                      >
-                        {insight.change} this week
-                      </p>
+                      <div className="flex items-center gap-1.5 mt-2">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-bold ${insight.trend === "up" ? "bg-blue-50 text-blue-700" : "bg-slate-100 text-slate-600"
+                          }`}>
+                          {insight.change}
+                        </span>
+                        <span className="text-xs font-medium text-slate-400">this week</span>
+                      </div>
                     </div>
                     <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        insight.trend === "up" ? "bg-green-50" : "bg-red-50"
-                      }`}
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${insight.trend === "up" ? "bg-gradient-to-br from-blue-50 to-blue-100" : "bg-gradient-to-br from-slate-50 to-slate-100"
+                        }`}
                     >
                       <TrendingUp
-                        className={`w-6 h-6 ${
-                          insight.trend === "up" ? "text-green-600" : "text-red-500"
-                        }`}
+                        className={`w-7 h-7 ${insight.trend === "up" ? "text-blue-700" : "text-slate-500"
+                          }`}
                       />
                     </div>
                   </div>
@@ -174,15 +172,15 @@ export default function CandidateDashboard() {
         {/* Main grid */}
         <div className="grid lg:grid-cols-3 gap-8">
 
-          {/* Left – Recommendations + Application Activity */}
+          {/* Left — Recommendations + Application Activity */}
           <div className="lg:col-span-2 space-y-6">
 
-            {/* AI Recommended Jobs */}
+            {/* AI Recommended Jobs — skeleton while loading */}
             <div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-6 h-6 text-[var(--color-brand-teal)]" />
-                  <h2 className="text-2xl font-bold text-[var(--color-brand-blue)]">
+                  <Sparkles className="w-6 h-6 text-[#2563EB]" />
+                  <h2 className="text-2xl font-bold text-slate-900">
                     AI Recommended Jobs
                   </h2>
                 </div>
@@ -191,230 +189,54 @@ export default function CandidateDashboard() {
                 </Button>
               </div>
 
-              <div className="space-y-4">
-                {recommendations.length === 0 && (
-                  <Card>
-                    <CardContent className="p-6 text-center text-[var(--color-muted-foreground)]">
-                      No recommendations yet. Complete your profile to get matched.
-                    </CardContent>
-                  </Card>
-                )}
-                {recommendations.map((job) => {
-                  const salary = formatSalary(job.salaryRange);
-                  const logo = job.company?.logo ?? "💼";
-                  const companyName = job.company?.name ?? job.company ?? "Unknown";
-                  return (
-                    <Card
-                      key={job._id ?? job.id}
-                      hover
-                      onClick={() => navigate(`/candidate/jobs/${job._id ?? job.id}`)}
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-brand-blue)] to-[var(--color-brand-teal)] flex items-center justify-center text-2xl flex-shrink-0">
-                            {logo}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-start justify-between gap-4 mb-2">
-                              <div>
-                                <h3 className="font-semibold text-lg text-[var(--color-foreground)] mb-1">
-                                  {job.title}
-                                </h3>
-                                <p className="text-[var(--color-muted-foreground)]">{companyName}</p>
-                              </div>
-                              {job.aiScore != null && (
-                                <AIScoreBadge score={job.aiScore} showIcon />
-                              )}
-                            </div>
-                            <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--color-muted-foreground)] mb-3">
-                              {job.location && (
-                                <div className="flex items-center gap-1">
-                                  <MapPin className="w-4 h-4" />
-                                  {job.location}
-                                </div>
-                              )}
-                              {(job.employmentType ?? job.type) && (
-                                <div className="flex items-center gap-1">
-                                  <Briefcase className="w-4 h-4" />
-                                  {job.employmentType ?? job.type}
-                                </div>
-                              )}
-                              {job.postedDays != null && (
-                                <div className="flex items-center gap-1">
-                                  <Clock className="w-4 h-4" />
-                                  {job.postedDays}d ago
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center justify-between">
-                              {salary && (
-                                <span className="font-semibold text-[var(--color-brand-blue)]">
-                                  {salary}
-                                </span>
-                              )}
-                              <Button size="sm" onClick={(e) => { e.stopPropagation(); navigate(`/candidate/jobs/${job._id ?? job.id}`); }}>
-                                View Job
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
+              {loadingRecs ? (
+                <RecommendedJobsSkeleton count={3} />
+              ) : recommendations.length === 0 ? (
+                <Card>
+                  <CardContent className="p-6 text-center text-[var(--color-muted-foreground)]">
+                    No recommendations yet. Complete your profile to get matched.
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="space-y-4">
+                  {recommendations.map((job) => (
+                    <RecommendedJobCard key={job._id ?? job.id} job={job} />
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Application Activity */}
-            <Card>
-              <CardHeader>
-                <h3 className="font-semibold text-lg">Your Application Activity</h3>
-              </CardHeader>
-              <CardContent>
-                {applications.length === 0 ? (
-                  <p className="text-sm text-center text-[var(--color-muted-foreground)] py-4">
-                    No applications yet.{" "}
-                    <button
-                      className="text-[var(--color-brand-blue)] underline"
-                      onClick={() => navigate("/candidate/jobs")}
-                    >
-                      Browse jobs to get started.
-                    </button>
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {applications.map((app) => (
-                      <div
-                        key={app._id ?? app.id}
-                        className="flex items-center justify-between p-4 bg-[var(--color-muted)] rounded-lg hover:bg-[var(--color-border)] transition-colors cursor-pointer"
-                        onClick={() => navigate("/candidate/applications")}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-[var(--color-foreground)] truncate">
-                            {app.role ?? app.jobTitle ?? "Role"}
-                          </h4>
-                          <p className="text-sm text-[var(--color-muted-foreground)] truncate">
-                            {app.company ?? app.companyName ?? ""}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-4 ml-4">
-                          <Badge variant={statusVariant(app.status)}>{app.status}</Badge>
-                          {app.appliedDate && (
-                            <span className="text-sm text-[var(--color-muted-foreground)] whitespace-nowrap">
-                              {new Date(app.appliedDate).toLocaleDateString()}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <ApplicationActivityCard applications={applications} />
           </div>
 
           {/* Right sidebar */}
           <div className="space-y-6">
 
             {/* Profile Strength */}
-            <Card>
-              <CardHeader>
-                <h3 className="font-semibold text-lg">Profile Strength</h3>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center">
-                <AIScoreCircular score={profileCompletion} size={140} strokeWidth={10} />
-                <div className="mt-6 w-full space-y-3">
-                  <div className="flex items-center gap-2.5 text-sm">
-                    {profileChecks.resume ? (
-                      <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-orange-500 shrink-0" />
-                    )}
-                    <span className={profileChecks.resume ? "text-slate-700 font-medium" : "text-slate-400"}>
-                      {profileChecks.resume ? "Resume uploaded" : "Upload your resume"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-sm">
-                    {profileChecks.skills ? (
-                      <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-orange-500 shrink-0" />
-                    )}
-                    <span className={profileChecks.skills ? "text-slate-700 font-medium" : "text-slate-400"}>
-                      {profileChecks.skills ? "Skills added" : "Add your skills"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-sm">
-                    {profileChecks.experience ? (
-                      <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-orange-500 shrink-0" />
-                    )}
-                    <span className={profileChecks.experience ? "text-slate-700 font-medium" : "text-slate-400"}>
-                      {profileChecks.experience ? "Work experience added" : "Add work experience"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-sm">
-                    {profileChecks.education ? (
-                      <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-orange-500 shrink-0" />
-                    )}
-                    <span className={profileChecks.education ? "text-slate-700 font-medium" : "text-slate-400"}>
-                      {profileChecks.education ? "Education listed" : "Add education"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-sm">
-                    {profileChecks.contactInfo ? (
-                      <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-orange-500 shrink-0" />
-                    )}
-                    <span className={profileChecks.contactInfo ? "text-slate-700 font-medium" : "text-slate-400"}>
-                      {profileChecks.contactInfo ? "Headline & Phone complete" : "Add headline & phone"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-sm">
-                    {profileChecks.bio ? (
-                      <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-orange-500 shrink-0" />
-                    )}
-                    <span className={profileChecks.bio ? "text-slate-700 font-medium" : "text-slate-400"}>
-                      {profileChecks.bio ? "Personal bio written" : "Write a personal bio"}
-                    </span>
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full mt-5 hover:bg-slate-50"
-                  onClick={() => navigate("/candidate/profile")}
-                >
-                  Complete Profile
-                </Button>
-              </CardContent>
-            </Card>
+            <ProfileStrengthCard
+              profileCompletion={profileCompletion}
+              profileChecks={profileChecks}
+            />
 
             {/* AI Career Insights promo */}
-            <Card className="bg-gradient-to-br from-[var(--color-brand-blue)] to-[var(--color-brand-teal)] text-white border-0">
+            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm animate-slide-up" style={{ animationDelay: '200ms' }}>
               <CardContent className="p-6">
-                <Sparkles className="w-8 h-8 mb-3" />
-                <h3 className="font-semibold text-lg mb-2">AI Career Insights</h3>
-                <p className="text-blue-100 text-sm mb-4">
+                <Sparkles className="w-8 h-8 mb-3 text-[#2563EB]" />
+                <h3 className="font-bold text-lg mb-2 text-[#1e3a8a]">AI Career Insights</h3>
+                <p className="text-[#1e3a8a]/70 text-sm mb-4 font-medium">
                   Get personalised career recommendations based on market trends and your profile.
                 </p>
-                <Button variant="secondary" className="w-full">
+                <Button variant="outline" className="w-full bg-white text-[#2563EB] border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-colors">
                   View Insights
                 </Button>
               </CardContent>
             </Card>
 
             {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <h3 className="font-semibold text-lg">Quick Actions</h3>
-              </CardHeader>
-              <CardContent className="space-y-2">
+            <Card className="shadow-sm border-slate-200 animate-slide-up" style={{ animationDelay: '300ms' }}>
+              <CardContent className="p-6 space-y-2">
+                <h3 className="font-bold text-slate-900 text-lg mb-3">Quick Actions</h3>
                 <Button
                   variant="ghost"
                   className="w-full justify-start"
