@@ -163,11 +163,11 @@ export default function CandidateDetails() {
       : null;
 
   return (
-    <div className="bg-slate-50/50 min-h-screen text-slate-800 font-sans py-8 px-4 sm:px-6 lg:px-8">
+    <div className="bg-[#F8FAFC] min-h-screen text-(--color-secondary-main) font-sans py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm font-semibold text-blue-900 hover:text-blue-950 mb-6 transition-colors cursor-pointer">
+          className="flex items-center gap-2 text-sm font-bold text-[var(--color-primary-main)] hover:text-blue-700 mb-6 transition-all duration-200 ease-in-out cursor-pointer">
           <ArrowLeft className="w-4 h-4" />{" "}
           {isHR ? "Back to Pipeline" : "Back to Applications"}
         </button>
@@ -185,7 +185,7 @@ export default function CandidateDetails() {
             {isHR && <InternalNotesSection applicationId={candidate.id} />}
 
             {recommendation && (
-              <div className="pt-6 border-t border-gray-200">
+              <div className="pt-6 border-t border-slate-100">
                 <AIInterviewCoach recommendation={recommendation} />
               </div>
             )}
@@ -195,33 +195,33 @@ export default function CandidateDetails() {
             <ApplicationDetails meta={candidate.meta} />
 
             {latestInterview && (
-              <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-4">
-                <h3 className="font-bold text-sm text-slate-900 border-b border-gray-100 pb-3 flex items-center gap-2">
-                  <Calendar className="h-4.5 w-4.5 text-indigo-500" />
+              <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-[0_4px_12px_rgba(15,23,42,0.03)] space-y-4">
+                <h3 className="font-extrabold text-sm text-(--color-secondary-main) border-b border-slate-100 pb-3 flex items-center gap-2">
+                  <Calendar className="h-4.5 w-4.5 text-[var(--color-primary-main)]" />
                   Interview Details
                 </h3>
                 <div className="space-y-3.5">
                   <div>
-                    <span className="text-xs text-slate-400 font-semibold block mb-1">
+                    <span className="text-xs text-(--color-secondary-muted) font-semibold block mb-1">
                       Status
                     </span>
                     <span
-                      className={`inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
+                      className={`inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full transition-all duration-200 ease-in-out hover:scale-105 ${
                         latestInterview.status === "scheduled" ||
                         latestInterview.status === "rescheduled"
-                          ? "bg-blue-50 text-blue-700 border border-blue-200"
+                          ? "bg-[var(--color-bg-light-tint)] text-[var(--color-primary-main)] border border-blue-200/50"
                           : latestInterview.status === "completed"
-                            ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                            : "bg-red-50 text-red-700 border border-red-200"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-200/50"
+                            : "bg-red-50 text-red-700 border border-red-200/50"
                       }`}>
                       {latestInterview.status}
                     </span>
                   </div>
                   <div>
-                    <span className="text-xs text-slate-400 font-semibold block mb-1">
+                    <span className="text-xs text-(--color-secondary-muted) font-semibold block mb-1">
                       Date & Time
                     </span>
-                    <span className="text-slate-800 font-bold text-sm block">
+                    <span className="text-(--color-secondary-main) font-bold text-sm block">
                       {new Date(
                         latestInterview.interviewDate,
                       ).toLocaleDateString("en-US", {
@@ -231,7 +231,7 @@ export default function CandidateDetails() {
                         year: "numeric",
                       })}
                     </span>
-                    <span className="text-slate-500 text-xs block">
+                    <span className="text-(--color-secondary-muted) text-xs block mt-0.5">
                       {new Date(
                         latestInterview.interviewDate,
                       ).toLocaleTimeString("en-US", {
@@ -242,10 +242,10 @@ export default function CandidateDetails() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-xs text-slate-400 font-semibold block mb-1">
+                    <span className="text-xs text-(--color-secondary-muted) font-semibold block mb-1">
                       Type
                     </span>
-                    <span className="text-slate-700 font-semibold text-sm capitalize">
+                    <span className="text-(--color-secondary-main) font-semibold text-sm capitalize">
                       {latestInterview.interviewType} Interview
                     </span>
                   </div>
@@ -253,14 +253,14 @@ export default function CandidateDetails() {
                   {latestInterview.interviewType === "online" &&
                     latestInterview.meetingLink && (
                       <div>
-                        <span className="text-xs text-slate-400 font-semibold block mb-1">
+                        <span className="text-xs text-(--color-secondary-muted) font-semibold block mb-1">
                           Meeting Link
                         </span>
                         <a
                           href={latestInterview.meetingLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-indigo-600 hover:text-indigo-800 text-xs font-semibold underline flex items-center gap-1">
+                          className="text-[var(--color-primary-main)] hover:text-blue-700 text-xs font-semibold underline flex items-center gap-1 transition-all duration-200 ease-in-out">
                           Join Video Call <ExternalLink className="h-3 w-3" />
                         </a>
                       </div>
@@ -269,21 +269,21 @@ export default function CandidateDetails() {
                   {latestInterview.interviewType === "onsite" &&
                     latestInterview.location && (
                       <div>
-                        <span className="text-xs text-slate-400 font-semibold block mb-1">
+                        <span className="text-xs text-(--color-secondary-muted) font-semibold block mb-1">
                           Location
                         </span>
-                        <span className="text-slate-700 text-xs font-medium">
+                        <span className="text-(--color-secondary-main) text-xs font-medium">
                           {latestInterview.location}
                         </span>
                       </div>
                     )}
 
                   {latestInterview.notes && (
-                    <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">
+                    <div className="bg-slate-100/30 p-3 rounded-xl border border-slate-100">
+                      <span className="text-[10px] text-(--color-secondary-muted) font-bold uppercase tracking-wider block mb-1">
                         Instructions
                       </span>
-                      <p className="text-slate-600 text-xs whitespace-pre-line leading-relaxed">
+                      <p className="text-(--color-secondary-muted) text-xs whitespace-pre-line leading-relaxed">
                         {latestInterview.notes}
                       </p>
                     </div>

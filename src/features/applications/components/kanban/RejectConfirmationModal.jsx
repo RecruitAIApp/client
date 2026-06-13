@@ -34,14 +34,14 @@ export const RejectConfirmationModal = ({ applicationId, onClose }) => {
       <ModalContent className="max-w-md">
         <ModalHeader>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-full bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0 shadow-sm">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
-              <ModalTitle className="text-red-600 font-bold text-lg">
+              <ModalTitle className="text-red-650 font-extrabold text-lg tracking-tight">
                 Reject Candidate
               </ModalTitle>
-              <ModalDescription className="text-xs mt-0.5">
+              <ModalDescription className="text-xs text-(--color-secondary-muted) mt-0.5 font-medium leading-relaxed">
                 This will move the applicant to the rejected stage and trigger a feedback process.
               </ModalDescription>
             </div>
@@ -58,18 +58,19 @@ export const RejectConfirmationModal = ({ applicationId, onClose }) => {
             maxLength={500}
             disabled={loading}
           />
-          <div className="flex justify-between items-center text-xs text-slate-400">
+          <div className="flex justify-between items-center text-[10px] md:text-xs text-(--color-secondary-muted) font-semibold mt-1">
             <span>Minimum 10 characters recommended if you want to provide constructive feedback.</span>
             <span>{hrNotes.length}/500</span>
           </div>
         </div>
 
-        <ModalFooter className="gap-2 sm:gap-0 mt-2">
+        <ModalFooter className="gap-2 sm:gap-2 mt-2">
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
             disabled={loading}
+            className="rounded-[24px] px-5 py-2 font-bold cursor-pointer transition-all shadow-2xs"
           >
             Cancel
           </Button>
@@ -78,7 +79,7 @@ export const RejectConfirmationModal = ({ applicationId, onClose }) => {
             variant="destructive"
             onClick={handleConfirm}
             disabled={loading}
-            className="cursor-pointer"
+            className="rounded-[24px] px-5 py-2 font-bold cursor-pointer transition-all shadow-2xs"
           >
             {loading ? (
               <>

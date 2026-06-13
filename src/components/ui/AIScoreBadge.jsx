@@ -31,7 +31,7 @@ export function AIScoreBadge({
   );
 }
 
-export function AIScoreCircular({ score, size = 120, strokeWidth = 8 }) {
+export function AIScoreCircular({ score, size = 120, strokeWidth = 8, label = "Completion" }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (score / 100) * circumference;
@@ -71,7 +71,7 @@ export function AIScoreCircular({ score, size = 120, strokeWidth = 8 }) {
         <span className="text-2xl font-bold" style={{ color: getColor(score) }}>
           {score}%
         </span>
-        <span className="text-xs text-gray-500">Completion</span>
+        <span className="text-xs text-gray-500 font-medium">{label}</span>
       </div>
     </div>
   );
