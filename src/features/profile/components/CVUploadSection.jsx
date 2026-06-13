@@ -81,10 +81,10 @@ export default function CVUploadSection({
           }
         }}
         onClick={() => inputRef.current?.click()}
-        className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal ${
+        className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
           dragOver
-            ? "border-brand-teal bg-brand-teal/5"
-            : "border-slate-200 hover:border-brand-teal/50 bg-slate-50/50"
+            ? "border-blue-500 bg-blue-50"
+            : "border-slate-200 hover:border-blue-400 bg-slate-50/50 hover:bg-slate-50"
         }`}
         aria-label="Upload resume PDF"
       >
@@ -96,7 +96,7 @@ export default function CVUploadSection({
           onChange={(e) => validateAndUpload(e.target.files?.[0])}
         />
         <div className="flex flex-col items-center gap-3">
-          <div className="w-14 h-14 rounded-full bg-brand-teal/10 flex items-center justify-center text-brand-teal">
+          <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
             <Upload className="w-7 h-7" />
           </div>
           <p className="text-base font-semibold text-slate-800">
@@ -104,7 +104,7 @@ export default function CVUploadSection({
           </p>
           <p className="text-sm text-slate-500">PDF only · Max {MAX_SIZE_MB}MB</p>
           {fileName && (
-            <p className="text-sm text-brand-teal font-medium flex items-center gap-1">
+            <p className="text-sm text-blue-600 font-medium flex items-center gap-1">
               <FileText className="w-4 h-4" />
               {fileName}
             </p>

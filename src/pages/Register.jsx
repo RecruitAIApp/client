@@ -114,7 +114,7 @@ export default function Register() {
     <AuthLayout>
       {/* 1. ROLE SELECTION STEP */}
       {step === "role-selection" && (
-        <Card className="w-full max-w-lg border border-slate-100 shadow-xl shadow-slate-100/40 p-2 sm:p-4 rounded-2xl bg-white">
+        <Card className="w-full max-w-lg border border-white/60 shadow-[0_20px_60px_-15px_rgba(37,99,235,0.1)] p-2 sm:p-4 rounded-2xl bg-white/90 backdrop-blur-xl animate-fade-in">
           <CardContent className="space-y-6">
             {/* Header */}
             <div className="space-y-2">
@@ -138,9 +138,9 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => onRoleSelect("candidate")}
-                  className="p-6 border-2 border-slate-100 hover:border-brand-teal hover:shadow-lg rounded-2xl bg-white transition-all text-center flex flex-col items-center gap-3 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-brand-teal/20"
+                  className="p-6 border-2 border-slate-100 hover:border-[#2563EB] hover:shadow-[0_8px_30px_-10px_rgba(37,99,235,0.15)] rounded-2xl bg-white transition-all duration-300 text-center flex flex-col items-center gap-3 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 hover:-translate-y-1"
                 >
-                  <div className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-500 group-hover:bg-teal-50 group-hover:text-brand-teal transition-all duration-200">
+                  <div className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-500 group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-100 transition-all duration-300">
                     <User className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div>
@@ -153,9 +153,9 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => onRoleSelect("employer")}
-                  className="p-6 border-2 border-slate-100 hover:border-brand-teal hover:shadow-lg rounded-2xl bg-white transition-all text-center flex flex-col items-center gap-3 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-brand-teal/20"
+                  className="p-6 border-2 border-slate-100 hover:border-[#2563EB] hover:shadow-[0_8px_30px_-10px_rgba(37,99,235,0.15)] rounded-2xl bg-white transition-all duration-300 text-center flex flex-col items-center gap-3 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 hover:-translate-y-1"
                 >
-                  <div className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-500 group-hover:bg-teal-50 group-hover:text-brand-teal transition-all duration-200">
+                  <div className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center text-slate-500 group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-100 transition-all duration-300">
                     <Building className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div>
@@ -171,7 +171,7 @@ export default function Register() {
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-brand-blue-light hover:text-brand-blue font-bold hover:underline"
+                className="text-[#3b82f6] hover:text-[#2563EB] font-bold hover:underline transition-colors"
               >
                 Sign in
               </Link>
@@ -182,7 +182,7 @@ export default function Register() {
 
       {/* 2. REGISTRATION FORM STEP */}
       {step === "form" && (
-        <Card className="w-full max-w-lg border border-slate-100 shadow-xl shadow-slate-100/40 p-2 sm:p-4 rounded-2xl bg-white">
+        <Card className="w-full max-w-lg border border-white/60 shadow-[0_20px_60px_-15px_rgba(37,99,235,0.1)] p-2 sm:p-4 rounded-2xl bg-white/90 backdrop-blur-xl animate-fade-in">
           <CardContent className="space-y-6">
             {/* Back Arrow & Header */}
             <div className="space-y-4">
@@ -241,8 +241,8 @@ export default function Register() {
                         onClick={() => setEmployerType("owner")}
                         className={`p-3 rounded-xl border-2 text-sm font-semibold transition-all ${
                           employerType === "owner"
-                            ? "border-brand-teal bg-teal-50 text-brand-teal"
-                            : "border-slate-100 text-slate-600 hover:border-slate-200"
+                            ? "border-[#2563EB] bg-blue-50 text-[#2563EB]"
+                            : "border-slate-100 text-slate-600 hover:border-slate-200 hover:bg-slate-50"
                         }`}
                       >
                         <Building className="w-4 h-4 mx-auto mb-1" />
@@ -253,8 +253,8 @@ export default function Register() {
                         onClick={() => setEmployerType("hr")}
                         className={`p-3 rounded-xl border-2 text-sm font-semibold transition-all ${
                           employerType === "hr"
-                            ? "border-brand-teal bg-teal-50 text-brand-teal"
-                            : "border-slate-100 text-slate-600 hover:border-slate-200"
+                            ? "border-[#2563EB] bg-blue-50 text-[#2563EB]"
+                            : "border-slate-100 text-slate-600 hover:border-slate-200 hover:bg-slate-50"
                         }`}
                       >
                         <Users className="w-4 h-4 mx-auto mb-1" />
@@ -293,7 +293,7 @@ export default function Register() {
               {/* Submit button */}
               <Button
                 type="submit"
-                className="w-full py-3.5 rounded-xl shadow-lg shadow-brand-blue/10 flex items-center justify-center font-bold tracking-wide"
+                className="w-full py-3.5 rounded-xl shadow-lg shadow-blue-500/20 bg-[#2563EB] hover:bg-[#1d4ed8] text-white hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center font-bold tracking-wide transition-all duration-200"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -312,7 +312,7 @@ export default function Register() {
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-brand-blue-light hover:text-brand-blue font-bold hover:underline"
+                className="text-[#3b82f6] hover:text-[#2563EB] font-bold hover:underline transition-colors"
               >
                 Sign in
               </Link>
@@ -323,7 +323,7 @@ export default function Register() {
 
       {/* 3. EMPLOYER PENDING APPROVAL STEP */}
       {step === "pending-approval" && (
-        <Card className="w-full max-w-lg border border-slate-100 shadow-xl shadow-slate-100/40 p-6 sm:p-8 rounded-2xl bg-white text-center">
+        <Card className="w-full max-w-lg border border-white/60 shadow-[0_20px_60px_-15px_rgba(37,99,235,0.1)] p-6 sm:p-8 rounded-2xl bg-white/90 backdrop-blur-xl text-center animate-fade-in">
           <CardContent className="space-y-6 flex flex-col items-center">
             {/* Illustrative Heavy Icon */}
             <div className="w-16 h-16 bg-blue-50 border border-blue-100 text-brand-blue rounded-full flex items-center justify-center shadow-sm select-none">
@@ -334,7 +334,7 @@ export default function Register() {
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Approval Pending</h2>
               <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-md mx-auto">
-                Thank you for joining Masar! Your employer account has been successfully created.
+                Thank you for joining Naqla! Your employer account has been successfully created.
                 To protect our candidates and secure the network, an administrator must approve your company before you can gain platform access.
               </p>
             </div>
@@ -342,7 +342,7 @@ export default function Register() {
             {/* Bullet Info Card */}
             <div className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-left space-y-2 select-none">
               <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-brand-teal" />
+                <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
                 <span>What's Next?</span>
               </div>
               <p className="text-xs text-slate-500 font-medium leading-relaxed">
@@ -354,7 +354,7 @@ export default function Register() {
             <Button
               onClick={signOut}
               disabled={isSigningOut}
-              className="w-full py-3.5 rounded-xl font-bold tracking-wide"
+              className="w-full py-3.5 rounded-xl shadow-lg shadow-blue-500/20 bg-[#2563EB] hover:bg-[#1d4ed8] text-white hover:shadow-xl hover:-translate-y-0.5 font-bold tracking-wide transition-all duration-200"
             >
               {isSigningOut ? "Signing out…" : "Sign Out"}
             </Button>

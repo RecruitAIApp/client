@@ -173,27 +173,21 @@ export default function ProfileBuilder() {
         role="status"
         aria-live="polite"
       >
-        <Loader2 className="w-8 h-8 animate-spin text-brand-teal" />
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
         <span className="sr-only">Loading profile…</span>
       </div>
     );
   }
 
   return (
-    <div
-      className="py-12 px-4 sm:px-8 lg:px-32"
-      style={{
-        backgroundImage:
-          "linear-gradient(139.64deg, rgb(239, 246, 255) 0%, rgb(255, 255, 255) 50%, rgb(240, 253, 250) 100%)",
-      }}
-    >
+    <div className="py-12 px-4 sm:px-8 lg:px-32 min-h-screen bg-slate-50 animate-fade-in">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-teal/10 border border-brand-teal/20 text-brand-teal text-sm font-medium">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-sm font-medium">
             <Sparkles className="w-4 h-4" aria-hidden="true" />
-            Welcome to Masar
+            Welcome to Naqla
           </div>
-          <h1 className="text-3xl font-bold text-brand-blue tracking-tight">
+          <h1 className="text-3xl font-bold text-[#2563EB] tracking-tight">
             Complete Your Profile
           </h1>
           <p className="text-slate-500 text-base">
@@ -203,9 +197,9 @@ export default function ProfileBuilder() {
 
         <ProfileStepper currentStep={step} />
 
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden animate-slide-up transition-all duration-300">
           <div className="px-6 py-6 border-b border-slate-100">
-            <h2 className="text-xl font-bold text-brand-blue">{stepMeta?.label}</h2>
+            <h2 className="text-xl font-bold text-slate-900">{stepMeta?.label}</h2>
             <p className="text-slate-500 text-sm mt-1">
               {step === 1 && "Tell us about yourself"}
               {step === 2 && "Add your core skills and expertise"}

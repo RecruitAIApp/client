@@ -234,12 +234,12 @@ export default function JobSearch() {
     selectedTypes.length + selectedLevels.length + (selectedSalary ? 1 : 0);
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)]">
+    <div className="min-h-screen bg-slate-50 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 py-8">
 
         {/* Page header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[var(--color-brand-blue)] mb-6">
+          <h1 className="text-3xl font-bold text-slate-900 mb-6">
             Find Your Dream Job
           </h1>
 
@@ -298,8 +298,8 @@ export default function JobSearch() {
         <div className="grid lg:grid-cols-4 gap-8">
 
           {/* Sidebar Filters */}
-          <aside className={`lg:col-span-1 space-y-4 ${filtersOpen ? "block" : "hidden"}`}>
-            <Card>
+          <aside className={`lg:col-span-1 space-y-4 ${filtersOpen ? "block animate-fade-in" : "hidden"}`}>
+            <Card className="shadow-sm border-slate-200">
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-4 flex items-center gap-2">
                   <Filter className="w-4 h-4" /> Filters
@@ -409,14 +409,14 @@ export default function JobSearch() {
             </Card>
 
             {/* AI Job Alerts promo */}
-            <Card className="bg-gradient-to-br from-[var(--color-brand-blue)] to-[var(--color-brand-teal)] text-white border-0">
+            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm animate-slide-up" style={{ animationDelay: '200ms' }}>
               <CardContent className="p-6">
-                <Sparkles className="w-8 h-8 mb-3" />
-                <h3 className="font-semibold mb-2">AI Job Alerts</h3>
-                <p className="text-sm text-blue-100 mb-4">
+                <Sparkles className="w-8 h-8 mb-3 text-[#2563EB]" />
+                <h3 className="font-bold mb-2 text-[#1e3a8a]">AI Job Alerts</h3>
+                <p className="text-sm text-[#1e3a8a]/70 mb-4 font-medium">
                   Get notified when jobs matching your profile are posted
                 </p>
-                <Button variant="secondary" className="w-full">
+                <Button variant="outline" className="w-full bg-white text-[#2563EB] border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-colors">
                   Enable Alerts
                 </Button>
               </CardContent>
@@ -461,10 +461,10 @@ export default function JobSearch() {
                 const isSaved = savedJobs.has(id);
 
                 return (
-                  <Card key={id} hover>
+                  <Card key={id} className="shadow-sm border-slate-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-blue-200 animate-slide-up group">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--color-brand-blue)] to-[var(--color-brand-teal)] flex items-center justify-center text-2xl flex-shrink-0">
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                           {logo}
                         </div>
 
@@ -473,7 +473,7 @@ export default function JobSearch() {
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-3 mb-1">
                                 <h3
-                                  className="font-semibold text-lg text-[var(--color-foreground)] hover:text-[var(--color-brand-blue)] cursor-pointer"
+                                  className="font-bold text-lg text-slate-900 group-hover:text-[#2563EB] cursor-pointer transition-colors"
                                   onClick={() => navigate(`/candidate/jobs/${id}`)}
                                 >
                                   {job.title}

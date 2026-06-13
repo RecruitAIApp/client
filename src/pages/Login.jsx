@@ -58,7 +58,7 @@ export default function Login() {
 
   return (
     <AuthLayout>
-      <Card className="w-full max-w-lg border border-slate-100 shadow-xl shadow-slate-100/40 p-2 sm:p-4 rounded-2xl bg-white">
+      <Card className="w-full max-w-lg border border-white/60 shadow-[0_20px_60px_-15px_rgba(37,99,235,0.1)] p-2 sm:p-4 rounded-2xl bg-white/90 backdrop-blur-xl">
         <CardContent className="space-y-6">
           {/* Header */}
           <div className="space-y-2">
@@ -108,7 +108,7 @@ export default function Login() {
               <label className="flex items-center gap-2 cursor-pointer text-slate-600 font-medium group">
                 <input
                   type="checkbox"
-                  className="w-4.5 h-4.5 rounded-sm border-slate-300 text-brand-teal focus:ring-brand-teal/20 transition-all cursor-pointer"
+                  className="w-4.5 h-4.5 rounded-sm border-slate-300 text-[#2563EB] focus:ring-[#2563EB]/20 transition-all cursor-pointer"
                   disabled={isSubmitting}
                   {...register("rememberMe")}
                 />
@@ -117,7 +117,7 @@ export default function Login() {
 
               <Link
                 to="/forgot-password"
-                className="text-brand-blue-light hover:text-brand-blue font-semibold hover:underline"
+                className="text-[#3b82f6] hover:text-[#2563EB] font-semibold hover:underline transition-colors"
               >
                 Forgot password?
               </Link>
@@ -126,7 +126,7 @@ export default function Login() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full py-3.5 rounded-xl shadow-lg shadow-brand-blue/10 flex items-center justify-center font-bold tracking-wide"
+              className="w-full py-3.5 rounded-xl shadow-lg shadow-blue-500/20 bg-[#2563EB] hover:bg-[#1d4ed8] text-white hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center font-bold tracking-wide transition-all duration-200"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -145,7 +145,7 @@ export default function Login() {
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="text-brand-blue-light hover:text-brand-blue font-bold hover:underline"
+              className="text-[#3b82f6] hover:text-[#2563EB] font-bold hover:underline transition-colors"
             >
               Sign up
             </Link>

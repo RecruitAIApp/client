@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { useAuthStore } from "../store/authStore";
 import { appRoutes } from "./appRoutes";
 import { authRoutes } from "./authRoutes";
+import RootLayout from "../components/layouts/RootLayout";
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const AcceptInvite = lazy(() => import("../pages/AcceptInvite"));
@@ -59,35 +60,40 @@ const PublicLayout = () => {
 };
 
 export const router = createBrowserRouter([
-  // Public landing page
   {
-    path: "/",
-    element: (
-      <Suspense fallback={null}>
-        <LandingPage />
-      </Suspense>
-    ),
-  },
-  {
-    path: "/accept-invite",
-    element: (
-      <Suspense fallback={null}>
-        <AcceptInvite />
-      </Suspense>
-    ),
-  },
-  {
-    element: <ProtectedLayout />,
-    children: appRoutes,
-  },
-  {
-    element: <PublicLayout />,
-    children: authRoutes,
-  },
-  {
-    path: "*",
-    element: (
-      <div className="text-center p-10 font-bold">404 - Page Not Found</div>
-    ),
+    element: <RootLayout />,
+    children: [
+      // Public landing page
+      {
+        path: "/",
+        element: (
+          <Suspense fallback={null}>
+            <LandingPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/accept-invite",
+        element: (
+          <Suspense fallback={null}>
+            <AcceptInvite />
+          </Suspense>
+        ),
+      },
+      {
+        element: <ProtectedLayout />,
+        children: appRoutes,
+      },
+      {
+        element: <PublicLayout />,
+        children: authRoutes,
+      },
+      {
+        path: "*",
+        element: (
+          <div className="text-center p-10 font-bold">404 - Page Not Found</div>
+        ),
+      },
+    ],
   },
 ]);
