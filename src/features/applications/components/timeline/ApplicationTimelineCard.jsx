@@ -111,7 +111,7 @@ export default function ApplicationTimelineCard({ app }) {
           const isLineActive = idx < app.currentStageIndex;
           const isLineRejected = app.status === "Rejected" && idx >= app.currentStageIndex;
           const lineColorClass = isLineActive
-            ? "bg-[#10B981]"
+            ? "bg-[var(--color-primary-main)]"
             : isLineRejected
             ? "bg-red-500"
             : "bg-slate-100";
@@ -124,7 +124,7 @@ export default function ApplicationTimelineCard({ app }) {
                     isRejectedStage
                       ? "bg-red-500 border-red-500 text-white"
                       : isPassed
-                      ? "bg-[#10B981] border-[#10B981] text-white"
+                      ? "bg-[var(--color-primary-main)] border-[var(--color-primary-main)] text-white"
                       : "bg-white border-slate-200 text-slate-300"
                   }`}
                 >
