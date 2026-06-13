@@ -6,19 +6,17 @@ export function Button({
   ...props
 }) {
   const baseStyles =
-    "rounded-[24px] font-bold tracking-wide transition-all duration-300 ease-out flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95";
+    "rounded-[24px] font-bold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow";
 
   const variants = {
     primary:
-      "bg-[var(--color-primary-main)] text-white shadow-[0_4px_14px_rgba(29,78,216,0.3)] hover:shadow-[0_6px_20px_rgba(29,78,216,0.4)] hover:bg-blue-700 hover:scale-[1.02] hover:cursor-pointer",
+      "bg-[#1D4ED8] text-white active:scale-95 hover:bg-[#1e40af] hover:shadow-md",
     secondary:
-      "bg-[var(--color-secondary-main)] text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:shadow-[0_6px_18px_rgba(15,23,42,0.25)] hover:bg-slate-800 hover:scale-[1.02] hover:cursor-pointer",
+      "bg-[#0F172A] text-white active:scale-95 hover:bg-[#1e293b] hover:shadow-md",
     outline:
-      "border border-[var(--color-primary-main)] bg-white text-[var(--color-primary-main)] shadow-[0_4px_12px_rgba(29,78,216,0.05)] hover:shadow-[0_6px_16px_rgba(29,78,216,0.1)] hover:bg-[var(--color-bg-light-tint)] hover:scale-[1.02] hover:cursor-pointer",
-    ghost:
-      "text-[var(--color-primary-main)] hover:bg-[var(--color-bg-light-tint)] hover:scale-[1.02] hover:cursor-pointer",
-    destructive:
-      "bg-red-600 text-white shadow-[0_4px_14px_rgba(220,38,38,0.25)] hover:shadow-[0_6px_18px_rgba(220,38,38,0.35)] hover:bg-red-700 hover:scale-[1.02] hover:cursor-pointer",
+      "border-2 border-[#1D4ED8] text-[#1D4ED8] bg-transparent active:scale-95 hover:bg-[#EFF6FF]",
+    ghost: "text-[#1D4ED8] active:scale-95 hover:bg-[#EFF6FF] shadow-none hover:shadow-none",
+    destructive: "bg-red-600 text-white active:scale-95 hover:bg-red-700 hover:shadow-md",
   };
 
   const sizes = {

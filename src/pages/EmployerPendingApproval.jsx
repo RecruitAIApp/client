@@ -19,7 +19,7 @@ export default function EmployerPendingApproval() {
               Approval Pending
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed max-w-md">
-              Thank you for joining Masar! Your employer account and company
+              Thank you for joining Naqla! Your employer account and company
               have been submitted. An administrator must approve your company
               before you can access the platform.
             </p>

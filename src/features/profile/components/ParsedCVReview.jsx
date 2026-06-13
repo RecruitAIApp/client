@@ -18,7 +18,7 @@ export default function ParsedCVReview({
       <div
         role="status"
         aria-live="polite"
-        className="p-4 rounded-xl bg-brand-teal/5 border border-brand-teal/20 text-sm text-slate-700"
+        className="p-4 rounded-xl bg-blue-50 border border-blue-100 text-sm text-blue-800"
       >
         Review AI-extracted data below. Edit anything before finishing your profile.
       </div>

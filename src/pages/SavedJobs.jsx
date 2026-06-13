@@ -88,7 +88,7 @@ export default function SavedJobs() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)]">
+    <div className="min-h-screen bg-slate-50 animate-fade-in">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex items-center gap-4 mb-8">
           <button
@@ -126,7 +126,7 @@ export default function SavedJobs() {
               </CardContent>
             </Card>
           ) : (
-            jobs.map((job) => {
+            jobs.map((job, index) => {
               const id = job._id ?? job.id;
               const companyName = job.company?.name ?? job.company ?? "Unknown Company";
               const logo = job.company?.logo ?? "💼";
@@ -134,8 +134,9 @@ export default function SavedJobs() {
               const skills = job.skills ?? job.requiredSkills ?? [];
 
               return (
-                <Card key={id} hover>
-                  <CardContent className="p-6">
+                <div key={id} className="animate-slide-up" style={{ animationDelay: `${index * 100}ms` }}>
+                  <Card hover>
+                    <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--color-brand-blue)] to-[var(--color-brand-teal)] flex items-center justify-center text-2xl flex-shrink-0">
                         {logo}
@@ -230,7 +231,8 @@ export default function SavedJobs() {
                       </div>
                     </div>
                   </CardContent>
-                </Card>
+                  </Card>
+                </div>
               );
             })
           )}
