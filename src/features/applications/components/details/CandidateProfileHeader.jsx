@@ -18,7 +18,6 @@ export default function CandidateProfileHeader({ candidate = {}, hideActions = f
       await createInterview({ ...payload, applicationId: id });
       toast.success("Interview scheduled successfully!");
       setIsModalOpen(false);
-      // reload details
       window.location.reload();
     } catch (err) {
       toast.error(err.message || "Failed to schedule interview");
@@ -53,35 +52,35 @@ export default function CandidateProfileHeader({ candidate = {}, hideActions = f
   const currentStatus = candidate?.meta?.status || "applied";
 
   return (
-    <div className='bg-white rounded-2xl border border-gray-100 shadow-sm p-6'>
+    <div className='bg-white rounded-2xl border border-slate-100 shadow-[0_4px_12px_rgba(15,23,42,0.03)] p-6'>
       <div className='flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-6'>
-        <div className='w-16 h-16 rounded-full bg-linear-to-br from-(--color-brand-blue) to-(--color-brand-teal) text-white font-bold text-2xl shrink-0 flex items-center justify-center'>
+        <div className='w-16 h-16 rounded-full bg-gradient-to-br from-[var(--color-primary-main)] to-[#3b82f6] text-white font-bold text-2xl shrink-0 flex items-center justify-center shadow-sm'>
           {initials}
         </div>
         <div className='space-y-1 flex-1 min-w-0 w-full'>
           <div className='flex justify-between items-center'>
-            <h1 className="text-2xl font-bold text-slate-900 truncate">{name}</h1>
+            <h1 className="text-2xl font-extrabold text-(--color-secondary-main) truncate tracking-tight">{name}</h1>
             {!hideActions && (
               <Star 
                 onClick={handleToggleStar}
-                className={`w-5 h-5 cursor-pointer shrink-0 ml-2 transition-all hover:scale-110 ${isStarred ? 'fill-amber-400 text-amber-400' : 'text-gray-300 hover:text-amber-400 hover:fill-amber-400/50'}`} 
+                className={`w-5 h-5 cursor-pointer shrink-0 ml-2 transition-all duration-200 ease-in-out hover:scale-110 ${isStarred ? 'fill-amber-400 text-amber-400' : 'text-slate-300 hover:text-amber-500 hover:fill-amber-500/50'}`} 
               />
             )}
           </div>
-          <p className='text-sm font-medium text-gray-500 truncate'>{role}</p>
-
-          <div className='flex flex-wrap gap-x-4 gap-y-1.5 pt-2 text-xs text-gray-500 font-medium'>
-            <span className='flex items-center gap-1.5'><Mail className="w-3.5 h-3.5 text-gray-400 shrink-0" /> {email}</span>
-            <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-gray-400 shrink-0" /> {phone}</span>
-            <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-gray-400 shrink-0" /> {location}</span>
-            <span className="flex items-center gap-1.5"><Briefcase className="w-3.5 h-3.5 text-gray-400 shrink-0" /> {experienceYears}</span>
+          <p className='text-sm font-medium text-(--color-secondary-muted) truncate'>{role}</p>
+  
+          <div className='flex flex-wrap gap-x-4 gap-y-1.5 pt-2 text-xs text-(--color-secondary-muted) font-medium'>
+            <span className='flex items-center gap-1.5'><Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {email}</span>
+            <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {phone}</span>
+            <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {location}</span>
+            <span className="flex items-center gap-1.5"><Briefcase className="w-3.5 h-3.5 text-slate-400 shrink-0" /> {experienceYears}</span>
           </div>
-
+  
           <div className='flex gap-1.5 flex-wrap mt-4'>
             {skills && skills.slice(0, 3).map((skill, idx) => (
               <span
                 key={idx}
-                className="bg-blue-50 text-blue-600 border border-blue-500 text-[11px] font-semibold px-2.5 py-0.5 rounded-full"
+                className="bg-[var(--color-bg-light-tint)] text-[var(--color-primary-main)] border border-blue-200/50 text-[11px] font-semibold px-2.5 py-0.5 rounded-full transition-all duration-200 ease-in-out hover:scale-105"
               >
                 {skill}
               </span>
@@ -89,17 +88,17 @@ export default function CandidateProfileHeader({ candidate = {}, hideActions = f
           </div>
         </div>
       </div>
-
+  
       {!hideActions && (
-        <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3  border-t border-gray-100 pt-4'>
+        <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-3 border-t border-slate-100 pt-4'>
           {currentStatus === 'interview' ? (
-            <div className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-not-allowed">
+            <div className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold rounded-[24px] bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-not-allowed transition-all duration-200 ease-in-out">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Stage: Interview
             </div>
           ) : (
             <Button 
               onClick={() => handleStages('interview')}
-              className="hover:bg-brand-light transition-colors w-full"
+              className="hover:bg-blue-700 w-full transition-all duration-200 ease-in-out"
             >
               <CheckCircle2 className="w-4 h-4" /> Move to Interview
             </Button>
@@ -107,24 +106,23 @@ export default function CandidateProfileHeader({ candidate = {}, hideActions = f
           
           <Button 
             onClick={() => setIsModalOpen(true)}
-            className="hover:bg-brand hover:text-white hover:border-brand transition-colors w-full" 
+            className="w-full transition-all duration-200 ease-in-out" 
             variant='outline'
           >
             <Calendar className="w-4 h-4" /> Schedule Interview
           </Button>
           
           {currentStatus === 'rejected' ? (
-            <div className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200 cursor-not-allowed">
+            <div className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-bold rounded-[24px] bg-rose-50 text-rose-700 border border-rose-200 cursor-not-allowed transition-all duration-200 ease-in-out">
               <XCircle className="w-4 h-4 text-rose-600" /> Rejected
             </div>
           ) : (
-            <Button
+            <button
               onClick={() => handleStages('rejected')}
-              variant="destructive" 
-              className="w-full font-bold hover:bg-red-700 transition-colors"
+              className="w-full font-bold bg-rose-50 text-rose-600 border border-rose-200 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-200 ease-in-out flex items-center justify-center gap-2 py-2.5 px-4 text-sm rounded-[24px] cursor-pointer shadow-2xs hover:shadow-xs"
             >
               <XCircle className="w-4 h-4" /> Reject
-            </Button>
+            </button>
           )}
         </div>
       )}

@@ -6,17 +6,17 @@ function PipelineHeader({ jobTitle = "Loading Job...", totalCandidates = 0, avgM
       {/* Top Title & Actions Row */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-blue-950">Candidate Pipeline</h1>
-          <p className="text-xs text-gray-400 font-medium mt-0.5">Drag and drop candidates to move them through your hiring process</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Candidate Pipeline</h1>
+          <p className="text-xs text-slate-500 font-medium mt-1">Drag and drop candidates to move them through your hiring process</p>
         </div>
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-650 bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-2xs">
-            <SlidersHorizontal className="w-3.5 h-3.5 text-brand-teal" />
-            <span className="text-gray-400 font-medium">Sort by:</span>
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 bg-white border border-(--color-border) rounded-[24px] px-4 py-2 shadow-micro">
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[var(--color-primary-main)]" />
+            <span className="text-slate-500 font-medium">Sort by:</span>
             <select 
               value={sortBy} 
               onChange={(e) => onSortChange(e.target.value)}
-              className="bg-transparent border-none p-0 focus:ring-0 focus:outline-none font-bold text-slate-700 cursor-pointer text-xs ml-1"
+              className="bg-transparent border-none p-0 focus:ring-0 focus:outline-none font-bold text-(--color-secondary-main) cursor-pointer text-xs ml-1"
             >
               <option value="score">AI Match Score</option>
               <option value="date">Applied Date</option>
@@ -24,7 +24,7 @@ function PipelineHeader({ jobTitle = "Loading Job...", totalCandidates = 0, avgM
           </div>
           <button 
             onClick={onExport}
-            className="bg-white border-2 border-blue-900 text-blue-900 hover:bg-blue-50 text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-1.5 cursor-pointer ml-auto md:ml-0"
+            className="bg-white border-2 border-[var(--color-primary-main)] text-[var(--color-primary-main)] hover:bg-[var(--color-bg-light-tint)] text-xs font-bold px-5 py-2.5 rounded-[24px] shadow-micro transition-all flex items-center gap-1.5 cursor-pointer ml-auto md:ml-0"
           >
             <Download className="w-3.5 h-3.5" /> Export Pipeline
           </button>
@@ -32,26 +32,26 @@ function PipelineHeader({ jobTitle = "Loading Job...", totalCandidates = 0, avgM
       </div>
 
       {/* Info Card Row */}
-      <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-cyan-50 rounded-xl text-cyan-700 shrink-0">
+      <div className="bg-white rounded-2xl border border-(--color-border) p-5 shadow-micro flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="p-3.5 bg-[var(--color-bg-light-tint)] rounded-[24px] text-[var(--color-primary-main)] shrink-0">
             <Briefcase className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-bold text-gray-900 text-base">{jobTitle}</h2>
-            <p className="text-xs text-gray-400 font-medium">{totalCandidates} total candidates in pipeline</p>
+            <h2 className="font-extrabold text-slate-900 text-base">{jobTitle}</h2>
+            <p className="text-xs text-slate-500 font-medium mt-0.5">{totalCandidates} total candidates in pipeline</p>
           </div>
         </div>
 
-        <div className="flex gap-6 sm:gap-8 items-center sm:text-right pr-0 sm:pr-4 w-full sm:w-auto justify-between sm:justify-end border-t border-gray-50 sm:border-t-0 pt-3 sm:pt-0">
+        <div className="flex gap-6 sm:gap-8 items-center sm:text-right pr-0 sm:pr-4 w-full sm:w-auto justify-between sm:justify-end border-t border-(--color-border) sm:border-t-0 pt-3 sm:pt-0">
           <div>
-            <span className="text-2xl font-black text-gray-900">{avgMatchScore}%</span>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Avg AI Match</p>
+            <span className="text-2xl font-extrabold text-slate-900">{avgMatchScore}%</span>
+            <p className="text-[10px] uppercase tracking-wider font-bold text-slate-500 mt-0.5">Avg AI Match</p>
           </div>
-          <div className="hidden sm:block border-l border-gray-100 h-8"></div>
+          <div className="hidden sm:block border-l border-(--color-border) h-8"></div>
           <div>
-            <span className="text-2xl font-black text-emerald-600">{avgTimeToHire}</span>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-gray-400">Avg Time to Hire</p>
+            <span className="text-2xl font-extrabold text-emerald-600">{avgTimeToHire}</span>
+            <p className="text-[10px] uppercase tracking-wider font-bold text-slate-500 mt-0.5">Avg Time to Hire</p>
           </div>
         </div>
       </div>

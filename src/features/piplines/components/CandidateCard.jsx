@@ -42,24 +42,24 @@ function CandidateCard({candidateDate}) {
     <div 
     ref={setNodeRef}
     style={dragStyle}
-    className='bg-white rounded-lg border border-gray-100 p-4 shadow-sm hover:shadow-md transition-all relative animate-settle'>
+    className='bg-white rounded-xl border border-(--color-border) p-4.5 shadow-micro hover:shadow-hover hover:border-blue-200/50 transition-all duration-300 relative animate-settle'>
       {/* Header */}
       <div className='flex justify-between items-start mb-3 gap-2'>
-        <div className='flex gap-2 items-center min-w-0'>
+        <div className='flex gap-2.5 items-center min-w-0'>
           {/* Grip drag handle */}
           <div 
             {...attributes} 
             {...listeners} 
-            className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-650 p-1 hover:bg-slate-50 rounded transition-colors shrink-0"
+            className="cursor-grab active:cursor-grabbing text-slate-350 hover:text-slate-500 p-1 hover:bg-slate-50 rounded transition-colors shrink-0"
             title="Drag candidate card"
           >
             <GripVertical className="w-4 h-4" />
           </div>
-          <div className='w-10 h-10 shrink-0 bg-linear-to-br from-(--color-brand-blue) to-(--color-brand-teal)  rounded-full text-white flex items-center justify-center font-medium text-sm '>
+          <div className='w-10 h-10 shrink-0 bg-gradient-to-br from-[var(--color-primary-main)] to-[#3b82f6] rounded-full text-white flex items-center justify-center font-bold text-sm shadow-sm'>
            {initials || 'AN'}
          </div>
          <div className='min-w-0 flex-1'>
-          <h4 className='font-semibold text-gray-900 flex items-center gap-1.5 text-sm'>
+          <h4 className='font-extrabold text-(--color-secondary-main) flex items-center gap-1.5 text-sm tracking-tight'>
             <span className="truncate">{name || 'Ahmed Nabil'}</span>
             <button 
               onClick={handleToggleStar}
@@ -69,11 +69,11 @@ function CandidateCard({candidateDate}) {
               <Star className={`w-3.5 h-3.5 shrink-0 transition-all ${
                 isStarred 
                   ? 'fill-amber-400 text-amber-400 scale-110' 
-                  : 'text-slate-350 hover:text-amber-450 hover:scale-110'
+                  : 'text-slate-300 hover:text-amber-500 hover:scale-110'
               }`} />
             </button>
           </h4>
-          <p className='font-medium text-gray-400 text-sm'>
+          <p className='font-medium text-(--color-secondary-muted) text-xs mt-0.5'>
             {role || 'Software Engineer'}
             </p>
          </div>
@@ -93,23 +93,23 @@ function CandidateCard({candidateDate}) {
         </div>
       )}
       {/* Contact Info */}
-      <div className='space-y-1.5 text-xs text-gray-500 font-medium mb-4 mt-2'>
+      <div className='space-y-1.5 text-xs text-(--color-secondary-muted) font-medium mb-4 mt-3.5'>
         <div className='flex items-center gap-2'>
-          <Mail className="w-3.5 h-3.5 text-gray-400" /> <span>{email || 'example@gmail.com'}</span>
+          <Mail className="w-3.5 h-3.5 text-slate-400" /> <span className="truncate">{email || 'example@gmail.com'}</span>
         </div>
          <div className='flex items-center gap-2'>
-          <Phone className="w-3.5 h-3.5 text-gray-400" /> <span>{phone || '+201034567890'}</span>
-        </div>
+          <Phone className="w-3.5 h-3.5 text-slate-400" /> <span>{phone || '+201034567890'}</span>
+         </div>
          <div className='flex items-center gap-2'>
-          <Calendar className="w-3.5 h-3.5 text-gray-400" /> <span>{appliedAt ? (isNaN(Date.parse(appliedAt)) ? appliedAt : `Applied ${new Date(appliedAt).toLocaleDateString()}`) : 'Applied 2026-05-01'}</span>
-        </div>
+          <Calendar className="w-3.5 h-3.5 text-slate-400" /> <span>{appliedAt ? (isNaN(Date.parse(appliedAt)) ? appliedAt : `Applied ${new Date(appliedAt).toLocaleDateString()}`) : 'Applied 2026-05-01'}</span>
+         </div>
       </div>
       {/*Skills */}
       <div className='flex gap-1.5 flex-wrap mb-4'>
         {skills && skills.slice(0,3).map((skill, idx) => (
           <span 
             key={idx} 
-            className="bg-slate-100 text-slate-600 text-[10px] font-bold px-2.5 py-0.5 rounded-md border border-slate-200/50"
+            className="bg-slate-100/60 text-(--color-secondary-muted) text-[10px] font-bold px-2.5 py-0.5 rounded-md border border-slate-200/20"
           >
             {skill}
           </span>
@@ -118,10 +118,10 @@ function CandidateCard({candidateDate}) {
 
       {/*badges */}
       <div className="flex gap-2 flex-wrap mb-4">
-        <span className="bg-blue-50 text-blue-600 border border-blue-500 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">
+        <span className="bg-[var(--color-bg-light-tint)] text-[var(--color-primary-main)] border border-blue-200/40 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">
           {experience ? `${experience} years` : '2 years'}
         </span>
-        <span className="bg-gray-100 text-gray-600 border border-gray-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">
+        <span className="bg-slate-50 text-(--color-secondary-muted) border border-(--color-border) text-[11px] font-semibold px-2.5 py-0.5 rounded-full">
           {location || 'Cairo'}
         </span>
       </div>
@@ -129,7 +129,7 @@ function CandidateCard({candidateDate}) {
       <div className='flex justify-between items-center pt-2 gap-2 relative'>
         <button 
           onClick={(e) => { e.stopPropagation(); navigate(`/candidateProfile/${id}`); }} 
-          className='flex-1 border border-[var(--color-brand-blue)] cursor-pointer text-[var(--color-brand-blue)] rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-[var(--color-brand-blue)] hover:text-white transition-colors flex items-center justify-center gap-1.5'
+          className='flex-1 border border-[var(--color-primary-main)] cursor-pointer text-[var(--color-primary-main)] rounded-[24px] px-3.5 py-1.5 text-xs font-bold hover:bg-[var(--color-primary-main)] hover:text-white transition-colors flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs'
         >
           <Eye className="w-3.5 h-3.5" /> View
         </button>

@@ -85,7 +85,6 @@ function KanbanPipeline() {
     ? Math.round(allCandidates.reduce((acc, c) => acc + (c.score || 0), 0) / allCandidates.length)
     : 0;
 
-    // incase in al hr msh 7atet totaldays
   const hiredCandidates = columns.hired || [];
   const totalDays = hiredCandidates.reduce((sum, c) => {
     const start = new Date(c.appliedAt);
@@ -140,10 +139,10 @@ function KanbanPipeline() {
 
   if (!jobId) {
     return (
-      <div className="p-12 text-center text-slate-500 bg-slate-50/50 min-h-screen flex items-center justify-center">
-        <div className="bg-white p-8 rounded-2xl border border-slate-200/60 shadow-md max-w-md">
-          <h2 className="text-xl font-bold text-slate-800 mb-2">No Job Selected</h2>
-          <p className="text-sm text-slate-500">
+      <div className="p-12 text-center text-(--color-secondary-muted) bg-(--color-bg-page) min-h-screen flex items-center justify-center font-sans">
+        <div className="bg-white p-8 rounded-2xl border border-(--color-border) shadow-micro max-w-md">
+          <h2 className="text-xl font-extrabold text-(--color-secondary-main) mb-2 tracking-tight">No Job Selected</h2>
+          <p className="text-sm text-(--color-secondary-muted) leading-relaxed">
             Please navigate to the job pipeline page from your dashboard to view applicants.
           </p>
         </div>
@@ -155,14 +154,17 @@ function KanbanPipeline() {
 
   if (loading && isColumnsEmpty) {
     return (
-      <div className="p-6 bg-slate-50/50 min-h-screen space-y-6">
-        <div className="h-24 bg-gray-200 rounded-xl animate-pulse"></div>
+      <div className="p-6 bg-(--color-bg-page) min-h-screen space-y-6 font-sans">
+        <div className="h-24 bg-white border border-(--color-border) rounded-2xl p-5 shadow-micro animate-pulse flex items-center justify-between">
+          <div className="h-8 bg-slate-100 rounded-lg w-1/3"></div>
+          <div className="h-8 bg-slate-100 rounded-[24px] w-1/5"></div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-gray-100 border border-gray-200/60 rounded-2xl p-4 h-[600px] space-y-4 animate-pulse">
-              <div className="h-6 bg-gray-200 rounded w-1/2 mb-6"></div>
-              <div className="h-40 bg-gray-200 rounded-xl"></div>
-              <div className="h-40 bg-gray-200 rounded-xl"></div>
+            <div key={i} className="bg-white border border-(--color-border) rounded-2xl p-4 h-[600px] space-y-4 animate-pulse shadow-micro">
+              <div className="h-8 bg-slate-100 rounded-lg w-1/2 mb-6"></div>
+              <div className="h-40 bg-slate-50/50 border border-(--color-border) rounded-xl"></div>
+              <div className="h-40 bg-slate-50/50 border border-(--color-border) rounded-xl"></div>
             </div>
           ))}
         </div>
@@ -171,7 +173,7 @@ function KanbanPipeline() {
   }
 
   return (
-    <div className="p-6 bg-slate-50/50 min-h-screen text-gray-800 font-sans flex flex-col gap-6">
+    <div className="p-6 bg-(--color-bg-page) min-h-screen text-(--color-secondary-main) font-sans flex flex-col gap-6 select-none">
       <PipelineHeader 
         jobTitle={job?.title || "Loading Job..."} 
         totalCandidates={totalCandidates} 
@@ -182,10 +184,10 @@ function KanbanPipeline() {
         onExport={handleExport}
       />
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <div className="flex gap-5 overflow-x-auto pb-6 select-none flex-1 items-start">
-          <KanbanColumn id="applied" title="Applied" count={columns.applied.length} candidates={columns.applied} colorClass="border-t-blue-500" />
-          <KanbanColumn id="shortlisted" title="Shortlisted" count={columns.shortlisted.length} candidates={columns.shortlisted} colorClass="border-t-teal-400" />
-          <KanbanColumn id="interview" title="Interview" count={columns.interview.length} candidates={columns.interview} colorClass="border-t-purple-500" />
+        <div className="flex gap-5 overflow-x-auto pb-6 select-none flex-1 items-start scrollbar-thin">
+          <KanbanColumn id="applied" title="Applied" count={columns.applied.length} candidates={columns.applied} colorClass="border-t-[var(--color-primary-main)]" />
+          <KanbanColumn id="shortlisted" title="Shortlisted" count={columns.shortlisted.length} candidates={columns.shortlisted} colorClass="border-t-sky-500" />
+          <KanbanColumn id="interview" title="Interview" count={columns.interview.length} candidates={columns.interview} colorClass="border-t-indigo-500" />
           <KanbanColumn id="offerSent" title="Offer Sent" count={columns.offerSent.length} candidates={columns.offerSent} colorClass="border-t-amber-500" />
           <KanbanColumn id="hired" title="Hired" count={columns.hired.length} candidates={columns.hired} colorClass="border-t-emerald-500" />
           <KanbanColumn id="rejected" title="Rejected" count={columns.rejected.length} candidates={columns.rejected} colorClass="border-t-red-500" />

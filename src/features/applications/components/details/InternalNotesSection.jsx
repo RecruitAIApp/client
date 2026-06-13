@@ -58,11 +58,11 @@ export default function InternalNotesSection({applicationId}) {
    };
 
    return (
-      <div className='bg-white border border-gray-100 rounded-2xl p-6 space-y-6 shadow-sm'>
-         <h3 className="font-bold text-base text-slate-900 border-b border-gray-100 pb-3">Internal Notes & Rating</h3>
+      <div className='bg-white border border-(--color-border) rounded-2xl p-6 space-y-6 shadow-micro'>
+         <h3 className="font-extrabold text-base text-(--color-secondary-main) border-b border-(--color-border) pb-3">Internal Notes & Rating</h3>
          <div className='flex flex-col space-y-5'>
             <div>
-               <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2">Candidate Rating</label>
+               <label className="text-xs font-bold text-(--color-secondary-muted) uppercase tracking-wider block mb-2">Candidate Rating</label>
                <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                      <button
@@ -77,7 +77,7 @@ export default function InternalNotesSection({applicationId}) {
                            className={`w-6 h-6 transition-colors ${
                               star <= (hoverRating || rating)
                                  ? 'fill-amber-400 text-amber-400'
-                                 : 'text-gray-300 hover:text-amber-400'
+                                 : 'text-slate-200 hover:text-amber-400'
                            }`}
                         />
                      </button>
@@ -86,31 +86,31 @@ export default function InternalNotesSection({applicationId}) {
             </div>
 
             <div className="flex flex-col space-y-2">
-               <label htmlFor="notes" className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Notes</label>
+               <label htmlFor="notes" className="text-xs font-bold text-(--color-secondary-muted) uppercase tracking-wider">Notes</label>
                <textarea
                   name="notes"
                   id="notes"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder='Add your notes about this candidate...'
-                  className="w-full min-h-[100px] p-3 border border-gray-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-sm placeholder:text-gray-400 resize-y"
+                  className="w-full min-h-[100px] p-3.5 border border-(--color-border) rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/10 focus:border-[var(--color-primary-main)] text-sm placeholder:text-slate-400 resize-y bg-slate-50/20"
                ></textarea>
             </div>
 
             <div className='pt-1'>
-               <Button onClick={handleAddNotes} className="w-full sm:w-auto">Save Notes</Button>
+               <Button onClick={handleAddNotes} className="w-full sm:w-auto shadow-2xs">Save Notes</Button>
             </div>
             
             {currentApplication?.notes && currentApplication.notes.length > 0 && (
-               <div className="pt-4 border-t border-gray-100 space-y-3">
-                  <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Previous Notes</h4>
+               <div className="pt-5 border-t border-(--color-border) space-y-4">
+                  <h4 className="text-xs font-bold text-(--color-secondary-muted) uppercase tracking-wider">Previous Notes</h4>
                   <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
                      {currentApplication.notes.slice().reverse().map((n, idx) => {
                         const isAuthor = n.authorId?.toString() === currentUserId?.toString();
                         const isEditing = editingNoteId === n._id;
 
                         return (
-                           <div key={n._id || idx} className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2 text-sm relative group">
+                           <div key={n._id || idx} className="bg-slate-100/30 p-4 rounded-xl border border-(--color-border) space-y-2 text-sm relative group">
                               {isEditing ? (
                                  <div className="space-y-3">
                                     <div className="flex items-center gap-1">
@@ -127,7 +127,7 @@ export default function InternalNotesSection({applicationId}) {
                                                 className={`w-4 h-4 transition-colors ${
                                                    star <= (editingHoverRating || editingRating)
                                                       ? 'fill-amber-400 text-amber-400'
-                                                      : 'text-gray-300 hover:text-amber-400'
+                                                      : 'text-slate-200 hover:text-amber-400'
                                                 }`}
                                              />
                                           </button>
@@ -136,18 +136,18 @@ export default function InternalNotesSection({applicationId}) {
                                     <textarea
                                        value={editingText}
                                        onChange={(e) => setEditingText(e.target.value)}
-                                       className="w-full p-2.5 border border-gray-200 rounded-lg text-xs focus:ring-1 focus:ring-blue-500/20 resize-y min-h-[60px]"
+                                       className="w-full p-2.5 border border-(--color-border) rounded-lg text-xs focus:ring-1 focus:ring-blue-500/10 resize-y min-h-[60px]"
                                     />
                                     <div className="flex gap-2 justify-end">
                                        <button 
                                           onClick={() => setEditingNoteId(null)} 
-                                          className="px-2.5 py-1 text-xs border border-gray-300 rounded-md hover:bg-gray-250 transition-colors font-semibold"
+                                          className="px-3 py-1 text-xs border border-(--color-border) rounded-[24px] hover:bg-slate-50 transition-colors font-semibold cursor-pointer"
                                        >
                                           Cancel
                                        </button>
                                        <button 
                                           onClick={() => handleUpdateNote(n._id)} 
-                                          className="px-2.5 py-1 text-xs bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-semibold"
+                                          className="px-3 py-1 text-xs bg-[var(--color-primary-main)] text-white rounded-[24px] hover:bg-blue-750 transition-colors font-semibold cursor-pointer"
                                        >
                                           Save
                                        </button>
@@ -155,7 +155,7 @@ export default function InternalNotesSection({applicationId}) {
                                  </div>
                               ) : (
                                  <>
-                                    <div className="flex justify-between items-center text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                                    <div className="flex justify-between items-center text-[10px] text-(--color-secondary-muted) font-bold uppercase tracking-wider">
                                        <div className="flex items-center gap-2">
                                           <span>Recruiter Note</span>
                                           {n.ratingScore > 0 && (
@@ -175,32 +175,32 @@ export default function InternalNotesSection({applicationId}) {
                                                       setEditingText(n.content);
                                                       setEditingRating(n.ratingScore || 0);
                                                    }}
-                                                   className="text-gray-400 hover:text-blue-600 transition-colors p-0.5 cursor-pointer"
+                                                   className="text-slate-400 hover:text-[var(--color-primary-main)] transition-colors p-0.5 cursor-pointer"
                                                    title="Edit Note"
                                                 >
                                                    <Pencil className="w-3.5 h-3.5" />
-                                                </button>
-                                                <button 
-                                                   onClick={() => handleDeleteNote(n._id)}
-                                                   className="text-gray-400 hover:text-red-650 transition-colors p-0.5 cursor-pointer"
-                                                   title="Delete Note"
-                                                >
-                                                   <Trash2 className="w-3.5 h-3.5" />
-                                                </button>
-                                             </div>
-                                          )}
-                                       </div>
-                                    </div>
-                                    <p className="text-slate-700 font-medium leading-relaxed">{n.content}</p>
-                                 </>
-                              )}
-                           </div>
-                        );
-                     })}
-                  </div>
-               </div>
-            )}
-         </div>
-      </div>
-   );
+                                                 </button>
+                                                 <button 
+                                                    onClick={() => handleDeleteNote(n._id)}
+                                                    className="text-slate-400 hover:text-red-650 transition-colors p-0.5 cursor-pointer"
+                                                    title="Delete Note"
+                                                 >
+                                                    <Trash2 className="w-3.5 h-3.5" />
+                                                 </button>
+                                              </div>
+                                           )}
+                                        </div>
+                                     </div>
+                                     <p className="text-(--color-secondary-main) font-medium leading-relaxed">{n.content}</p>
+                                  </>
+                               )}
+                            </div>
+                         );
+                      })}
+                   </div>
+                </div>
+             )}
+          </div>
+       </div>
+    );
 }

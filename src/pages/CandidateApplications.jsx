@@ -102,7 +102,7 @@ export default function CandidateApplications() {
   });
 
   return (
-    <div className="bg-slate-50/50 min-h-screen text-slate-800 font-sans py-8">
+    <div className="bg-[#F8FAFC] min-h-screen text-(--color-secondary-main) font-sans py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ApplicationsHeader
           viewMode={viewMode}
@@ -116,18 +116,18 @@ export default function CandidateApplications() {
         />
         <ApplicationsStats apps={mappedApplications}/>
         {error ? (
-          <div className="mt-8 bg-red-50 border border-red-200 rounded-2xl p-8 text-center max-w-xl mx-auto shadow-sm animate-in fade-in slide-in-from-bottom-3 duration-300">
-            <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+          <div className="mt-8 bg-red-50/40 border border-red-200/50 rounded-2xl p-8 text-center max-w-xl mx-auto shadow-micro animate-in fade-in slide-in-from-bottom-3 duration-300">
+            <div className="w-12 h-12 rounded-full bg-red-100/60 text-red-600 flex items-center justify-center mx-auto mb-4 shadow-sm">
               <AlertCircle className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold text-red-800 mb-1">Failed to Load Applications</h3>
-            <p className="text-sm text-red-600/80 mb-6 font-medium">{error}</p>
+            <h3 className="text-lg font-extrabold text-red-800 mb-1">Failed to Load Applications</h3>
+            <p className="text-sm text-red-650/80 mb-6 font-medium">{error}</p>
             <button
               onClick={() => {
                 clearError();
                 fetchCandidateApplications();
               }}
-              className="bg-red-650 hover:bg-red-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all shadow-md shadow-red-600/10 cursor-pointer"
+              className="bg-[#EF4444] hover:bg-red-600 text-white font-bold text-sm px-6 py-2.5 rounded-[24px] transition-all shadow-2xs hover:shadow-sm cursor-pointer"
             >
               Retry Connection
             </button>
@@ -141,13 +141,13 @@ export default function CandidateApplications() {
                 <ApplicationTimelineCard key={app.id} app={app}/>
               ))
             ) : (
-              <div className="bg-white rounded-2xl border border-gray-150 p-12 text-center text-gray-500 font-medium">
+              <div className="bg-white rounded-2xl border border-(--color-border) p-12 text-center text-(--color-secondary-muted) font-semibold shadow-micro">
                 No applications found matching your criteria.
               </div>
             )}
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 w-full items-stretch">
             <ApplicationKanbanColumn 
               title="In Progress" 
               apps={filteredApplications.filter(app => app.kanbanBucket === 'inProgress')} 
