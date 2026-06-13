@@ -272,14 +272,18 @@ export default function HrAssistantPage() {
                                                     {cand.name ? cand.name[0] : 'C'}
                                                 </div>
                                                 <Link 
-                                                    to={`/employer/pipeline/${jobId}`}
-                                                    title="View in Pipeline"
+                                                    to={`/candidateProfile/${cand.id}`}
+                                                    title="View Candidate Details"
                                                     className="p-2 text-slate-300 hover:text-brand-blue transition-colors"
                                                 >
                                                     <ExternalLink className="w-4 h-4" />
                                                 </Link>
+
                                             </div>
-                                            <h4 className="font-bold text-slate-800 text-base mb-1">{cand.name}</h4>
+                                            <Link to={`/candidateProfile/${cand.id}`} className="hover:text-brand-blue transition-colors">
+                                                <h4 className="font-bold text-slate-800 text-base mb-1">{cand.name}</h4>
+                                            </Link>
+
                                             <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
                                                 {cand.highlight}
                                             </p>
