@@ -271,7 +271,7 @@ export default function JobSearch() {
               <Filter className="w-4 h-4" />
               Filters
               {activeFilterCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-5 h-5 bg-(--color-brand-teal) text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 w-5 h-5 bg-brand text-white text-xs rounded-full flex items-center justify-center">
                   {activeFilterCount}
                 </span>
               )}
@@ -339,7 +339,7 @@ export default function JobSearch() {
                             type="checkbox"
                             checked={selectedTypes.includes(type)}
                             onChange={() => toggleType(type)}
-                            className="rounded border-(--color-border) accent-(--color-brand-teal)"
+                            className="rounded border-(--color-border) accent-brand"
                           />
                           <span>{type}</span>
                         </label>
@@ -361,7 +361,7 @@ export default function JobSearch() {
                             type="checkbox"
                             checked={selectedLevels.includes(level)}
                             onChange={() => toggleLevel(level)}
-                            className="rounded border-(--color-border) accent-(--color-brand-teal)"
+                            className="rounded border-(--color-border) accent-brand"
                           />
                           <span>{level}</span>
                         </label>
@@ -474,7 +474,7 @@ export default function JobSearch() {
                 {total === 1 ? "job" : "jobs"} found
               </p>
               <div className="flex items-center gap-2 text-sm text-(--color-muted-foreground)">
-                <Sparkles className="w-4 h-4 text-(--color-brand-teal)" />
+                <Sparkles className="w-4 h-4 text-brand" />
                 Sorted by relevance
               </div>
             </div>
@@ -544,7 +544,7 @@ export default function JobSearch() {
                               aria-label={isSaved ? "Unsave job" : "Save job"}
                               className="p-2 hover:bg-gray-100 rounded-lg transition-colors shrink-0">
                               {isSaved ? (
-                                <Bookmark className="w-5 h-5 text-(--color-brand-teal) fill-current" />
+                                <Bookmark className="w-5 h-5 text-brand fill-current" />
                               ) : (
                                 <BookmarkPlus className="w-5 h-5 text-(--color-muted-foreground)" />
                               )}
