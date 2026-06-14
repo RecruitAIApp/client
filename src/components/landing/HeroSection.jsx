@@ -164,7 +164,7 @@ export default function HeroSection({ onNavigate }) {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-0 lg:pt-28">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-0 lg:pt-40">
         {/* Centered top badge */}
         <div className="flex justify-center mb-6">
           <span
