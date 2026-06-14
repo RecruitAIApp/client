@@ -10,13 +10,13 @@ export function LoadingScreen() {
       aria-label="Loading"
       aria-busy="true"
       style={{
-        background: "linear-gradient(135deg, #f0f9ff 0%, #e8f4f8 40%, #f0fdf4 100%)",
+        background: "linear-gradient(135deg, #f0f9ff 0%, #e8f4f8 40%, #eff6ff 100%)",
       }}
     >
       {/* Subtle animated background orbs */}
       <div
         className="fixed top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full opacity-[0.06] blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, #14b8a6, transparent)" }}
+        style={{ background: "radial-gradient(circle, #3b82f6, transparent)" }}
       />
       <div
         className="fixed bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full opacity-[0.06] blur-3xl pointer-events-none"
@@ -30,7 +30,7 @@ export function LoadingScreen() {
           <div
             className="absolute inset-0 rounded-3xl animate-ping opacity-20"
             style={{
-              background: "linear-gradient(135deg, #1e3a8a, #14b8a6)",
+              background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
               animationDuration: "2.4s",
             }}
           />
@@ -38,8 +38,8 @@ export function LoadingScreen() {
           <div
             className="relative w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl"
             style={{
-              background: "linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #14b8a6 100%)",
-              boxShadow: "0 20px 60px -10px rgba(30,58,138,0.35), 0 8px 24px -4px rgba(20,184,166,0.2)",
+              background: "linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #3b82f6 100%)",
+              boxShadow: "0 20px 60px -10px rgba(30,58,138,0.35), 0 8px 24px -4px rgba(59,130,246,0.2)",
             }}
           >
             <span className="text-white font-black text-3xl tracking-tight">N</span>
@@ -51,7 +51,7 @@ export function LoadingScreen() {
           <span
             className="text-2xl font-bold tracking-tight"
             style={{
-              background: "linear-gradient(135deg, #1e3a8a, #14b8a6)",
+              background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
@@ -68,7 +68,7 @@ export function LoadingScreen() {
           <div
             className="h-full rounded-full"
             style={{
-              background: "linear-gradient(90deg, #1e3a8a, #14b8a6)",
+              background: "linear-gradient(90deg, #1e3a8a, #3b82f6)",
               animation: "naqlaProgress 1.8s ease-in-out infinite",
             }}
           />
