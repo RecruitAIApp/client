@@ -1,7 +1,6 @@
-import React from "react";
 import { useAuthStore } from "../store/authStore";
 import { useEmployerStore } from "../store/employerStore";
-import { Card, CardHeader, CardContent } from "../components/ui/Card";
+import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
 import { Skeleton } from "../components/ui/Skeleton";
 import {

@@ -260,7 +260,7 @@ export default function EmployerDashboard() {
           </Button>
           <Button 
             onClick={() => navigate("/jobs/create")} 
-            className="bg-[var(--color-brand-blue)] hover:bg-[var(--color-brand-blue)]/90 text-white font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all duration-200 px-4 py-2 text-sm rounded-lg"
+            className="bg-(--color-brand-blue) hover:bg-(--color-brand-blue)/90 text-white font-semibold flex items-center gap-1.5 shadow-xs hover:shadow transition-all duration-200 px-4 py-2 text-sm rounded-lg"
           >
             <Plus className="w-4 h-4" /> Post a Job
           </Button>

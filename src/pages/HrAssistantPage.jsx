@@ -107,7 +107,7 @@ export default function HrAssistantPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] bg-slate-50 overflow-visible">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-xs shrink-0 relative overflow-visible z-[1000]">
+      <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-xs shrink-0 relative overflow-visible z-1000">
         <div className="flex items-center gap-4 max-w-[70%]">
           <Button 
             variant="ghost" 
@@ -117,7 +117,7 @@ export default function HrAssistantPage() {
           >
             <ArrowLeft className="w-4 h-4" />
           </Button>
-          <div className="h-8 w-[1px] bg-slate-100" />
+          <div className="h-8 w-px bg-slate-100" />
           <div className="flex items-center gap-3 overflow-visible">
             <div className="w-10 h-10 rounded-xl bg-linear-to-br from-brand-blue to-brand-teal flex items-center justify-center text-white shadow-md relative shrink-0">
               <Bot className="w-6 h-6" />
@@ -130,14 +130,14 @@ export default function HrAssistantPage() {
               <div className="flex items-center gap-1 mt-0.5 relative" ref={dropdownRef}>
                 <button 
                   onClick={() => setIsJobSelectOpen(!isJobSelectOpen)}
-                  className="flex items-center gap-1.5 text-[11px] font-extrabold text-brand-blue bg-white border border-slate-100 rounded-lg px-2.5 py-1.5 cursor-pointer max-w-[220px] shadow-xs hover:border-brand-teal hover:bg-slate-50/50 transition-all active:scale-95"
+                  className="flex items-center gap-1.5 text-[11px] font-extrabold text-brand-blue bg-white border border-slate-100 rounded-lg px-2.5 py-1.5 cursor-pointer max-w-55 shadow-xs hover:border-brand-teal hover:bg-slate-50/50 transition-all active:scale-95"
                 >
                   <span className="truncate pr-1">Target: {currentJob?.title || "Loading..."}</span>
                   <ChevronDown className={`w-3 h-3 text-brand-blue transition-transform duration-300 shrink-0 ${isJobSelectOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {isJobSelectOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl z-[9999] overflow-visible">
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl z-9999 overflow-visible">
                     <div className="p-3 border-b border-slate-50 bg-slate-50/50 rounded-t-2xl">
                         <p className="text-[10px] font-bold text-slate-400 uppercase px-1 tracking-wider">Select Job Context</p>
                     </div>
@@ -242,7 +242,7 @@ export default function HrAssistantPage() {
                     <div className={`flex-1 space-y-4 ${msg.role === 'human' ? 'text-right' : 'text-left'}`}>
                         <div className={`inline-block p-5 rounded-3xl text-sm leading-relaxed shadow-sm relative ${
                             msg.role === 'human'
-                            ? 'bg-[var(--color-brand-blue)] text-white rounded-tr-none'
+                            ? 'bg-(--color-brand-blue) text-white rounded-tr-none'
                             : 'bg-white border border-slate-100 text-slate-700 rounded-tl-none font-medium'
                         }`}>
                             <div className={`prose prose-sm max-w-none ${msg.role === 'human' ? 'prose-invert text-white' : 'prose-slate text-slate-700'}`}>

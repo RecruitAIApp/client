@@ -1,6 +1,5 @@
 import { useAuthStore } from "../store/authStore";
 
-/** Shown when an HR employer has no company assignment yet */
 export default function EmployerOnboarding() {
   const user = useAuthStore((s) => s.user);
 

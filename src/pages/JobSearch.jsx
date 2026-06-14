@@ -22,7 +22,11 @@ import { Badge } from "../components/ui/Badge";
 import { AIScoreBadge } from "../components/ui/AIScoreBadge";
 import { getJobs } from "../services/jobsApi";
 import { quickApplyToJob, getMyApplications } from "../services/applicationAPI";
-import { getCandidateProfile, saveJob, unsaveJob } from "../services/profileApi";
+import {
+  getCandidateProfile,
+  saveJob,
+  unsaveJob,
+} from "../services/profileApi";
 import { useChatStore } from "../store/chatStore";
 import {
   Modal,
@@ -37,17 +41,12 @@ import {
 // Job types and experience levels for sidebar filters
 const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Remote"];
 const EXP_LEVELS = ["Entry Level", "Mid Level", "Senior", "Lead"];
-const SALARY_RANGES = [
-  { label: "$0 – $80k", min: 0, max: 80000 },
-  { label: "$80k – $120k", min: 80000, max: 120000 },
-  { label: "$120k – $160k", min: 120000, max: 160000 },
-  { label: "$160k+", min: 160000, max: null },
-];
 
 function formatSalary(job) {
   if (job.salaryRange) {
     const { min, max, currency = "$" } = job.salaryRange;
-    const fmt = (n) => (n >= 1000 ? `${currency}${Math.round(n / 1000)}k` : `${currency}${n}`);
+    const fmt = (n) =>
+      n >= 1000 ? `${currency}${Math.round(n / 1000)}k` : `${currency}${n}`;
     if (min && max) return `${fmt(min)} – ${fmt(max)}`;
     if (min) return `${fmt(min)}+`;
   }
@@ -70,9 +69,9 @@ function formatCustomSalaryLabel(min, max) {
 
 function JobSkeleton() {
   return (
-    <div className="bg-white rounded-xl border border-[var(--color-border)] shadow-sm p-6 animate-pulse">
+    <div className="bg-white rounded-xl border border-(--color-border) shadow-sm p-6 animate-pulse">
       <div className="flex items-start gap-4">
-        <div className="w-14 h-14 bg-gray-200 rounded-xl flex-shrink-0" />
+        <div className="w-14 h-14 bg-gray-200 rounded-xl shrink-0" />
         <div className="flex-1 space-y-3">
           <div className="h-5 bg-gray-200 rounded w-2/3" />
           <div className="h-4 bg-gray-200 rounded w-1/3" />
@@ -111,7 +110,7 @@ export default function JobSearch() {
       try {
         const [profileRes, appsList] = await Promise.all([
           getCandidateProfile().catch(() => null),
-          getMyApplications().catch(() => [])
+          getMyApplications().catch(() => []),
         ]);
 
         if (profileRes?.profile?.resume?.url) {
@@ -147,33 +146,42 @@ export default function JobSearch() {
     if (selectedTypes.length) params.jobType = selectedTypes.join(",");
     if (selectedLevels.length) params.level = selectedLevels.join(",");
     if (selectedSalary) {
-      if (selectedSalary.min != null) params.salaryMin = selectedSalary.min * 1000;
-      if (selectedSalary.max != null) params.salaryMax = selectedSalary.max * 1000;
+      if (selectedSalary.min != null)
+        params.salaryMin = selectedSalary.min * 1000;
+      if (selectedSalary.max != null)
+        params.salaryMax = selectedSalary.max * 1000;
     }
 
     try {
       const result = await getJobs(params);
       const list = result?.data?.data ?? result?.data ?? result ?? [];
       setJobs(list);
-      setTotal(result?.data?.pagination?.total ?? result?.pagination?.total ?? list.length);
+      setTotal(
+        result?.data?.pagination?.total ??
+          result?.pagination?.total ??
+          list.length,
+      );
     } finally {
       setLoading(false);
     }
   }, [debouncedQuery, selectedTypes, selectedLevels, selectedSalary]);
 
   useEffect(() => {
-    fetchJobs();
+    const timer = setTimeout(() => {
+      fetchJobs();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchJobs]);
 
   function toggleType(type) {
     setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
   }
 
   function toggleLevel(level) {
     setSelectedLevels((prev) =>
-      prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level]
+      prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level],
     );
   }
 
@@ -224,7 +232,11 @@ export default function JobSearch() {
 
       setConfirmJob(null);
     } catch (err) {
-      setApplyError(err?.response?.data?.message ?? err.message ?? "Failed to apply. Please try again.");
+      setApplyError(
+        err?.response?.data?.message ??
+          err.message ??
+          "Failed to apply. Please try again.",
+      );
     } finally {
       setApplying(false);
     }
@@ -236,7 +248,6 @@ export default function JobSearch() {
   return (
     <div className="min-h-screen bg-slate-50 animate-fade-in">
       <div className="max-w-7xl mx-auto px-4 py-8">
-
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-6">
@@ -256,12 +267,11 @@ export default function JobSearch() {
             <Button
               variant="outline"
               className="relative"
-              onClick={() => setFiltersOpen((o) => !o)}
-            >
+              onClick={() => setFiltersOpen((o) => !o)}>
               <Filter className="w-4 h-4" />
               Filters
               {activeFilterCount > 0 && (
-                <span className="absolute -top-2 -right-2 w-5 h-5 bg-[var(--color-brand-teal)] text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 w-5 h-5 bg-(--color-brand-teal) text-white text-xs rounded-full flex items-center justify-center">
                   {activeFilterCount}
                 </span>
               )}
@@ -277,17 +287,28 @@ export default function JobSearch() {
           {activeFilterCount > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {selectedTypes.map((t) => (
-                <Badge key={t} variant="info" className="cursor-pointer" onClick={() => toggleType(t)}>
+                <Badge
+                  key={t}
+                  variant="info"
+                  className="cursor-pointer"
+                  onClick={() => toggleType(t)}>
                   {t} <X className="w-3 h-3 ml-1" />
                 </Badge>
               ))}
               {selectedLevels.map((l) => (
-                <Badge key={l} variant="purple" className="cursor-pointer" onClick={() => toggleLevel(l)}>
+                <Badge
+                  key={l}
+                  variant="purple"
+                  className="cursor-pointer"
+                  onClick={() => toggleLevel(l)}>
                   {l} <X className="w-3 h-3 ml-1" />
                 </Badge>
               ))}
               {selectedSalary && (
-                <Badge variant="success" className="cursor-pointer" onClick={() => setSelectedSalary(null)}>
+                <Badge
+                  variant="success"
+                  className="cursor-pointer"
+                  onClick={() => setSelectedSalary(null)}>
                   {selectedSalary.label} <X className="w-3 h-3 ml-1" />
                 </Badge>
               )}
@@ -296,9 +317,9 @@ export default function JobSearch() {
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
-
           {/* Sidebar Filters */}
-          <aside className={`lg:col-span-1 space-y-4 ${filtersOpen ? "block animate-fade-in" : "hidden"}`}>
+          <aside
+            className={`lg:col-span-1 space-y-4 ${filtersOpen ? "block animate-fade-in" : "hidden"}`}>
             <Card className="shadow-sm border-slate-200">
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-4 flex items-center gap-2">
@@ -311,12 +332,14 @@ export default function JobSearch() {
                     <p className="block text-sm font-medium mb-2">Job Type</p>
                     <div className="space-y-2">
                       {JOB_TYPES.map((type) => (
-                        <label key={type} className="flex items-center gap-2 text-sm cursor-pointer">
+                        <label
+                          key={type}
+                          className="flex items-center gap-2 text-sm cursor-pointer">
                           <input
                             type="checkbox"
                             checked={selectedTypes.includes(type)}
                             onChange={() => toggleType(type)}
-                            className="rounded border-[var(--color-border)] accent-[var(--color-brand-teal)]"
+                            className="rounded border-(--color-border) accent-(--color-brand-teal)"
                           />
                           <span>{type}</span>
                         </label>
@@ -325,16 +348,20 @@ export default function JobSearch() {
                   </div>
 
                   {/* Experience Level */}
-                  <div className="border-t border-[var(--color-border)] pt-4">
-                    <p className="block text-sm font-medium mb-2">Experience Level</p>
+                  <div className="border-t border-(--color-border) pt-4">
+                    <p className="block text-sm font-medium mb-2">
+                      Experience Level
+                    </p>
                     <div className="space-y-2">
                       {EXP_LEVELS.map((level) => (
-                        <label key={level} className="flex items-center gap-2 text-sm cursor-pointer">
+                        <label
+                          key={level}
+                          className="flex items-center gap-2 text-sm cursor-pointer">
                           <input
                             type="checkbox"
                             checked={selectedLevels.includes(level)}
                             onChange={() => toggleLevel(level)}
-                            className="rounded border-[var(--color-border)] accent-[var(--color-brand-teal)]"
+                            className="rounded border-(--color-border) accent-(--color-brand-teal)"
                           />
                           <span>{level}</span>
                         </label>
@@ -343,11 +370,15 @@ export default function JobSearch() {
                   </div>
 
                   {/* Salary Range */}
-                  <div className="border-t border-[var(--color-border)] pt-4">
-                    <p className="block text-sm font-medium mb-2 font-semibold text-[var(--color-foreground)]">Salary Range (k$)</p>
+                  <div className="border-t border-(--color-border) pt-4">
+                    <p className="block text-sm font-semibold mb-2 text-(--color-foreground)">
+                      Salary Range (k$)
+                    </p>
                     <div className="grid grid-cols-2 gap-2 mt-2">
                       <div>
-                        <label className="text-[10px] uppercase tracking-wider text-[var(--color-muted-foreground)] block mb-1">Min Salary (k$)</label>
+                        <label className="text-[10px] uppercase tracking-wider text-(--color-muted-foreground) block mb-1">
+                          Min Salary (k$)
+                        </label>
                         <Input
                           type="number"
                           min={0}
@@ -364,7 +395,7 @@ export default function JobSearch() {
                               setSelectedSalary({
                                 min: minVal,
                                 max: maxVal,
-                                label: formatCustomSalaryLabel(minVal, maxVal)
+                                label: formatCustomSalaryLabel(minVal, maxVal),
                               });
                             }
                           }}
@@ -372,7 +403,9 @@ export default function JobSearch() {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] uppercase tracking-wider text-[var(--color-muted-foreground)] block mb-1">Max Salary (k$)</label>
+                        <label className="text-[10px] uppercase tracking-wider text-(--color-muted-foreground) block mb-1">
+                          Max Salary (k$)
+                        </label>
                         <Input
                           type="number"
                           min={0}
@@ -389,7 +422,7 @@ export default function JobSearch() {
                               setSelectedSalary({
                                 min: minVal,
                                 max: maxVal,
-                                label: formatCustomSalaryLabel(minVal, maxVal)
+                                label: formatCustomSalaryLabel(minVal, maxVal),
                               });
                             }
                           }}
@@ -401,7 +434,10 @@ export default function JobSearch() {
                 </div>
 
                 {activeFilterCount > 0 && (
-                  <Button variant="outline" className="w-full mt-5" onClick={clearFilters}>
+                  <Button
+                    variant="outline"
+                    className="w-full mt-5"
+                    onClick={clearFilters}>
                     Clear all filters
                   </Button>
                 )}
@@ -409,14 +445,18 @@ export default function JobSearch() {
             </Card>
 
             {/* AI Job Alerts promo */}
-            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm animate-slide-up" style={{ animationDelay: '200ms' }}>
+            <Card
+              className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm animate-slide-up"
+              style={{ animationDelay: "200ms" }}>
               <CardContent className="p-6">
                 <Sparkles className="w-8 h-8 mb-3 text-[#2563EB]" />
                 <h3 className="font-bold mb-2 text-[#1e3a8a]">AI Job Alerts</h3>
                 <p className="text-sm text-[#1e3a8a]/70 mb-4 font-medium">
                   Get notified when jobs matching your profile are posted
                 </p>
-                <Button variant="outline" className="w-full bg-white text-[#2563EB] border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-colors">
+                <Button
+                  variant="outline"
+                  className="w-full bg-white text-[#2563EB] border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-colors">
                   Enable Alerts
                 </Button>
               </CardContent>
@@ -424,14 +464,17 @@ export default function JobSearch() {
           </aside>
 
           {/* Job List */}
-          <div className={`${filtersOpen ? "lg:col-span-3" : "lg:col-span-4"} space-y-4`}>
+          <div
+            className={`${filtersOpen ? "lg:col-span-3" : "lg:col-span-4"} space-y-4`}>
             <div className="flex items-center justify-between mb-2">
-              <p className="text-[var(--color-muted-foreground)]">
-                <span className="font-semibold text-[var(--color-foreground)]">{total}</span>{" "}
+              <p className="text-(--color-muted-foreground)">
+                <span className="font-semibold text-(--color-foreground)">
+                  {total}
+                </span>{" "}
                 {total === 1 ? "job" : "jobs"} found
               </p>
-              <div className="flex items-center gap-2 text-sm text-[var(--color-muted-foreground)]">
-                <Sparkles className="w-4 h-4 text-[var(--color-brand-teal)]" />
+              <div className="flex items-center gap-2 text-sm text-(--color-muted-foreground)">
+                <Sparkles className="w-4 h-4 text-(--color-brand-teal)" />
                 Sorted by relevance
               </div>
             </div>
@@ -443,7 +486,7 @@ export default function JobSearch() {
                 <CardContent className="p-10 text-center">
                   <Search className="w-12 h-12 mx-auto text-gray-300 mb-4" />
                   <p className="font-semibold text-lg mb-1">No jobs found</p>
-                  <p className="text-sm text-[var(--color-muted-foreground)] mb-4">
+                  <p className="text-sm text-(--color-muted-foreground) mb-4">
                     Try adjusting your filters or search terms.
                   </p>
                   <Button variant="outline" onClick={clearFilters}>
@@ -454,17 +497,20 @@ export default function JobSearch() {
             ) : (
               jobs.map((job) => {
                 const id = job._id ?? job.id;
-                const companyName = job.company?.name ?? job.company ?? "Unknown Company";
+                const companyName =
+                  job.company?.name ?? job.company ?? "Unknown Company";
                 const logo = job.company?.logo ?? "💼";
                 const salary = formatSalary(job);
                 const skills = job.skills ?? job.requiredSkills ?? [];
                 const isSaved = savedJobs.has(id);
 
                 return (
-                  <Card key={id} className="shadow-sm border-slate-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-blue-200 animate-slide-up group">
+                  <Card
+                    key={id}
+                    className="shadow-sm border-slate-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-blue-200 animate-slide-up group">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+                        <div className="w-14 h-14 rounded-xl bg-linear-to-br from-blue-50 to-indigo-100 border border-blue-200 flex items-center justify-center text-2xl shrink-0 group-hover:scale-105 transition-transform duration-300">
                           {logo}
                         </div>
 
@@ -474,17 +520,20 @@ export default function JobSearch() {
                               <div className="flex items-center gap-3 mb-1">
                                 <h3
                                   className="font-bold text-lg text-slate-900 group-hover:text-[#2563EB] cursor-pointer transition-colors"
-                                  onClick={() => navigate(`/candidate/jobs/${id}`)}
-                                >
+                                  onClick={() =>
+                                    navigate(`/candidate/jobs/${id}`)
+                                  }>
                                   {job.title}
                                 </h3>
-                                {job.aiScore != null && <AIScoreBadge score={job.aiScore} />}
+                                {job.aiScore != null && (
+                                  <AIScoreBadge score={job.aiScore} />
+                                )}
                               </div>
-                              <p className="text-[var(--color-muted-foreground)] font-medium mb-1">
+                              <p className="text-(--color-muted-foreground) font-medium mb-1">
                                 {companyName}
                               </p>
                               {job.description && (
-                                <p className="text-sm text-[var(--color-muted-foreground)] line-clamp-2">
+                                <p className="text-sm text-(--color-muted-foreground) line-clamp-2">
                                   {job.description}
                                 </p>
                               )}
@@ -493,17 +542,16 @@ export default function JobSearch() {
                             <button
                               onClick={() => toggleSave(id)}
                               aria-label={isSaved ? "Unsave job" : "Save job"}
-                              className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
-                            >
+                              className="p-2 hover:bg-gray-100 rounded-lg transition-colors shrink-0">
                               {isSaved ? (
-                                <Bookmark className="w-5 h-5 text-[var(--color-brand-teal)] fill-current" />
+                                <Bookmark className="w-5 h-5 text-(--color-brand-teal) fill-current" />
                               ) : (
-                                <BookmarkPlus className="w-5 h-5 text-[var(--color-muted-foreground)]" />
+                                <BookmarkPlus className="w-5 h-5 text-(--color-muted-foreground)" />
                               )}
                             </button>
                           </div>
 
-                          <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--color-muted-foreground)] mb-3">
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-(--color-muted-foreground)] mb-3">
                             {job.location && (
                               <div className="flex items-center gap-1">
                                 <MapPin className="w-4 h-4" /> {job.location}
@@ -540,28 +588,30 @@ export default function JobSearch() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                onClick={() => navigate(`/candidate/jobs/${id}`)}
-                              >
+                                onClick={() =>
+                                  navigate(`/candidate/jobs/${id}`)
+                                }>
                                 View Details
                               </Button>
                               <Button
                                 size="sm"
                                 variant="outline"
                                 className="border-brand-teal text-brand-teal hover:bg-brand-teal/5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-                                onClick={() => openChat(id, job.title, companyName)}
-                              >
+                                onClick={() =>
+                                  openChat(id, job.title, companyName)
+                                }>
                                 <MessageSquare className="w-4 h-4" />
                                 Ask AI
                               </Button>
                               {appliedJobIds.has(id) ? (
                                 <Badge className="h-9 px-4 flex items-center justify-center font-medium gap-1 text-sm bg-green-50 border border-green-200 text-green-700 rounded-lg">
-                                  <Check className="w-4 h-4 text-green-600" /> Applied
+                                  <Check className="w-4 h-4 text-green-600" />{" "}
+                                  Applied
                                 </Badge>
                               ) : (
                                 <Button
                                   size="sm"
-                                  onClick={() => handleQuickApplyClick(job)}
-                                >
+                                  onClick={() => handleQuickApplyClick(job)}>
                                   Quick Apply
                                 </Button>
                               )}
@@ -578,25 +628,33 @@ export default function JobSearch() {
         </div>
       </div>
 
-      <Modal open={!!confirmJob} onOpenChange={(open) => !open && setConfirmJob(null)}>
+      <Modal
+        open={!!confirmJob}
+        onOpenChange={(open) => !open && setConfirmJob(null)}>
         <ModalContent>
           <ModalHeader>
             <ModalTitle>Confirm Quick Apply</ModalTitle>
             <ModalDescription>
-              Are you sure you want to apply for <strong>{confirmJob?.title}</strong> at <strong>{confirmJob?.company?.name || confirmJob?.company}</strong>?
+              Are you sure you want to apply for{" "}
+              <strong>{confirmJob?.title}</strong> at{" "}
+              <strong>
+                {confirmJob?.company?.name || confirmJob?.company}
+              </strong>
+              ?
             </ModalDescription>
           </ModalHeader>
-          <div className="py-2 text-sm text-[var(--color-muted-foreground)]">
-            This will automatically submit the resume currently stored in your profile.
+          <div className="py-2 text-sm text-(--color-muted-foreground)">
+            This will automatically submit the resume currently stored in your
+            profile.
           </div>
           {applyError && (
-            <p className="text-sm text-red-600 font-medium">
-              {applyError}
-            </p>
+            <p className="text-sm text-red-600 font-medium">{applyError}</p>
           )}
           <ModalFooter>
             <ModalClose asChild>
-              <Button variant="outline" disabled={applying}>Cancel</Button>
+              <Button variant="outline" disabled={applying}>
+                Cancel
+              </Button>
             </ModalClose>
             <Button onClick={executeQuickApply} disabled={applying}>
               {applying ? "Applying..." : "Confirm & Apply"}
@@ -613,11 +671,14 @@ export default function JobSearch() {
               <AlertCircle className="w-5 h-5 text-amber-500" /> Resume Required
             </ModalTitle>
             <ModalDescription>
-              You need to upload a resume to your profile before you can use the Quick Apply feature.
+              You need to upload a resume to your profile before you can use the
+              Quick Apply feature.
             </ModalDescription>
           </ModalHeader>
-          <div className="py-2 text-sm text-[var(--color-muted-foreground)]">
-            Quick Apply uses your saved profile resume to instantly apply to jobs with a single click. Please head over to your profile to upload your latest resume.
+          <div className="py-2 text-sm text-(--color-muted-foreground)">
+            Quick Apply uses your saved profile resume to instantly apply to
+            jobs with a single click. Please head over to your profile to upload
+            your latest resume.
           </div>
           <ModalFooter>
             <ModalClose asChild>
@@ -629,7 +690,6 @@ export default function JobSearch() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
     </div>
   );
 }

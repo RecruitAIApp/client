@@ -25,29 +25,34 @@ import { Skeleton } from "../components/ui/Skeleton";
 const schema = z
   .object({
     title: z.string().min(3, "Title must be at least 3 characters").max(200),
-    description: z.string().min(20, "Description must be at least 20 characters").max(5000),
+    description: z
+      .string()
+      .min(20, "Description must be at least 20 characters")
+      .max(5000),
     location: z.string().min(2, "Location is required").max(200),
     jobType: z.enum(["remote", "onsite", "hybrid"], {
       errorMap: () => ({ message: "Please select a job type" }),
     }),
     employmentType: z.enum(
       ["full-time", "part-time", "contract", "internship", "freelance"],
-      { errorMap: () => ({ message: "Please select an employment type" }) }
+      { errorMap: () => ({ message: "Please select an employment type" }) },
     ),
-    experienceLevel: z.enum(
-      ["entry", "mid", "senior", "lead", "executive"],
-      { errorMap: () => ({ message: "Please select an experience level" }) }
-    ),
+    experienceLevel: z.enum(["entry", "mid", "senior", "lead", "executive"], {
+      errorMap: () => ({ message: "Please select an experience level" }),
+    }),
     minSalary: z.coerce.number().min(0, "Minimum salary must be >= 0"),
     maxSalary: z.coerce.number().min(0, "Maximum salary must be >= 0"),
     currency: z.string().min(2, "Currency is required").max(3),
-    applicationDeadline: z.string().optional().refine(
-      (val) => {
-        if (!val) return true;
-        return new Date(val) > new Date();
-      },
-      { message: "Application deadline must be in the future" }
-    ),
+    applicationDeadline: z
+      .string()
+      .optional()
+      .refine(
+        (val) => {
+          if (!val) return true;
+          return new Date(val) > new Date();
+        },
+        { message: "Application deadline must be in the future" },
+      ),
   })
   .refine((data) => data.maxSalary >= data.minSalary, {
     message: "Maximum salary must be >= minimum salary",
@@ -91,6 +96,13 @@ export default function JobFormPage({ mode = "create" }) {
     queryKey: ["jobDetail", jobId],
     queryFn: () => getJobById(jobId),
     enabled: mode === "edit" && Boolean(jobId),
+    onSuccess: (data) => {
+      if (mode === "edit" && data?.data) {
+        const job = data.data;
+        setRequirements(job.requirements?.length ? job.requirements : [""]);
+        setSkills(job.skills?.length ? job.skills : [""]);
+      }
+    },
   });
 
   // Populate form if editing
@@ -111,12 +123,6 @@ export default function JobFormPage({ mode = "create" }) {
           ? new Date(job.applicationDeadline).toISOString().split("T")[0]
           : "",
       });
-      if (job.requirements && job.requirements.length > 0) {
-        setRequirements(job.requirements);
-      }
-      if (job.skills && job.skills.length > 0) {
-        setSkills(job.skills);
-      }
     }
   }, [mode, editJobData, reset]);
 
@@ -136,9 +142,14 @@ export default function JobFormPage({ mode = "create" }) {
     mutationFn: (payload) => updateJob(jobId, payload),
     onSuccess: (data) => {
       const updatedJob = data.data;
-      queryClient.invalidateQueries(["companyJobs", updatedJob.company._id || updatedJob.company]);
+      queryClient.invalidateQueries([
+        "companyJobs",
+        updatedJob.company._id || updatedJob.company,
+      ]);
       queryClient.invalidateQueries(["jobDetail", jobId]);
-      navigate(`/employer/company/${updatedJob.company._id || updatedJob.company}/jobs`);
+      navigate(
+        `/employer/company/${updatedJob.company._id || updatedJob.company}/jobs`,
+      );
     },
     onError: (err) => {
       setGeneralError(err.message || "Failed to update job posting.");
@@ -213,14 +224,17 @@ export default function JobFormPage({ mode = "create" }) {
       updateJobMutation.mutate(payload);
     } else {
       if (!activeCompanyId) {
-        setGeneralError("Active company workspace not found. Please switch company and try again.");
+        setGeneralError(
+          "Active company workspace not found. Please switch company and try again.",
+        );
         return;
       }
       createJobMutation.mutate(payload);
     }
   };
 
-  const isSubmitting = createJobMutation.isPending || updateJobMutation.isPending;
+  const isSubmitting =
+    createJobMutation.isPending || updateJobMutation.isPending;
 
   if (mode === "edit" && isJobLoading) {
     return (
@@ -236,8 +250,7 @@ export default function JobFormPage({ mode = "create" }) {
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition-colors font-semibold cursor-pointer"
-      >
+        className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition-colors font-semibold cursor-pointer">
         <ArrowLeft className="w-4 h-4" /> Back
       </button>
 
@@ -255,7 +268,9 @@ export default function JobFormPage({ mode = "create" }) {
       </div>
 
       {generalError && (
-        <div className="flex gap-2 p-4 bg-red-50 text-red-700 text-sm rounded-lg" role="alert">
+        <div
+          className="flex gap-2 p-4 bg-red-50 text-red-700 text-sm rounded-lg"
+          role="alert">
           <AlertCircle className="w-5 h-5 shrink-0" />
           <span>{generalError}</span>
         </div>
@@ -265,7 +280,6 @@ export default function JobFormPage({ mode = "create" }) {
       <Card className="border border-slate-100 shadow-xl rounded-2xl bg-white">
         <CardContent className="p-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            
             {/* Title & Description */}
             <div className="space-y-4">
               <Input
@@ -290,49 +304,64 @@ export default function JobFormPage({ mode = "create" }) {
             {/* Role Properties */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Job Type</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Job Type
+                </label>
                 <select
                   disabled={isSubmitting}
                   className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 outline-none focus:ring-2 focus:ring-accent"
-                  {...register("jobType")}
-                >
+                  {...register("jobType")}>
                   <option value="remote">Remote</option>
                   <option value="onsite">Onsite</option>
                   <option value="hybrid">Hybrid</option>
                 </select>
-                {errors.jobType && <p className="mt-1 text-xs text-red-500">{errors.jobType.message}</p>}
+                {errors.jobType && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.jobType.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Employment Type</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Employment Type
+                </label>
                 <select
                   disabled={isSubmitting}
                   className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 outline-none focus:ring-2 focus:ring-accent"
-                  {...register("employmentType")}
-                >
+                  {...register("employmentType")}>
                   <option value="full-time">Full-time</option>
                   <option value="part-time">Part-time</option>
                   <option value="contract">Contract</option>
                   <option value="internship">Internship</option>
                   <option value="freelance">Freelance</option>
                 </select>
-                {errors.employmentType && <p className="mt-1 text-xs text-red-500">{errors.employmentType.message}</p>}
+                {errors.employmentType && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.employmentType.message}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">Experience Level</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Experience Level
+                </label>
                 <select
                   disabled={isSubmitting}
                   className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm text-slate-700 outline-none focus:ring-2 focus:ring-accent"
-                  {...register("experienceLevel")}
-                >
+                  {...register("experienceLevel")}>
                   <option value="entry">Entry</option>
                   <option value="mid">Mid</option>
                   <option value="senior">Senior</option>
                   <option value="lead">Lead</option>
                   <option value="executive">Executive</option>
                 </select>
-                {errors.experienceLevel && <p className="mt-1 text-xs text-red-500">{errors.experienceLevel.message}</p>}
+                {errors.experienceLevel && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.experienceLevel.message}
+                  </p>
+                )}
               </div>
 
               <Input
@@ -347,7 +376,9 @@ export default function JobFormPage({ mode = "create" }) {
 
             {/* Salary Range */}
             <div className="border-t border-slate-100 pt-5 space-y-4">
-              <h3 className="font-bold text-slate-800 text-sm">Salary & Package</h3>
+              <h3 className="font-bold text-slate-800 text-sm">
+                Salary & Package
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Input
                   label="Minimum Salary"
@@ -389,15 +420,16 @@ export default function JobFormPage({ mode = "create" }) {
             {/* Requirements (Dynamic List) */}
             <div className="border-t border-slate-100 pt-5 space-y-3">
               <div className="flex justify-between items-center">
-                <label className="block text-sm font-bold text-slate-800">Job Requirements</label>
+                <label className="block text-sm font-bold text-slate-800">
+                  Job Requirements
+                </label>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={handleAddRequirement}
                   disabled={isSubmitting}
-                  className="px-3 py-1 text-xs"
-                >
+                  className="px-3 py-1 text-xs">
                   <Plus className="w-3.5 h-3.5" /> Add Requirement
                 </Button>
               </div>
@@ -408,7 +440,9 @@ export default function JobFormPage({ mode = "create" }) {
                     <Input
                       placeholder={`Requirement #${index + 1}`}
                       value={req}
-                      onChange={(e) => handleRequirementChange(index, e.target.value)}
+                      onChange={(e) =>
+                        handleRequirementChange(index, e.target.value)
+                      }
                       disabled={isSubmitting}
                       className="flex-1"
                     />
@@ -417,8 +451,7 @@ export default function JobFormPage({ mode = "create" }) {
                         type="button"
                         onClick={() => handleRemoveRequirement(index)}
                         disabled={isSubmitting}
-                        className="p-2 text-slate-400 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg cursor-pointer"
-                      >
+                        className="p-2 text-slate-400 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg cursor-pointer">
                         <Trash2 className="w-4.5 h-4.5" />
                       </button>
                     )}
@@ -430,15 +463,16 @@ export default function JobFormPage({ mode = "create" }) {
             {/* Skills (Dynamic List) */}
             <div className="border-t border-slate-100 pt-5 space-y-3">
               <div className="flex justify-between items-center">
-                <label className="block text-sm font-bold text-slate-800">Key Skills / Tags</label>
+                <label className="block text-sm font-bold text-slate-800">
+                  Key Skills / Tags
+                </label>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={handleAddSkill}
                   disabled={isSubmitting}
-                  className="px-3 py-1 text-xs"
-                >
+                  className="px-3 py-1 text-xs">
                   <Plus className="w-3.5 h-3.5" /> Add Skill
                 </Button>
               </div>
@@ -458,8 +492,7 @@ export default function JobFormPage({ mode = "create" }) {
                         type="button"
                         onClick={() => handleRemoveSkill(index)}
                         disabled={isSubmitting}
-                        className="p-2 text-slate-400 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg cursor-pointer"
-                      >
+                        className="p-2 text-slate-400 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg cursor-pointer">
                         <Trash2 className="w-4.5 h-4.5" />
                       </button>
                     )}
@@ -474,11 +507,13 @@ export default function JobFormPage({ mode = "create" }) {
                 type="button"
                 variant="outline"
                 onClick={() => navigate(-1)}
-                disabled={isSubmitting}
-              >
+                disabled={isSubmitting}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting} className="min-w-[8rem]">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="min-w-32">
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin mr-1" />
@@ -491,7 +526,6 @@ export default function JobFormPage({ mode = "create" }) {
                 )}
               </Button>
             </div>
-
           </form>
         </CardContent>
       </Card>

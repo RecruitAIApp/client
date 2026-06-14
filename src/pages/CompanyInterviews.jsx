@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { 
   getCompanyInterviews, 
   updateInterview, 
@@ -31,8 +31,8 @@ import {
   ChevronRight, 
   CheckCircle,
   XCircle,
-  HelpCircle,
-  Eye
+  Eye,
+  Brain
 } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -71,7 +71,11 @@ export default function CompanyInterviews() {
   };
 
   useEffect(() => {
-    fetchInterviews(1);
+    const loadInterviews = async () => {
+      await fetchInterviews(1);
+    };
+
+    loadInterviews();
   }, [status]);
 
   const handleSearchSubmit = (e) => {
@@ -161,7 +165,7 @@ export default function CompanyInterviews() {
       {/* Upper Info Grid */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-[var(--color-brand-blue)]">Company Interviews</h1>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-(--color-brand-blue)">Company Interviews</h1>
           <p className="text-slate-500 text-sm">Review, reschedule, and manage scheduled interviews for your company applications.</p>
         </div>
       </div>
@@ -341,7 +345,7 @@ export default function CompanyInterviews() {
         <Modal open={isCoachModalOpen} onOpenChange={(open) => !open && setIsCoachModalOpen(false)}>
           <ModalContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
             <ModalHeader>
-              <ModalTitle className="text-xl font-bold text-[var(--color-brand-blue)] flex items-center gap-2">
+              <ModalTitle className="text-xl font-bold text-(--color-brand-blue) flex items-center gap-2">
                 <Brain className="h-5 w-5 text-indigo-500" />
                 AI Interview Coach Assessment
               </ModalTitle>
