@@ -1,9 +1,10 @@
 import { Brain, Target, BarChart3, Shield, Zap, Users, ChevronRight, Sparkles } from "lucide-react";
 
-/* ── Split value prop section (Section 2 from design.md) ── */
+/* ── Split value prop section ── */
 function ValuePropSection() {
   return (
     <div
+      id="how-it-works"
       className="py-24"
       style={{ background: "#fafafa", borderTop: "1px solid #f1f5f9" }}
     >
@@ -144,7 +145,7 @@ function ValuePropSection() {
   );
 }
 
-/* ── 3-column secondary features strip (Section 4 from design.md) ── */
+/* ── 3-column secondary features strip ── */
 const secondaryFeatures = [
   {
     icon: Shield,
@@ -174,7 +175,7 @@ const secondaryFeatures = [
 
 function SecondaryFeaturesStrip() {
   return (
-    <div className="py-20" style={{ background: "#ffffff" }}>
+    <div id="features" className="py-20" style={{ background: "#ffffff" }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-6">
           {secondaryFeatures.map((f) => (
@@ -204,7 +205,7 @@ function SecondaryFeaturesStrip() {
   );
 }
 
-/* ── Testimonials / social proof (Section 8 from design.md) ── */
+/* ── Testimonials / social proof ── */
 const testimonials = [
   {
     quote:
@@ -235,6 +236,7 @@ const testimonials = [
 function TestimonialsSection() {
   return (
     <div
+      id="testimonials"
       className="py-24"
       style={{ background: "#fafafa", borderTop: "1px solid #f1f5f9" }}
     >
