@@ -163,6 +163,11 @@ export const appRoutes = [
             handle: { allowedRoles: ["employer"] },
           },
           {
+            path: "/employer/jobs",
+            element: <EmployerDashboard />,
+            handle: { allowedRoles: ["employer"] },
+          },
+          {
             path: "/employer/pipeline",
             element: <KanbanPipeline />,
             handle: { allowedRoles: ["employer"] },

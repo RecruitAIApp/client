@@ -255,7 +255,6 @@ export function Navbar() {
                   <>
                     <NavLink onClick={() => navigate(activeCompanyId ? `/employer/company/${activeCompanyId}` : "/employer/dashboard")}>Dashboard</NavLink>
                     <NavLink onClick={() => navigate(activeCompanyId ? `/employer/company/${activeCompanyId}/jobs` : "/employer/jobs")}>Jobs</NavLink>
-                    <NavLink onClick={() => navigate("/employer/analytics")}>Analytics</NavLink>
                   </>
                 )}
                 {userRole === "admin" && (

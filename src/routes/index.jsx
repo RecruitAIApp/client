@@ -8,6 +8,7 @@ import RootLayout from "../components/layouts/RootLayout";
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const AcceptInvite = lazy(() => import("../pages/AcceptInvite"));
+const NotFound = lazy(() => import("../pages/NotFound"));
 
 const ProtectedLayout = () => {
   const { isAuthenticated, user, isHydrated } = useAuthStore();
@@ -88,12 +89,14 @@ export const router = createBrowserRouter([
         element: <PublicLayout />,
         children: authRoutes,
       },
-      {
-        path: "*",
-        element: (
-          <div className="text-center p-10 font-bold">404 - Page Not Found</div>
-        ),
-      },
     ],
+  },
+  {
+    path: "*",
+    element: (
+      <Suspense fallback={null}>
+        <NotFound />
+      </Suspense>
+    ),
   },
 ]);
