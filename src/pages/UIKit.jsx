@@ -26,7 +26,7 @@ export default function UIKit() {
   return (
     <div className="min-h-screen bg-gray-50 p-10 space-y-16">
       <h1 className="text-3xl font-bold text-(--color-brand-blue)">
-        Masar — UI Kit
+        Naqla — UI Kit
       </h1>
 
       {/* BUTTONS */}

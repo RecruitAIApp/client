@@ -72,9 +72,9 @@ export default function ForgotPassword() {
 
             {/* Content */}
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Check your email</h2>
+              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Request Received</h2>
               <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-sm mx-auto">
-                We sent a password reset link to <span className="font-semibold text-slate-800">{successEmail}</span>. Click the link inside the email to reset your password.
+                If an account exists for <span className="font-semibold text-slate-800">{successEmail}</span>, a password reset link has been sent. Please check your inbox and click the link to reset your password.
               </p>
             </div>
 

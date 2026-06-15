@@ -731,8 +731,8 @@ export function Navbar() {
                   key={path}
                   onClick={() => { setShowMobileMenu(false); navigate(path); }}
                   className={`cursor-pointer w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
-                      ? "text-blue-700 bg-blue-50/80"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    ? "text-blue-700 bg-blue-50/80"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                 >
                   {label}
@@ -761,8 +761,8 @@ export function Navbar() {
                   key={path}
                   onClick={() => { setShowMobileMenu(false); navigate(path); }}
                   className={`cursor-pointer w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
-                      ? "text-blue-700 bg-blue-50/80"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    ? "text-blue-700 bg-blue-50/80"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                 >
                   {label}
@@ -780,8 +780,8 @@ export function Navbar() {
                   key={path}
                   onClick={() => { setShowMobileMenu(false); navigate(path); }}
                   className={`cursor-pointer w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
-                      ? "text-blue-700 bg-blue-50/80"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    ? "text-blue-700 bg-blue-50/80"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                     }`}
                 >
                   {label}

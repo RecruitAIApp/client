@@ -36,7 +36,7 @@ function AIMatchCard() {
             className="flex-1 text-xs text-center font-medium mx-8 rounded-md px-3 py-1"
             style={{ background: "white", color: "#64748b" }}
           >
-            masar.app — AI Match Analysis
+            Naqla.app — AI Match Analysis
           </span>
         </div>
 
@@ -56,17 +56,17 @@ function AIMatchCard() {
               <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <svg className="absolute inset-0 w-full h-full -rotate-90">
                 <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="3" fill="transparent" className="text-slate-100" />
-                <circle 
-                  cx="32" 
-                  cy="32" 
-                  r="28" 
-                  stroke="url(#blue-gradient)" 
-                  strokeWidth="4" 
-                  fill="transparent" 
-                  strokeDasharray="175.9" 
-                  strokeDashoffset="17.6" 
-                  strokeLinecap="round" 
-                  className="transition-all duration-1000 ease-out drop-shadow-sm group-hover:drop-shadow-[0_0_6px_rgba(37,99,235,0.5)]" 
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="28"
+                  stroke="url(#blue-gradient)"
+                  strokeWidth="4"
+                  fill="transparent"
+                  strokeDasharray="175.9"
+                  strokeDashoffset="17.6"
+                  strokeLinecap="round"
+                  className="transition-all duration-1000 ease-out drop-shadow-sm group-hover:drop-shadow-[0_0_6px_rgba(37,99,235,0.5)]"
                 />
                 <defs>
                   <linearGradient id="blue-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
