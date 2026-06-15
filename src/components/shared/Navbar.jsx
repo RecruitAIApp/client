@@ -83,9 +83,8 @@ function NavLink({ children, onClick, active }) {
   return (
     <button
       onClick={onClick}
-      className={`cursor-pointer px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 relative focus-visible:ring-2 focus-visible:ring-blue-500 focus:outline-none ${
-        active ? "text-blue-700" : "text-slate-600 hover:text-slate-900"
-      }`}
+      className={`cursor-pointer px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 relative focus-visible:ring-2 focus-visible:ring-blue-500 focus:outline-none ${active ? "text-blue-700" : "text-slate-600 hover:text-slate-900"
+        }`}
     >
       {active && (
         <span
@@ -432,7 +431,7 @@ export function Navbar() {
                 active={isActive("/admin/companies")}
                 onClick={() => navigate("/admin/companies")}
               >
-                companies
+                Companies
               </NavLink>
               <NavLink
                 active={isActive("/admin/analytics")}
@@ -736,11 +735,10 @@ export function Navbar() {
       {/* Mobile menu floating dropdown */}
       <div
         ref={mobileMenuRef}
-        className={`lg:hidden absolute left-0 right-0 top-full mt-3 rounded-3xl overflow-hidden transition-all duration-300 origin-top shadow-2xl ${
-          showMobileMenu
+        className={`lg:hidden absolute left-0 right-0 top-full mt-3 rounded-3xl overflow-hidden transition-all duration-300 origin-top shadow-2xl ${showMobileMenu
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-4 pointer-events-none"
-        }`}
+          }`}
         style={{
           background: "#ffffff",
           border: "1px solid #f1f5f9",
@@ -786,11 +784,10 @@ export function Navbar() {
                     setShowMobileMenu(false);
                     navigate(path);
                   }}
-                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${
-                    isActive(path)
+                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
                       ? "text-blue-700 bg-blue-50/80"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -820,11 +817,10 @@ export function Navbar() {
                     setShowMobileMenu(false);
                     navigate(path);
                   }}
-                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${
-                    isActive(path)
+                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
                       ? "text-blue-700 bg-blue-50/80"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -843,11 +839,10 @@ export function Navbar() {
                     setShowMobileMenu(false);
                     navigate(path);
                   }}
-                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${
-                    isActive(path)
+                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
                       ? "text-blue-700 bg-blue-50/80"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
