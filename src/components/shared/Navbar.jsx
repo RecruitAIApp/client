@@ -65,20 +65,19 @@ function NavLink({ children, onClick, active }) {
   return (
     <button
       onClick={onClick}
-      className={`cursor-pointer px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 relative focus-visible:ring-2 focus-visible:ring-blue-500 focus:outline-none ${
-        active ? "text-blue-700" : "text-slate-600 hover:text-slate-900"
-      }`}
+      className={`cursor-pointer px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 relative focus-visible:ring-2 focus-visible:ring-blue-500 focus:outline-none ${active ? "text-blue-700" : "text-slate-600 hover:text-slate-900"
+        }`}
     >
       {active && (
-        <span 
-          className="absolute inset-0 bg-blue-50 rounded-full" 
-          style={{ zIndex: -1 }} 
+        <span
+          className="absolute inset-0 bg-blue-50 rounded-full"
+          style={{ zIndex: -1 }}
         />
       )}
       {!active && (
-        <span 
-          className="absolute inset-0 bg-slate-100/80 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-200" 
-          style={{ zIndex: -1 }} 
+        <span
+          className="absolute inset-0 bg-slate-100/80 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-200"
+          style={{ zIndex: -1 }}
         />
       )}
       <span className="relative z-10">{children}</span>
@@ -155,7 +154,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-4 inset-x-0 z-50 mx-auto w-[95%] max-w-7xl transition-all duration-300 pointer-events-none">
-      <div 
+      <div
         className="flex items-center justify-between h-[4.25rem] px-3 rounded-full relative pointer-events-auto"
         style={{
           background: "rgba(255, 255, 255, 0.25)",
@@ -167,7 +166,7 @@ export function Navbar() {
       >
         {/* Subtle noise overlay for premium feel */}
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none mix-blend-overlay rounded-full overflow-hidden"
-             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
         />
         {/* Left: Logo + Workspace */}
         <div className="flex items-center gap-3 relative z-10 flex-1 lg:flex-none">
@@ -182,7 +181,7 @@ export function Navbar() {
                   setShowUserMenu(false);
                   setShowNotifications(false);
                 }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all max-w-[12rem] focus-visible:ring-2 focus-visible:ring-slate-300 focus:outline-none"
+                className="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all max-w-[12rem] focus-visible:ring-2 focus-visible:ring-slate-300 focus:outline-none"
                 style={{
                   background: showWorkspaceMenu ? "#f1f5f9" : "rgba(248, 250, 252, 0.8)",
                   border: "1px solid rgba(226, 232, 240, 0.8)",
@@ -204,10 +203,12 @@ export function Navbar() {
 
               {showWorkspaceMenu && (
                 <div
-                  className="absolute left-0 top-full mt-3 w-64 rounded-3xl py-3 z-50 overflow-hidden origin-top-left animate-in fade-in slide-in-from-top-2 duration-200"
+                  className="absolute left-0 top-full mt-3 w-64 rounded-3xl py-3 z-50 overflow-hidden origin-top-left animate-in fade-in slide-in-from-top-2 duration-200 pointer-events-auto"
                   style={{
-                    background: "#ffffff",
-                    border: "1px solid #f1f5f9",
+                    background: "rgba(255, 255, 255, 0.85)",
+                    backdropFilter: "blur(20px) saturate(150%)",
+                    WebkitBackdropFilter: "blur(20px) saturate(150%)",
+                    border: "1px solid rgba(255, 255, 255, 0.5)",
                     boxShadow: "0 12px 32px -4px rgba(0,0,0,0.1), 0 4px 12px -4px rgba(0,0,0,0.06)",
                   }}
                 >
@@ -219,7 +220,7 @@ export function Navbar() {
                       <button
                         key={m.company?._id}
                         onClick={() => handleSwitchCompany(m.company?._id)}
-                        className="w-full px-5 py-2.5 text-left text-sm flex items-center justify-between gap-3 transition-colors hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
+                        className="cursor-pointer w-full px-5 py-2.5 text-left text-sm flex items-center justify-between gap-3 transition-colors hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
                         style={{ color: "#334155" }}
                       >
                         <div className="flex items-center gap-3 min-w-0">
@@ -244,7 +245,7 @@ export function Navbar() {
                   <div className="mx-4 my-2 border-t border-slate-100" />
                   <button
                     onClick={() => { setShowWorkspaceMenu(false); navigate("/employer/company-onboarding"); }}
-                    className="w-full px-5 py-2 text-left text-sm flex items-center gap-2.5 transition-colors text-slate-500 hover:text-slate-800 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
+                    className="cursor-pointer w-full px-5 py-2 text-left text-sm flex items-center gap-2.5 transition-colors text-slate-500 hover:text-slate-800 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
                   >
                     <Plus className="w-4 h-4 text-slate-400" /> Create Company
                   </button>
@@ -274,14 +275,14 @@ export function Navbar() {
           )}
           {userRole === "employer" && (
             <>
-              <NavLink 
-                active={isActive(activeCompanyId ? `/employer/company/${activeCompanyId}` : "/employer/dashboard") && !location.pathname.includes('/jobs')} 
+              <NavLink
+                active={isActive(activeCompanyId ? `/employer/company/${activeCompanyId}` : "/employer/dashboard") && !location.pathname.includes('/jobs')}
                 onClick={() => navigate(activeCompanyId ? `/employer/company/${activeCompanyId}` : "/employer/dashboard")}
               >
                 Dashboard
               </NavLink>
-              <NavLink 
-                active={isActive(activeCompanyId ? `/employer/company/${activeCompanyId}/jobs` : "/employer/jobs")} 
+              <NavLink
+                active={isActive(activeCompanyId ? `/employer/company/${activeCompanyId}/jobs` : "/employer/jobs")}
                 onClick={() => navigate(activeCompanyId ? `/employer/company/${activeCompanyId}/jobs` : "/employer/jobs")}
               >
                 Jobs
@@ -306,7 +307,7 @@ export function Navbar() {
               <div className="relative" ref={notificationsRef}>
                 <button
                   onClick={() => { setShowNotifications(!showNotifications); setShowUserMenu(false); }}
-                  className="relative p-2.5 rounded-full transition-all duration-200 hover:bg-slate-100/80 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-300 focus:outline-none"
+                  className="cursor-pointer relative p-2.5 rounded-full transition-all duration-200 hover:bg-slate-100/80 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-300 focus:outline-none"
                   style={{ color: "#64748b" }}
                 >
                   <Bell className="w-5 h-5" />
@@ -321,8 +322,10 @@ export function Navbar() {
                   <div
                     className="absolute right-0 top-full mt-3 w-80 rounded-3xl py-2 z-50 overflow-hidden origin-top-right animate-in fade-in slide-in-from-top-2 duration-200"
                     style={{
-                      background: "#ffffff",
-                      border: "1px solid #f1f5f9",
+                      background: "#f7f9fc",
+                      backdropFilter: "blur(20px) saturate(150%)",
+                      WebkitBackdropFilter: "blur(20px) saturate(150%)",
+                      border: "1px solid rgba(255, 255, 255, 0.5)",
                       boxShadow: "0 12px 32px -4px rgba(0,0,0,0.1), 0 4px 12px -4px rgba(0,0,0,0.06)",
                     }}
                   >
@@ -330,7 +333,7 @@ export function Navbar() {
                       <h3 className="font-semibold text-sm text-slate-900">Notifications</h3>
                       <button
                         onClick={() => { setShowNotifications(false); navigate("/notifications"); }}
-                        className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+                        className="cursor-pointer text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors"
                       >
                         See all
                       </button>
@@ -390,7 +393,7 @@ export function Navbar() {
                       <div className="px-5 py-3 text-center border-t border-slate-100 bg-slate-50/50">
                         <button
                           onClick={() => { setShowNotifications(false); navigate("/notifications"); }}
-                          className="text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
+                          className="cursor-pointer text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
                         >
                           View all {notifications.length} notifications
                         </button>
@@ -404,7 +407,7 @@ export function Navbar() {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => { setShowUserMenu(!showUserMenu); setShowNotifications(false); }}
-                  className="flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full transition-all duration-200 border border-transparent hover:bg-slate-100/80 hover:border-slate-200 focus-visible:ring-2 focus-visible:ring-slate-300 focus:outline-none"
+                  className="cursor-pointer flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full transition-all duration-200 border border-transparent hover:bg-slate-100/80 hover:border-slate-200 focus-visible:ring-2 focus-visible:ring-slate-300 focus:outline-none"
                   style={{ background: showUserMenu ? "#f1f5f9" : "transparent" }}
                 >
                   {userRole === "candidate" ? (
@@ -424,8 +427,10 @@ export function Navbar() {
                   <div
                     className="absolute right-0 top-full mt-3 w-56 rounded-3xl py-2 z-50 overflow-hidden origin-top-right animate-in fade-in slide-in-from-top-2 duration-200"
                     style={{
-                      background: "#ffffff",
-                      border: "1px solid #f1f5f9",
+                      background: "#f7f9fc",
+                      backdropFilter: "blur(20px) saturate(150%)",
+                      WebkitBackdropFilter: "blur(20px) saturate(150%)",
+                      border: "1px solid rgba(255, 255, 255, 0.5)",
                       boxShadow: "0 12px 32px -4px rgba(0,0,0,0.1), 0 4px 12px -4px rgba(0,0,0,0.06)",
                     }}
                   >
@@ -436,14 +441,14 @@ export function Navbar() {
                     <div className="py-2">
                       <button
                         onClick={() => { setShowUserMenu(false); navigate(`/${userRole === "employer" ? "employer" : "candidate"}/profile`); }}
-                        className="w-full px-5 py-2.5 text-left text-sm font-medium flex items-center gap-3 transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
+                        className="cursor-pointer w-full px-5 py-2.5 text-left text-sm font-medium flex items-center gap-3 transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
                       >
                         <User className="w-4 h-4 text-slate-400" /> Profile
                       </button>
                       {userRole === "candidate" && (
                         <button
                           onClick={() => { setShowUserMenu(false); navigate("/candidate/saved-jobs"); }}
-                          className="w-full px-5 py-2.5 text-left text-sm font-medium flex items-center gap-3 transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
+                          className="cursor-pointer w-full px-5 py-2.5 text-left text-sm font-medium flex items-center gap-3 transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
                         >
                           <Bookmark className="w-4 h-4 text-slate-400" /> Saved Jobs
                         </button>
@@ -454,7 +459,7 @@ export function Navbar() {
                       type="button"
                       onClick={handleSignOut}
                       disabled={isLoading}
-                      className="w-full px-5 py-2.5 text-left text-sm font-medium flex items-center gap-3 transition-colors text-red-600 hover:bg-red-50 focus:bg-red-50 focus:outline-none disabled:opacity-50"
+                      className="cursor-pointer w-full px-5 py-2.5 text-left text-sm font-medium flex items-center gap-3 transition-colors text-red-600 hover:bg-red-50 focus:bg-red-50 focus:outline-none disabled:opacity-50"
                     >
                       {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <LogOut className="w-4 h-4" />}
                       Sign Out
@@ -498,14 +503,15 @@ export function Navbar() {
       </div>
 
       {/* Mobile menu floating dropdown */}
-      <div 
+      <div
         ref={mobileMenuRef}
-        className={`lg:hidden absolute left-0 right-0 top-full mt-3 rounded-3xl overflow-hidden transition-all duration-300 origin-top shadow-2xl ${
-          showMobileMenu ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
-        }`}
+        className={`lg:hidden absolute left-0 right-0 top-full mt-3 rounded-3xl overflow-hidden transition-all duration-300 origin-top shadow-2xl ${showMobileMenu ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-4 pointer-events-none"
+          }`}
         style={{
-          background: "#ffffff",
-          border: "1px solid #f1f5f9",
+          background: "#f7f9fc",
+          backdropFilter: "blur(20px) saturate(150%)",
+          WebkitBackdropFilter: "blur(20px) saturate(150%)",
+          border: "1px solid rgba(255, 255, 255, 0.5)",
           boxShadow: "0 12px 32px -4px rgba(0,0,0,0.1), 0 4px 12px -4px rgba(0,0,0,0.06)",
         }}
       >
@@ -544,11 +550,10 @@ export function Navbar() {
                 <button
                   key={path}
                   onClick={() => { setShowMobileMenu(false); navigate(path); }}
-                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${
-                    isActive(path) 
-                      ? "text-blue-700 bg-blue-50/80" 
+                  className={`cursor-pointer w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
+                      ? "text-blue-700 bg-blue-50/80"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -565,11 +570,10 @@ export function Navbar() {
                 <button
                   key={path}
                   onClick={() => { setShowMobileMenu(false); navigate(path); }}
-                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${
-                    isActive(path) 
-                      ? "text-blue-700 bg-blue-50/80" 
+                  className={`cursor-pointer w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
+                      ? "text-blue-700 bg-blue-50/80"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -585,23 +589,22 @@ export function Navbar() {
                 <button
                   key={path}
                   onClick={() => { setShowMobileMenu(false); navigate(path); }}
-                  className={`w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${
-                    isActive(path) 
-                      ? "text-blue-700 bg-blue-50/80" 
+                  className={`cursor-pointer w-full px-5 py-3 text-left text-sm font-semibold rounded-2xl transition-colors ${isActive(path)
+                      ? "text-blue-700 bg-blue-50/80"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
               ))}
             </>
           )}
-          
+
           {!userRole && (
             <div className="flex flex-col gap-2 pt-2 pb-1">
               <button
                 onClick={() => { setShowMobileMenu(false); navigate("/login"); }}
-                className="w-full py-3 rounded-2xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors border-2 border-slate-200"
+                className="cursor-pointer w-full py-3 rounded-2xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors border-2 border-slate-200"
               >
                 Sign In
               </button>
@@ -614,14 +617,14 @@ export function Navbar() {
               </button>
             </div>
           )}
-          
+
           {userRole && (
             <div className="pt-2 mt-2 border-t border-slate-100">
               <button
                 type="button"
                 onClick={handleSignOut}
                 disabled={isLoading}
-                className="w-full px-5 py-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50 rounded-2xl flex items-center gap-3 disabled:opacity-50 transition-colors"
+                className="cursor-pointer w-full px-5 py-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50 rounded-2xl flex items-center gap-3 disabled:opacity-50 transition-colors"
               >
                 {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <LogOut className="w-5 h-5" />}
                 Sign Out
